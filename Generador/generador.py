@@ -1,4 +1,4 @@
-# This program prints Hello, world!
+# Programa que genera un escenario inicial
 
 import random
 import matplotlib.pyplot as plt
@@ -9,7 +9,7 @@ f = open("scenary.txt", "w")
 # numero de ciudades
 num = 100
 
-# vector de posiciones
+# lista de posiciones
 posiciones = []
 
 # iteramos para num ciudades
