@@ -23,7 +23,7 @@ def main():
     # corregimos la solución (no hace nada, pues ya era válida)
     nuevaListaViajantes = corrigeSolucion(listaViajantes, copiaListaCiudades)
 
-    # imprimimos los caminos
+    # print de control: imprimimos los caminos
     for viajante in nuevaListaViajantes:
         print(viajante, "\n")
 
@@ -88,13 +88,10 @@ def generaSolucion(listaCiudades):
             # añadimos el elemento al viajante seleccionado
             viajante.append(ciudad)
 
-    # Añadir el primer y último elemento a los vectores
+    # Añadir el primer elemento a los vectores
     viajante1.insert(0, primera_ciudad)
-    viajante1.append(primera_ciudad)
     viajante2.insert(0, primera_ciudad)
-    viajante2.append(primera_ciudad)
     viajante3.insert(0, primera_ciudad)
-    viajante3.append(primera_ciudad)
 
     # Devolver los vectores como una tupla
     return viajante1, viajante2, viajante3
@@ -116,9 +113,6 @@ def corrigeSolucion(listaViajantes, listaCiudades):
     viajante1[0] = ciudadOrigen
     viajante2[0] = ciudadOrigen
     viajante3[0] = ciudadOrigen
-    viajante1[-1] = ciudadOrigen
-    viajante2[-1] = ciudadOrigen
-    viajante3[-1] = ciudadOrigen
 
     # objenemos una lista con las ciudades visitadas por los viajantes, eliminando elementos repetidos
     ciudadesVisitadas = set(viajante1 + viajante2 + viajante3)
