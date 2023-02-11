@@ -3,29 +3,26 @@
 # importamos librerias
 import re
 import random
+import math
+import matplotlib.pyplot as plt
 from random import randint
 
-# Funcion principal
+# Funcion main
 def main():
     
-    # Recuperamos las ciudades del .txt
-    listaCiudades = recuperaCiudades()
+    # Variables importantes configurables para el algoritmo genetico
+    tamano_poblacion = 500
+    porcentaje_mejor = 10
+    maximo_generaciones = 500
 
-    # hacemos una copia de la lista de ciudades 
-    copiaListaCiudades = listaCiudades[:]
+    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
+    num_viajantes = 3
 
-    # aleatorizamos la lista de las ciudades
-    random.shuffle(copiaListaCiudades)
+    # Llamamos al algoritmo genetico
+    mejorSolucion = genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajantes)
 
-    # generamos una solución aleatoria válida
-    listaViajantes = generaSolucion(copiaListaCiudades)
+    imprimirCaminos(mejorSolucion)
 
-    # corregimos la solución (no hace nada, pues ya era válida)
-    nuevaListaViajantes = corrigeSolucion(listaViajantes, copiaListaCiudades)
-
-    # print de control: imprimimos los caminos
-    for viajante in nuevaListaViajantes:
-        print(viajante, "\n")
 
 # Funcion que lee el contenido de el fichero scenary.txt y devuelve la lista de ciudades con sus coordenadas
 def recuperaCiudades():
@@ -58,107 +55,249 @@ def recuperaCiudades():
 
     return posiciones
 
-# Funcion que genera una solucion aleatoria valida a partir de una lista de ciudades (con orden previamente aleatorizado) 
-# para 3 viajantes, devuelve una lista que contiene tres listas con sus respectivos caminos
-def generaSolucion(listaCiudades):
+# Funcion que genera una solucion aleatoria valida a partir de una lista de ciudades (con orden previamente aleatorizado)
+# para N viajantes, devuelve una lista que contiene N listas con sus respectivos caminos
+def generaSolucion(listaCiudades, num_viajantes):
 
-    # Extraer el primer elemento de la lista
-    primera_ciudad = listaCiudades[0]
-
-    # Crear los vectores vacíos
-    viajante1 = []
-    viajante2 = []
-    viajante3 = []
+    # Crear la lista de vectores vacíos
+    lista_viajantes = []
+    for i in range(num_viajantes):
+        lista_viajantes.append([])
 
     # Repartir los elementos de la lista entre los viajantes
-    for ciudad in listaCiudades:
-        if ciudad != primera_ciudad:
+    for ciudad in listaCiudades[1:]:
 
+        # Verificamos si todos los viajantes tienen al menos una ciudad
+        todos_tienen_elemento = True
+        for viajante in lista_viajantes:
+            if len(viajante) == 0:
+                todos_tienen_elemento = False
+                viajante.append(ciudad)
+                break
+
+        # Si todos los viajantes tienen al menos una ciudad, se asigna aleatoriamente
+        if todos_tienen_elemento:
             # Elegir al azar a qué vector se añade el elemento
-            viajante = random.choice([viajante1, viajante2, viajante3])
-
-            # controlamos que ningun vector se quede sin al menos un elemento
-            if len(viajante1) == 0:
-                viajante = viajante1
-            if len(viajante2) == 0:
-                viajante = viajante2
-            if len(viajante3) == 0:
-                viajante = viajante3
+            viajante = random.choice(lista_viajantes)
 
             # añadimos el elemento al viajante seleccionado
             viajante.append(ciudad)
 
     # Añadir el primer elemento a los vectores
-    viajante1.insert(0, primera_ciudad)
-    viajante2.insert(0, primera_ciudad)
-    viajante3.insert(0, primera_ciudad)
+    for v in lista_viajantes:
+        v.insert(0, listaCiudades[0])
 
     # Devolver los vectores como una tupla
-    return viajante1, viajante2, viajante3
+    return lista_viajantes
 
 # Funcion que corrige una solucion incorrecta, haciendola válida usando una lista de ciudades (con orden previamente aleatorizado)
-# y usando la primera como ciudad inicial. Devuelve una lista que contiene tres listas con caminos validos
-def corrigeSolucion(listaViajantes, listaCiudades):
+# y usando la primera como ciudad inicial. Devuelve una lista que contiene N listas con caminos validos
+def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
 
     copiaListaViajantes = listaViajantes[:]
     copiaListaCiudades = listaCiudades[:]
 
-    # extraemos las listas de ciudades de cada viajante
-    viajante1 = copiaListaViajantes[0]
-    viajante2 = copiaListaViajantes[1]
-    viajante3 = copiaListaViajantes[2]
+    # Nos aseguramos de que la ciudad de origen es igual para todos los viajantes
+    for viajante in copiaListaViajantes:
+        viajante[0] = ciudadOrigen
 
-    # Nos aseguramos de que la ciudad de origen es igual para los tres viajantes
-    ciudadOrigen = copiaListaCiudades[0]
-    viajante1[0] = ciudadOrigen
-    viajante2[0] = ciudadOrigen
-    viajante3[0] = ciudadOrigen
-
-    # objenemos una lista con las ciudades visitadas por los viajantes, eliminando elementos repetidos
-    ciudadesVisitadas = set(viajante1 + viajante2 + viajante3)
-
-    # print de control para ver si esta funcionando
-    # print("ciudades visitadas:", len(ciudadesVisitadas))
+    # Obtenemos una lista con las ciudades visitadas por los viajantes, sin añadir elementos repetidos
+    ciudadesVisitadas = []
+    for viajante in copiaListaViajantes:
+        for ciudad in viajante:
+            if ciudad not in ciudadesVisitadas:
+                ciudadesVisitadas.append(ciudad)
+            
 
     # Obtenemos una lista de las ciudades sin visitar
-    ciudadesSinVisitar = []
-    
-    for ciudad in copiaListaCiudades:
-        # Si la ciudad no ha sido visitada, la agregamos a la lista
-        if ciudad not in ciudadesVisitadas:
-            ciudadesSinVisitar.append(ciudad)
-
-    # print de control para ver si esta funcionando
-    # print("ciudades sin visitar:", len(ciudadesSinVisitar))
+    ciudadesSinVisitar = [ciudad for ciudad in copiaListaCiudades if ciudad not in ciudadesVisitadas]
 
     # Repartir los elementos de la lista entre los viajantes
     for ciudad in ciudadesSinVisitar:
-            # Elegir al azar a qué vector se añade el elemento
-            viajante = random.choice([viajante1, viajante2, viajante3])
 
-            # controlamos que ningun vector se quede sin al menos un elemento
-            if len(viajante1) == 0:
-                viajante = viajante1
-            if len(viajante2) == 0:
-                viajante = viajante2
-            if len(viajante3) == 0:
-                viajante = viajante3
+        # Verificamos si todos los viajantes tienen al menos una ciudad (a parte de la inicial)
+        todos_tienen_elemento = True
+        for viajante in copiaListaViajantes:
+            if len(viajante) <= 1:
+                todos_tienen_elemento = False
+                viajante.append(ciudad)
+                break
+
+        # Si todos los viajantes tienen al menos una ciudad (a parte de la inicial), se asigna aleatoriamente
+        if todos_tienen_elemento:
+            # Elegir al azar a qué vector se añade el elemento
+            viajante = random.choice(copiaListaViajantes)
 
             # Generamos un número aleatorio entre 0 y la longitud de la lista
             random_index = randint(1, len(viajante) - 1)
 
-            # añadimos el elemento al viajante seleccionado en la posicion aleatoria
-            viajante1.insert(random_index, ciudad)
-
-    # print de control para ver si esta funcionando
-    # comprobamos que la solución es válida
-    # if (len(set(viajante1 + viajante2 + viajante3))) != len(copiaListaCiudades):
-    #     print("error: no se recorren todas las ciudades")
-    # else:
-    #     print("se recorren todas las ciudades")
+            # añadimos el elemento al viajante seleccionado en la posición aleatoria
+            viajante.insert(random_index, ciudad)
 
     # Devolver los vectores como una tupla
-    return viajante1, viajante2, viajante3
+    return copiaListaViajantes
+
+# Funcion que recibe una posible solución, calcula las distancias euclídeas de todos los caminos, y devuelve el fitness de la solución
+def fitness(listaViajantes):
+
+    # definimos una variable para el fitness
+    f = 0.0
+
+    # para cada viajante de la lista de viajantes
+    for viajante in listaViajantes:
+        # para cada ciudad del camino
+        for i in range(len(viajante) - 1):
+
+            # obtenemos las coordenadas de las dos ciudades contiguas en el camino
+            x1, y1 = viajante[i]
+            x2, y2 = viajante[i + 1]
+
+            # distancia euclidea
+            distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+            # la sumamos al total
+            f += distancia
+
+        # agregamos la distancia de retorno a la primera ciudad
+        x1, y1 = viajante[-1]
+        x2, y2 = viajante[0]
+
+        # distancia euclidea
+        distancia = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+        # la sumamos al total
+        f += distancia
+
+    # devolvemos el fitness de la solución
+    return f
+
+# Funcion que recibe dos soluciones correctas y las combina, creando dos nuevas soluciones. Estas soluciones NO son correctas, es decir, hay que 
+# corregirlas con la función corrigeSolucion
+def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
+
+    # Creamos dos listas vacias para devolver las posibles soluciones
+    listaViajantesHijo1 = []
+    listaViajantesHijo2 = []
+
+    # para cada viajante de las dos soluciones
+    for viajantePadre, viajanteMadre in zip(listaViajantesPadre, listaViajantesMadre):
+
+        # calculamos los puntos medios de los vectores
+        puntoMedioPadre = len(viajantePadre) // 2
+        puntoMedioMadre = len(viajanteMadre) // 2
+
+        # combinamos los caminos creando dos nuevos caminos
+        viajanteHijo1 = viajantePadre[:puntoMedioPadre] + viajanteMadre[puntoMedioMadre:]
+        viajanteHijo2 = viajanteMadre[:puntoMedioMadre] + viajantePadre[puntoMedioPadre:]
+
+        # metemos los nuevos caminos en la lista de viajantes
+        listaViajantesHijo1.append(viajanteHijo1)
+        listaViajantesHijo2.append(viajanteHijo2)
+
+    # devolvemos las dos nuevas soluciones (PUEDEN NO SER VALIDAS)
+    return listaViajantesHijo1, listaViajantesHijo2
+
+# Funcion principal que ejecuta el algoritmo genetico para el problema de los viajantes de ciudades
+def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajantes):
+
+    # Recuperamos las ciudades del .txt
+    listaCiudades = recuperaCiudades()
+
+    # hacemos una copia de la lista de ciudades 
+    copiaListaCiudades = listaCiudades[:]
+
+    # creamos una lista de soluciones
+    listaSoluciones = []
+
+    # realizamos tantas generaciones como maximo de generaciones
+    for generacion in range(maximo_generaciones):
+        
+        # Si estamos en la primera generacion
+        if generacion == 0:
+
+            # realizamos tantas veces como tamano de poblacion
+            for iteracion in range(tamano_poblacion):
+
+                # aleatorizamos la lista de las ciudades
+                random.shuffle(copiaListaCiudades)
+
+                # generamos una solución aleatoria válida
+                listaViajantes = generaSolucion(copiaListaCiudades, num_viajantes)
+
+                # obtenemos el fitness de la solucion
+                distancia = fitness(listaViajantes)
+
+                # creamos una tupla con la solucion y su fitness
+                solucion = [listaViajantes, distancia]
+
+                # anadimos la solucion a la lista de soluciones
+                listaSoluciones.append(solucion)
+
+        # para el resto de generaciones
+        else:
+
+            # hacemos una copia de las mejores soluciones para inicializar la lista de soluciones
+            listaSoluciones = mejoresSoluciones[:]
+
+            # mientras no llegemos al tamaño de la poblacion
+            while len(listaSoluciones) < tamano_poblacion:
+
+                # seleccionamos aleatoriamente 2 padres
+                padre, madre = [tupla[0] for tupla in random.sample(mejoresSoluciones, 2)]
+
+                # generamos 2 nuevos hijos a partir de esos padres
+                nuevosHijos = combinarSoluciones(padre, madre)
+
+                # corregimos las soluciones, siendo ciudad origen del hijo 1 la misma del padre, y ciudad origen del hijo 2 la misma de la madre
+                for hijo in nuevosHijos:
+
+                    # corregimos una solución
+                    listaViajantes = corrigeSolucion(hijo, listaCiudades, hijo[0][0])
+
+                    # obtenemos el fitness de la solucion
+                    distancia = fitness(listaViajantes)
+
+                    # creamos una tupla con la solucion y su fitness
+                    solucion = [listaViajantes, distancia]
+
+                    # anadimos la solucion a la lista de soluciones
+                    listaSoluciones.append(solucion)
+        
+        # ordenamos las soluciones en funcion de su fitness con una funcion anonima que recibe el segundo elemento de la tupla
+        listaSolucionesOrdenadas = sorted(listaSoluciones, key=lambda x: x[1])
+
+        # Escogemos las mejores soluciones basandonos en un porcentaje predefinido
+        mejoresSoluciones = listaSolucionesOrdenadas[:((tamano_poblacion * porcentaje_mejor) // 100)]
+
+    return mejoresSoluciones[0]
+
+# Funcion auxiliar para generar un color aleatorio
+def random_hex_color():
+    red = format(random.randint(0, 255), '02x')
+    green = format(random.randint(0, 255), '02x')
+    blue = format(random.randint(0, 255), '02x')
+    return '#' + red + green + blue
+
+# Funcion auxiliar para generar un grafico que muestre los caminos de los viajantes
+def imprimirCaminos(mejorSolucion):
+    # Imprimimos la solución
+    nCaminos = 0
+    for viajante in mejorSolucion[0]:
+        nCaminos += 1
+        print("\n\nCamino del viajante [", nCaminos, "]: \n\n", viajante)
+        x = []
+        y = []
+        for ciudad in viajante:
+            x.append(ciudad[0])
+            y.append(ciudad[1])
+        x.append(viajante[0][0])
+        y.append(viajante[0][1])
+        plt.plot(x,y,":",color=random_hex_color())
+        plt.xlabel('Eje X')
+        plt.ylabel('Eje Y')
+        plt.title('Gráfico de Caminos')
+    plt.show()
+    print("\nLa mínima distancia recorrida es: ", mejorSolucion[1], "\n\n\n")
 
 # Se ejecuta el programa
 main()
