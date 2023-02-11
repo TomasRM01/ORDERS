@@ -13,7 +13,7 @@ def main():
     # Variables importantes configurables para el algoritmo genetico
     tamano_poblacion = 500
     porcentaje_mejor = 10
-    maximo_generaciones = 500
+    maximo_generaciones = 100
 
     # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
     num_viajantes = 3
