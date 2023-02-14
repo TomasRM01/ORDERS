@@ -4,6 +4,7 @@
 import re
 import random
 import math
+import time
 import matplotlib.pyplot as plt
 from random import randint
 
@@ -11,15 +12,39 @@ from random import randint
 def main():
     
     # Variables importantes configurables para el algoritmo genetico
-    tamano_poblacion = 500
+    tamano_poblacion = 1000
     porcentaje_mejor = 10
-    maximo_generaciones = 100
-
+    probabilidad_mutante = 50
+    maximo_generaciones_sin_mejora = 100
+    
     # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
     num_viajantes = 3
 
+    # abrimos el fichero en modo append
+    f = open("log.txt", "a") 
+
+    print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
+    
+    # Arrancamos el cronometro
+    inicio = time.time()
+    
     # Llamamos al algoritmo genetico
-    mejorSolucion = genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajantes)
+    mejorSolucion = genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, num_viajantes)
+
+    # Paramos el cronometro y medimos el tiempo total
+    fin = time.time()
+    tiempo_total = fin - inicio
+    
+    print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
+    
+    string = "############# RESULTADO ##############\n\n" + "---ENTRADAS---" + "\nTamano poblacion: " + str(tamano_poblacion) + "\nPorcentaje mejor: " + str(porcentaje_mejor) + "\nProbabilidad mutante: " + str(probabilidad_mutante) + "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) + "\n\n---SALIDAS---" + "\nTiempo: " + str(tiempo_total) + "\nDistancia: " + str(mejorSolucion[1]) + "\n\n---CAMINOS---\n"
+
+    for viajante in mejorSolucion[0]:
+        string = string + str(viajante) + "\n"
+
+    string = string + "\n\n\n"
+    
+    f.write(string)
 
     imprimirCaminos(mejorSolucion)
 
@@ -185,7 +210,7 @@ def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
         # calculamos los puntos medios de los vectores
         puntoMedioPadre = len(viajantePadre) // 2
         puntoMedioMadre = len(viajanteMadre) // 2
-
+        
         # combinamos los caminos creando dos nuevos caminos
         viajanteHijo1 = viajantePadre[:puntoMedioPadre] + viajanteMadre[puntoMedioMadre:]
         viajanteHijo2 = viajanteMadre[:puntoMedioMadre] + viajantePadre[puntoMedioPadre:]
@@ -198,7 +223,7 @@ def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
     return listaViajantesHijo1, listaViajantesHijo2
 
 # Funcion principal que ejecuta el algoritmo genetico para el problema de los viajantes de ciudades
-def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajantes):
+def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, num_viajantes):
 
     # Recuperamos las ciudades del .txt
     listaCiudades = recuperaCiudades()
@@ -209,11 +234,16 @@ def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajan
     # creamos una lista de soluciones
     listaSoluciones = []
 
-    # realizamos tantas generaciones como maximo de generaciones
-    for generacion in range(maximo_generaciones):
+    # variable de control para la primera generacion
+    primera_generacion = True
+
+    mejor_fitness = math.inf
+
+    generaciones_sin_mejora = 0
+    while generaciones_sin_mejora < maximo_generaciones_sin_mejora:
         
         # Si estamos en la primera generacion
-        if generacion == 0:
+        if primera_generacion == True:
 
             # realizamos tantas veces como tamano de poblacion
             for iteracion in range(tamano_poblacion):
@@ -232,13 +262,15 @@ def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajan
 
                 # anadimos la solucion a la lista de soluciones
                 listaSoluciones.append(solucion)
+                
+            primera_generacion = False
 
         # para el resto de generaciones
         else:
 
             # hacemos una copia de las mejores soluciones para inicializar la lista de soluciones
             listaSoluciones = mejoresSoluciones[:]
-
+            
             # mientras no llegemos al tamaño de la poblacion
             while len(listaSoluciones) < tamano_poblacion:
 
@@ -253,6 +285,10 @@ def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajan
 
                     # corregimos una solución
                     listaViajantes = corrigeSolucion(hijo, listaCiudades, hijo[0][0])
+                    
+                    # mutamos hasta que obtengamos un numero aleatorio mayor que la probabilidad de que mute
+                    while random.randint(1, 100) <= probabilidad_mutante:
+                        listaViajantes = mutante(listaViajantes)
 
                     # obtenemos el fitness de la solucion
                     distancia = fitness(listaViajantes)
@@ -268,8 +304,40 @@ def genetico(tamano_poblacion, porcentaje_mejor, maximo_generaciones, num_viajan
 
         # Escogemos las mejores soluciones basandonos en un porcentaje predefinido
         mejoresSoluciones = listaSolucionesOrdenadas[:((tamano_poblacion * porcentaje_mejor) // 100)]
-
+        
+        # Comprobar si se ha alcanzado la estabilidad del fitness
+        if mejoresSoluciones[0][1] < mejor_fitness:
+            
+            # Print de control para ver si el algoritmo encuentra mejores soluciones que la funcion generaSolucion()
+            if  mejor_fitness != math.inf:
+                print("HAY MEJORA: ", mejoresSoluciones[0][1], " < ",  mejor_fitness)
+            mejor_fitness = mejoresSoluciones[0][1]
+            generaciones_sin_mejora = 0
+        else:
+            generaciones_sin_mejora = generaciones_sin_mejora + 1
+            
+        
     return mejoresSoluciones[0]
+
+# Funcion que recibe una lista de viajantes y la devuelve intercambiando el orden de dos ciudades aleatorias de un viajante aleatorio
+def mutante(listaViajantes):
+    
+    # Seleccionamos aleatoriamente una de las N listas
+    lista_seleccionada = random.choice(listaViajantes)
+    
+    # Excluimos la primera tupla de la lista seleccionada
+    lista_sin_primera_tupla = lista_seleccionada[1:]
+    
+    # Seleccionamos aleatoriamente dos tuplas de la lista
+    tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    
+    # Intercambiamos las posiciones de las tuplas
+    indice_tupla_1 = lista_seleccionada.index(tupla_1)
+    indice_tupla_2 = lista_seleccionada.index(tupla_2)
+    lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
+    
+    # Devolvemos la lista de listas actualizada
+    return listaViajantes
 
 # Funcion auxiliar para generar un color aleatorio
 def random_hex_color():
@@ -292,12 +360,13 @@ def imprimirCaminos(mejorSolucion):
             y.append(ciudad[1])
         x.append(viajante[0][0])
         y.append(viajante[0][1])
-        plt.plot(x,y,":",color=random_hex_color())
+        plt.plot(x,y,":o",color=random_hex_color())
         plt.xlabel('Eje X')
         plt.ylabel('Eje Y')
         plt.title('Gráfico de Caminos')
-    plt.show()
+    plt.text(mejorSolucion[0][0][0][0],mejorSolucion[0][0][0][1], " Ciudad origen")
     print("\nLa mínima distancia recorrida es: ", mejorSolucion[1], "\n\n\n")
+    plt.show()
 
 # Se ejecuta el programa
 main()
