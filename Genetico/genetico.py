@@ -17,8 +17,8 @@ def main():
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 100
     
-    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 2, MINIMO = 1)
-    num_viajantes = 3
+    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
+    num_viajantes = 99
 
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
     
