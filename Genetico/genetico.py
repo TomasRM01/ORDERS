@@ -20,9 +20,6 @@ def main():
     # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
     num_viajantes = 3
 
-    # abrimos el fichero en modo append
-    f = open("log.txt", "a") 
-
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
     
     # Arrancamos el cronometro
@@ -37,15 +34,16 @@ def main():
     
     print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
     
+    # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
+    f = open("log.txt", "a") 
     string = "############# RESULTADO ##############\n\n" + "---ENTRADAS---" + "\nTamano poblacion: " + str(tamano_poblacion) + "\nPorcentaje mejor: " + str(porcentaje_mejor) + "\nProbabilidad mutante: " + str(probabilidad_mutante) + "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) + "\n\n---SALIDAS---" + "\nTiempo: " + str(tiempo_total) + "\nDistancia: " + str(mejorSolucion[1]) + "\n\n---CAMINOS---\n"
-
     for viajante in mejorSolucion[0]:
         string = string + str(viajante) + "\n"
-
-    string = string + "\n\n\n"
-    
+    string += "\n\n\n"
     f.write(string)
+    f.close()
 
+    # Imprimimos la mejor solucion con una grafica
     imprimirCaminos(mejorSolucion)
 
 
@@ -237,9 +235,13 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
     # variable de control para la primera generacion
     primera_generacion = True
 
+    # inicializamos el mejor fitness a infinito
     mejor_fitness = math.inf
 
+    # inicializamos el numero de generaciones sin mejora a 0
     generaciones_sin_mejora = 0
+
+    # mientras no se alcance el maximo de generaciones sin mejora
     while generaciones_sin_mejora < maximo_generaciones_sin_mejora:
         
         # Si estamos en la primera generacion
@@ -311,12 +313,19 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
             # Print de control para ver si el algoritmo encuentra mejores soluciones que la funcion generaSolucion()
             if  mejor_fitness != math.inf:
                 print("HAY MEJORA: ", mejoresSoluciones[0][1], " < ",  mejor_fitness)
+
+            # Actualizamos el mejor fitness
             mejor_fitness = mejoresSoluciones[0][1]
+
+            # Reiniciamos el contador de generaciones sin mejora
             generaciones_sin_mejora = 0
+
         else:
+
+            # Incrementamos el contador de generaciones sin mejora
             generaciones_sin_mejora = generaciones_sin_mejora + 1
             
-        
+    # Devolvemos la mejor solucion
     return mejoresSoluciones[0]
 
 # Funcion que recibe una lista de viajantes y la devuelve intercambiando el orden de dos ciudades aleatorias de un viajante aleatorio
