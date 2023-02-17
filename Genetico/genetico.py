@@ -17,7 +17,7 @@ def main():
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 100
     
-    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
+    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 2, MINIMO = 1)
     num_viajantes = 3
 
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
@@ -328,7 +328,7 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
     # Devolvemos la mejor solucion
     return mejoresSoluciones[0]
 
-# Funcion que recibe una lista de viajantes y la devuelve intercambiando el orden de dos ciudades aleatorias de un viajante aleatorio
+# Funcion que recibe una lista de viajantes y la devuelve haciendo un shuffle a un viajante aleatorio
 def mutante(listaViajantes):
     
     # Seleccionamos aleatoriamente una de las N listas
@@ -337,13 +337,19 @@ def mutante(listaViajantes):
     # Excluimos la primera tupla de la lista seleccionada
     lista_sin_primera_tupla = lista_seleccionada[1:]
     
-    # Seleccionamos aleatoriamente dos tuplas de la lista
-    tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    # Mezclamos la lista de tuplas
+    random.shuffle(lista_sin_primera_tupla)
     
-    # Intercambiamos las posiciones de las tuplas
-    indice_tupla_1 = lista_seleccionada.index(tupla_1)
-    indice_tupla_2 = lista_seleccionada.index(tupla_2)
-    lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
+
+    # esta funcionalidad de abajo ha cambiado para probar si mezclar la lista de tuplas es mejor que intercambiarlas
+    
+    # # Seleccionamos aleatoriamente dos tuplas de la lista
+    # tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    
+    # # Intercambiamos las posiciones de las tuplas
+    # indice_tupla_1 = lista_seleccionada.index(tupla_1)
+    # indice_tupla_2 = lista_seleccionada.index(tupla_2)
+    # lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
     
     # Devolvemos la lista de listas actualizada
     return listaViajantes
@@ -357,11 +363,14 @@ def random_hex_color():
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los viajantes
 def imprimirCaminos(mejorSolucion):
+    totalCiudades = 0
     # Imprimimos la solución
     nCaminos = 0
     for viajante in mejorSolucion[0]:
         nCaminos += 1
         print("\n\nCamino del viajante [", nCaminos, "]: \n\n", viajante)
+        print("\nNúmero de ciudades recorridas: ", len(viajante) - 1, "\n\n")
+        totalCiudades += len(viajante) - 1
         x = []
         y = []
         for ciudad in viajante:
@@ -373,6 +382,7 @@ def imprimirCaminos(mejorSolucion):
         plt.xlabel('Eje X')
         plt.ylabel('Eje Y')
         plt.title('Gráfico de Caminos')
+    print("\n\nNúmero total de ciudades recorridas: ", totalCiudades + 1)
     plt.text(mejorSolucion[0][0][0][0],mejorSolucion[0][0][0][1], " Ciudad origen")
     print("\nLa mínima distancia recorrida es: ", mejorSolucion[1], "\n\n\n")
     plt.show()
