@@ -13,12 +13,12 @@ def main():
     
     # Variables importantes configurables para el algoritmo genetico
     tamano_poblacion = 1000
-    porcentaje_mejor = 10
-    probabilidad_mutante = 50
+    porcentaje_mejor = 1
+    probabilidad_mutante = 30
     maximo_generaciones_sin_mejora = 100
     
     # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
-    num_viajantes = 99
+    num_viajantes = 3
 
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
     
@@ -45,7 +45,6 @@ def main():
 
     # Imprimimos la mejor solucion con una grafica
     imprimirCaminos(mejorSolucion)
-
 
 # Funcion que lee el contenido de el fichero scenary.txt y devuelve la lista de ciudades con sus coordenadas
 def recuperaCiudades():
@@ -117,45 +116,56 @@ def generaSolucion(listaCiudades, num_viajantes):
 # y usando la primera como ciudad inicial. Devuelve una lista que contiene N listas con caminos validos
 def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
 
+    # Hacemos una copia de las listas para no modificarlas
     copiaListaViajantes = listaViajantes[:]
     copiaListaCiudades = listaCiudades[:]
 
-    # Nos aseguramos de que la ciudad de origen es igual para todos los viajantes
-    for viajante in copiaListaViajantes:
-        viajante[0] = ciudadOrigen
-
-    # Obtenemos una lista con las ciudades visitadas por los viajantes, sin añadir elementos repetidos
+    # Obtenemos una lista con las ciudades visitadas por los viajantes (sin repeticiones)
     ciudadesVisitadas = []
+    ciudadesRepetidas = []
     for viajante in copiaListaViajantes:
         for ciudad in viajante:
             if ciudad not in ciudadesVisitadas:
                 ciudadesVisitadas.append(ciudad)
-            
+            else:
+                if ciudad not in ciudadesRepetidas:
+                    ciudadesRepetidas.append(ciudad)
+
+    for viajante in copiaListaViajantes:
+        for ciudad in viajante[:]:
+            if ciudad in ciudadesRepetidas:
+                viajante.remove(ciudad)
 
     # Obtenemos una lista de las ciudades sin visitar
     ciudadesSinVisitar = [ciudad for ciudad in copiaListaCiudades if ciudad not in ciudadesVisitadas]
 
+    ciudadesSinVisitar += ciudadesRepetidas
+
+    ciudadesSinVisitar.remove(ciudadOrigen)
+
     # Repartir los elementos de la lista entre los viajantes
     for ciudad in ciudadesSinVisitar:
 
-        # Verificamos si todos los viajantes tienen al menos una ciudad (a parte de la inicial)
-        todos_tienen_elemento = True
-        for viajante in copiaListaViajantes:
-            if len(viajante) <= 1:
-                todos_tienen_elemento = False
-                viajante.append(ciudad)
-                break
+        # ordenamos la lista de viajantes por longitud
+        copiaListaViajantes = sorted(copiaListaViajantes, key=lambda x: len(x))
 
-        # Si todos los viajantes tienen al menos una ciudad (a parte de la inicial), se asigna aleatoriamente
-        if todos_tienen_elemento:
-            # Elegir al azar a qué vector se añade el elemento
-            viajante = random.choice(copiaListaViajantes)
+        # Elegimos el viajante con menos elementos
+        viajante = copiaListaViajantes[0]
 
-            # Generamos un número aleatorio entre 0 y la longitud de la lista
-            random_index = randint(1, len(viajante) - 1)
+        # Generamos un número aleatorio entre 0 y la longitud de la lista
+        if len(viajante) == 0:
+            random_index = 0
+        else:
+            random_index = randint(0, len(viajante) - 1)
 
-            # añadimos el elemento al viajante seleccionado en la posición aleatoria
-            viajante.insert(random_index, ciudad)
+        # añadimos el elemento al viajante seleccionado en la posición aleatoria
+        viajante.insert(random_index, ciudad)
+    
+    # Nos aseguramos de que la ciudad de origen es igual para todos los viajantes
+    for viajante in copiaListaViajantes:
+        if viajante[0] != ciudadOrigen:
+            # insertamos ciudadOrigen en la primera posicion del viajante
+            viajante.insert(0, ciudadOrigen)
 
     # Devolver los vectores como una tupla
     return copiaListaViajantes
@@ -246,6 +256,8 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
         
         # Si estamos en la primera generacion
         if primera_generacion == True:
+                
+            primera_generacion = False
 
             # realizamos tantas veces como tamano de poblacion
             for iteracion in range(tamano_poblacion):
@@ -264,8 +276,6 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
 
                 # anadimos la solucion a la lista de soluciones
                 listaSoluciones.append(solucion)
-                
-            primera_generacion = False
 
         # para el resto de generaciones
         else:
@@ -337,19 +347,17 @@ def mutante(listaViajantes):
     # Excluimos la primera tupla de la lista seleccionada
     lista_sin_primera_tupla = lista_seleccionada[1:]
     
-    # Mezclamos la lista de tuplas
-    random.shuffle(lista_sin_primera_tupla)
+    # alternativa
+    # # Mezclamos la lista de tuplas
+    # random.shuffle(lista_sin_primera_tupla)
     
-
-    # esta funcionalidad de abajo ha cambiado para probar si mezclar la lista de tuplas es mejor que intercambiarlas
+    # Seleccionamos aleatoriamente dos tuplas de la lista
+    tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
     
-    # # Seleccionamos aleatoriamente dos tuplas de la lista
-    # tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
-    
-    # # Intercambiamos las posiciones de las tuplas
-    # indice_tupla_1 = lista_seleccionada.index(tupla_1)
-    # indice_tupla_2 = lista_seleccionada.index(tupla_2)
-    # lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
+    # Intercambiamos las posiciones de las tuplas
+    indice_tupla_1 = lista_seleccionada.index(tupla_1)
+    indice_tupla_2 = lista_seleccionada.index(tupla_2)
+    lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
     
     # Devolvemos la lista de listas actualizada
     return listaViajantes
