@@ -14,10 +14,10 @@ def main():
     # Variables importantes configurables para el algoritmo genetico
     tamano_poblacion = 1000
     porcentaje_mejor = 1
-    probabilidad_mutante = 30
+    probabilidad_mutante = 20
     maximo_generaciones_sin_mejora = 100
     
-    # definimos el numero de viajantes, en este caso 3 (MAXIMO = Numero de ciudades - 1, MINIMO = 1)
+    # definimos el numero de viajantes, en este caso 3
     num_viajantes = 3
 
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
@@ -36,7 +36,17 @@ def main():
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
     f = open("log.txt", "a") 
-    string = "############# RESULTADO ##############\n\n" + "---ENTRADAS---" + "\nTamano poblacion: " + str(tamano_poblacion) + "\nPorcentaje mejor: " + str(porcentaje_mejor) + "\nProbabilidad mutante: " + str(probabilidad_mutante) + "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) + "\n\n---SALIDAS---" + "\nTiempo: " + str(tiempo_total) + "\nDistancia: " + str(mejorSolucion[1]) + "\n\n---CAMINOS---\n"
+    string = "############# RESULTADO ##############" 
+    string += "\n\n---ENTRADAS---" 
+    string += "\nNumero de viajantes: " + str(num_viajantes) 
+    string += "\nTamano poblacion: " + str(tamano_poblacion) 
+    string += "\nPorcentaje mejor: " + str(porcentaje_mejor) 
+    string += "\nProbabilidad mutante: " + str(probabilidad_mutante) 
+    string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) 
+    string += "\n\n---SALIDAS---" 
+    string += "\nTiempo: " + str(tiempo_total) 
+    string += "\nDistancia: " + str(mejorSolucion[1]) 
+    string += "\n\n---CAMINOS---\n"
     for viajante in mejorSolucion[0]:
         string = string + str(viajante) + "\n"
     string += "\n\n\n"
@@ -141,7 +151,8 @@ def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
 
     ciudadesSinVisitar += ciudadesRepetidas
 
-    ciudadesSinVisitar.remove(ciudadOrigen)
+    if ciudadOrigen in ciudadesSinVisitar:
+        ciudadesSinVisitar.remove(ciudadOrigen)
 
     # Repartir los elementos de la lista entre los viajantes
     for ciudad in ciudadesSinVisitar:
