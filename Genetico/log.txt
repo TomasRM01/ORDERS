@@ -1,6 +1,7 @@
 ############# RESULTADO ##############
 
 ---ENTRADAS---
+Numero de viajantes: 3
 Tamano poblacion: 1000
 Porcentaje mejor: 1
 Probabilidad mutante: 30
@@ -20,6 +21,7 @@ Distancia: 1857.0294261826946
 ############# RESULTADO ##############
 
 ---ENTRADAS---
+Numero de viajantes: 3
 Tamano poblacion: 1000
 Porcentaje mejor: 1
 Probabilidad mutante: 60
@@ -39,6 +41,7 @@ Distancia: 1969.7744672950214
 ############# RESULTADO ##############
 
 ---ENTRADAS---
+Numero de viajantes: 3
 Tamano poblacion: 1000
 Porcentaje mejor: 1
 Probabilidad mutante: 90
