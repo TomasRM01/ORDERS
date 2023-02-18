@@ -15,7 +15,7 @@ def main():
     tamano_poblacion = 1000
     porcentaje_mejor = 1
     probabilidad_mutante = 20
-    maximo_generaciones_sin_mejora = 100
+    maximo_generaciones_sin_mejora = 150
     
     # definimos el numero de viajantes, en este caso 3
     num_viajantes = 3
@@ -174,7 +174,7 @@ def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
     
     # Nos aseguramos de que la ciudad de origen es igual para todos los viajantes
     for viajante in copiaListaViajantes:
-        if viajante[0] != ciudadOrigen:
+        if len(viajante) == 0 or viajante[0] != ciudadOrigen:
             # insertamos ciudadOrigen en la primera posicion del viajante
             viajante.insert(0, ciudadOrigen)
 
@@ -227,8 +227,15 @@ def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
     for viajantePadre, viajanteMadre in zip(listaViajantesPadre, listaViajantesMadre):
 
         # calculamos los puntos medios de los vectores
-        puntoMedioPadre = len(viajantePadre) // 2
-        puntoMedioMadre = len(viajanteMadre) // 2
+        if len(viajantePadre) == 1:
+            puntoMedioPadre = 0
+        else:
+            puntoMedioPadre = len(viajantePadre) // randint(1, len(viajantePadre) - 1)
+
+        if len(viajanteMadre) == 1:
+            puntoMedioMadre = 0
+        else:
+            puntoMedioMadre = len(viajanteMadre) // randint(1, len(viajanteMadre) - 1)
         
         # combinamos los caminos creando dos nuevos caminos
         viajanteHijo1 = viajantePadre[:puntoMedioPadre] + viajanteMadre[puntoMedioMadre:]
@@ -309,8 +316,8 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
                     # corregimos una solución
                     listaViajantes = corrigeSolucion(hijo, listaCiudades, hijo[0][0])
                     
-                    # mutamos hasta que obtengamos un numero aleatorio mayor que la probabilidad de que mute
-                    while random.randint(1, 100) <= probabilidad_mutante:
+                    # mutamos si la probabilidad lo indica
+                    if random.randint(1, 100) <= probabilidad_mutante:
                         listaViajantes = mutante(listaViajantes)
 
                     # obtenemos el fitness de la solucion
@@ -363,12 +370,13 @@ def mutante(listaViajantes):
     # random.shuffle(lista_sin_primera_tupla)
     
     # Seleccionamos aleatoriamente dos tuplas de la lista
-    tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    if len(lista_sin_primera_tupla) > 1:
+        tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
     
-    # Intercambiamos las posiciones de las tuplas
-    indice_tupla_1 = lista_seleccionada.index(tupla_1)
-    indice_tupla_2 = lista_seleccionada.index(tupla_2)
-    lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
+        # Intercambiamos las posiciones de las tuplas
+        indice_tupla_1 = lista_seleccionada.index(tupla_1)
+        indice_tupla_2 = lista_seleccionada.index(tupla_2)
+        lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
     
     # Devolvemos la lista de listas actualizada
     return listaViajantes
