@@ -356,18 +356,16 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
     # Devolvemos la mejor solucion
     return mejoresSoluciones[0]
 
-# Funcion que recibe una lista de viajantes y la devuelve haciendo un shuffle a un viajante aleatorio
+# Funcion que recibe una lista de viajantes y la devuelve intercambiando dos ciudades aleatoriamente
 def mutante(listaViajantes):
     
+    copiaListaViajantes = listaViajantes.copy()
+    
     # Seleccionamos aleatoriamente una de las N listas
-    lista_seleccionada = random.choice(listaViajantes)
+    lista_seleccionada = random.choice(copiaListaViajantes)
     
     # Excluimos la primera tupla de la lista seleccionada
     lista_sin_primera_tupla = lista_seleccionada[1:]
-    
-    # alternativa
-    # # Mezclamos la lista de tuplas
-    # random.shuffle(lista_sin_primera_tupla)
     
     # Seleccionamos aleatoriamente dos tuplas de la lista
     if len(lista_sin_primera_tupla) > 1:
@@ -376,10 +374,15 @@ def mutante(listaViajantes):
         # Intercambiamos las posiciones de las tuplas
         indice_tupla_1 = lista_seleccionada.index(tupla_1)
         indice_tupla_2 = lista_seleccionada.index(tupla_2)
-        lista_seleccionada[indice_tupla_1], lista_seleccionada[indice_tupla_2] = lista_seleccionada[indice_tupla_2], lista_seleccionada[indice_tupla_1]
+        aux = lista_seleccionada[indice_tupla_1]
+        lista_seleccionada[indice_tupla_1] = lista_seleccionada[indice_tupla_2]
+        lista_seleccionada[indice_tupla_2] = aux
     
-    # Devolvemos la lista de listas actualizada
-    return listaViajantes
+    lista_sin_primera_tupla.insert(0, lista_seleccionada[0])
+    
+    copiaListaViajantes[copiaListaViajantes.index(lista_seleccionada)] = lista_sin_primera_tupla
+
+    return copiaListaViajantes
 
 # Funcion auxiliar para generar un color aleatorio
 def random_hex_color():
