@@ -1,6 +1,6 @@
 # Programa que resuelve el problema de los viajantes de ciudades mediante enfriamiento simulado
-
 # importamos librerias
+import copy
 import re
 import random
 import math
@@ -14,6 +14,8 @@ def main():
     # Variables importantes configurables para el algoritmo de enfriamiento simulado
 
     maximo_iteraciones = 100000
+    temperatura_inicial = 1000
+    factor_enfriamiento = 0.9999
 
     # definimos el numero de viajantes, en este caso 3
 
@@ -27,7 +29,7 @@ def main():
 
     # Llamamos al algoritmo de enfriamiento simulado
 
-    mejorSolucion = simulado(maximo_iteraciones, num_viajantes)
+    mejorSolucion = simulado(maximo_iteraciones, num_viajantes, temperatura_inicial, factor_enfriamiento)
 
     # Paramos el cronometro y medimos el tiempo total
 
@@ -46,9 +48,13 @@ def main():
 
     string += "\n\n---ENTRADAS---"
 
-    string += "\nMaximo de iteraciones: " + str(maximo_iteraciones)
-
     string += "\nNumero de viajantes: " + str(num_viajantes)
+
+    string += "\nMaximo de iteraciones: " + str(maximo_iteraciones)
+    
+    string += "\nTemperatura inicial: " + str(temperatura_inicial)
+    
+    string += "\nFactor de enfriamiento: " + str(factor_enfriamiento)
 
     string += "\n\n---SALIDAS---"
 
@@ -72,13 +78,13 @@ def main():
 
     imprimirCaminos(mejorSolucion)
 
-def simulado(maximo_iteraciones, num_viajantes):
+def simulado(maximo_iteraciones, num_viajantes, temperatura_inicial, factor_enfriamiento):
 
     # Recuperamos las ciudades del .txt
     listaCiudades = recuperaCiudades()
 
     # hacemos una copia de la lista de ciudades
-    copiaListaCiudades = listaCiudades[:]
+    copiaListaCiudades = copy.deepcopy(listaCiudades)
 
     # aleatorizamos la lista de las ciudades
     random.shuffle(copiaListaCiudades)
@@ -87,31 +93,31 @@ def simulado(maximo_iteraciones, num_viajantes):
     solucion_mejor = generaSolucion(copiaListaCiudades, num_viajantes)
 
     # inicializamos el contador de iteraciones
-    iteracion = 1
-    
-    # inicializamos la temperatura
-    temperatura = maximo_iteraciones / iteracion
+    iteracion_actual = 1
 
+    temperatura = temperatura_inicial
     # bucle principal
 
-    while iteracion < maximo_iteraciones:
-        
+    while iteracion_actual < maximo_iteraciones:
         solucion_candidata = mutante(solucion_mejor)
 
         fit_mejor = fitness(solucion_mejor)
         fit_candidato = fitness(solucion_candidata)
-        
-        print("it: ", iteracion, "temp: ", temperatura, "fit_candidato: ", fit_candidato, "fit_mejor: ", fit_mejor)
+
+        # print de control
+        # print("it: ", iteracion_actual, "temp: ", temperatura, "fit_candidato: ", fit_candidato, "fit_mejor: ", fit_mejor)
 
         if fit_candidato < fit_mejor:
             solucion_mejor = solucion_candidata
-
         else:
-            if random.random() <= math.exp(-(fit_mejor - fit_candidato) / temperatura) - 1:
+            delta_energia = fit_candidato - fit_mejor
+            probabilidad_aceptacion = math.exp(-delta_energia / temperatura)
+            if random.random() <= probabilidad_aceptacion:
                 solucion_mejor = solucion_candidata
-
-        iteracion = iteracion + 1
-        temperatura = maximo_iteraciones / iteracion
+                
+        iteracion_actual = iteracion_actual + 1
+        temperatura = temperatura_inicial * factor_enfriamiento ** iteracion_actual
+        print("ITERACION", iteracion_actual, "/", maximo_iteraciones)
 
     solucion = [solucion_mejor, fitness(solucion_mejor)]
 
@@ -264,30 +270,34 @@ def generaSolucion(listaCiudades, num_viajantes):
 # Funcion que recibe una lista de viajantes y la devuelve intercambiando dos ciudades aleatoriamente
 def mutante(listaViajantes):
     
-    copiaListaViajantes = listaViajantes.copy()
+    # Creamos una copia de la lista de viajantes
     
-    # Seleccionamos aleatoriamente una de las N listas
-    lista_seleccionada = random.choice(copiaListaViajantes)
+    copiaListaViajantes = copy.deepcopy(listaViajantes)
     
-    # Excluimos la primera tupla de la lista seleccionada
-    lista_sin_primera_tupla = lista_seleccionada[1:]
+    # Seleccionamos dos viajantes aleatoriamente, pudiendo ser el mismo viajante
     
-    # Seleccionamos aleatoriamente dos tuplas de la lista
-    if len(lista_sin_primera_tupla) > 1:
-        tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    viajante_a = random.randint(0, len(copiaListaViajantes) - 1)
+    viajante_b = random.randint(0, len(copiaListaViajantes) - 1)
     
-        # Intercambiamos las posiciones de las tuplas
-        indice_tupla_1 = lista_seleccionada.index(tupla_1)
-        indice_tupla_2 = lista_seleccionada.index(tupla_2)
-        aux = lista_seleccionada[indice_tupla_1]
-        lista_seleccionada[indice_tupla_1] = lista_seleccionada[indice_tupla_2]
-        lista_seleccionada[indice_tupla_2] = aux
+    # Si los viajantes seleccionados tienen mas de una ciudad (ciudad origen), seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados
     
-    lista_sin_primera_tupla.insert(0, lista_seleccionada[0])
+    if (len(copiaListaViajantes[viajante_a]) > 1 and len(copiaListaViajantes[viajante_b]) > 1):
+        
+        # Seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados, excluyendo la primera ciudad de cada viajante (ciudad origen)
+        
+        ciudad_a = random.randint(1, len(copiaListaViajantes[viajante_a]) - 1)
+        ciudad_b = random.randint(1, len(copiaListaViajantes[viajante_b]) - 1)
     
-    copiaListaViajantes[copiaListaViajantes.index(lista_seleccionada)] = lista_sin_primera_tupla
+        # Intercambiamos las ciudades seleccionadas
+        
+        aux = copiaListaViajantes[viajante_a][ciudad_a]
+        copiaListaViajantes[viajante_a][ciudad_a] = copiaListaViajantes[viajante_b][ciudad_b]
+        copiaListaViajantes[viajante_b][ciudad_b] = aux
+    
+    # Devolvemos la lista de viajantes mutada (o no, si no se cumplen las condiciones)
 
     return copiaListaViajantes
+
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los viajantes
 def imprimirCaminos(mejorSolucion):
@@ -348,3 +358,5 @@ def random_hex_color():
 
 # Se ejecuta el programa
 main()
+
+

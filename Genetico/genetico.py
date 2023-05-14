@@ -1,6 +1,7 @@
 # Programa que resuelve el problema de los viajantes de ciudades mediante algoritmos genéticos
 
 # importamos librerias
+import copy
 import re
 import random
 import math
@@ -13,9 +14,9 @@ def main():
     
     # Variables importantes configurables para el algoritmo genetico
     tamano_poblacion = 1000
-    porcentaje_mejor = 1
-    probabilidad_mutante = 20
-    maximo_generaciones_sin_mejora = 150
+    porcentaje_mejor = 10
+    probabilidad_mutante = 50
+    maximo_generaciones_sin_mejora = 100
     
     # definimos el numero de viajantes, en este caso 3
     num_viajantes = 3
@@ -127,8 +128,8 @@ def generaSolucion(listaCiudades, num_viajantes):
 def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
 
     # Hacemos una copia de las listas para no modificarlas
-    copiaListaViajantes = listaViajantes[:]
-    copiaListaCiudades = listaCiudades[:]
+    copiaListaViajantes = copy.deepcopy(listaViajantes)
+    copiaListaCiudades = copy.deepcopy(listaCiudades)
 
     # Obtenemos una lista con las ciudades visitadas por los viajantes (sin repeticiones)
     ciudadesVisitadas = []
@@ -222,7 +223,7 @@ def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
     # Creamos dos listas vacias para devolver las posibles soluciones
     listaViajantesHijo1 = []
     listaViajantesHijo2 = []
-
+    
     # para cada viajante de las dos soluciones
     for viajantePadre, viajanteMadre in zip(listaViajantesPadre, listaViajantesMadre):
 
@@ -230,16 +231,31 @@ def combinarSoluciones(listaViajantesPadre, listaViajantesMadre):
         if len(viajantePadre) == 1:
             puntoMedioPadre = 0
         else:
-            puntoMedioPadre = len(viajantePadre) // randint(1, len(viajantePadre) - 1)
+            puntoMedioPadre = len(viajantePadre) // random.randint(1, len(viajantePadre) - 1)
 
         if len(viajanteMadre) == 1:
             puntoMedioMadre = 0
         else:
-            puntoMedioMadre = len(viajanteMadre) // randint(1, len(viajanteMadre) - 1)
+            puntoMedioMadre = len(viajanteMadre) // random.randint(1, len(viajanteMadre) - 1)
+
+        # prints de control            
+        # print("puntoMedioPadre: ", puntoMedioPadre, "len(viajantePadre): ", len(viajantePadre))
+        # print("puntoMedioMadre: ", puntoMedioMadre, "len(viajanteMadre): ", len(viajanteMadre))
         
         # combinamos los caminos creando dos nuevos caminos
         viajanteHijo1 = viajantePadre[:puntoMedioPadre] + viajanteMadre[puntoMedioMadre:]
         viajanteHijo2 = viajanteMadre[:puntoMedioMadre] + viajantePadre[puntoMedioPadre:]
+        
+        # controlamos que los caminos no sean vacios
+        if len(viajanteHijo1) == 0:
+            # print de control
+            # print("ERROR: viajanteHijo1 vacio")
+            viajanteHijo1 = viajantePadre
+            
+        if len(viajanteHijo2) == 0:
+            # print de control
+            # print("ERROR: viajanteHijo2 vacio")
+            viajanteHijo2 = viajanteMadre
 
         # metemos los nuevos caminos en la lista de viajantes
         listaViajantesHijo1.append(viajanteHijo1)
@@ -255,7 +271,7 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
     listaCiudades = recuperaCiudades()
 
     # hacemos una copia de la lista de ciudades 
-    copiaListaCiudades = listaCiudades[:]
+    copiaListaCiudades = copy.deepcopy(listaCiudades)
 
     # creamos una lista de soluciones
     listaSoluciones = []
@@ -299,7 +315,7 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
         else:
 
             # hacemos una copia de las mejores soluciones para inicializar la lista de soluciones
-            listaSoluciones = mejoresSoluciones[:]
+            listaSoluciones = copy.deepcopy(mejoresSoluciones)
             
             # mientras no llegemos al tamaño de la poblacion
             while len(listaSoluciones) < tamano_poblacion:
@@ -340,7 +356,7 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
             
             # Print de control para ver si el algoritmo encuentra mejores soluciones que la funcion generaSolucion()
             if  mejor_fitness != math.inf:
-                print("HAY MEJORA: ", mejoresSoluciones[0][1], " < ",  mejor_fitness)
+                print("HAY MEJORA: ", mejoresSoluciones[0][1])
 
             # Actualizamos el mejor fitness
             mejor_fitness = mejoresSoluciones[0][1]
@@ -359,28 +375,31 @@ def genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_ge
 # Funcion que recibe una lista de viajantes y la devuelve intercambiando dos ciudades aleatoriamente
 def mutante(listaViajantes):
     
-    copiaListaViajantes = listaViajantes.copy()
+    # Creamos una copia de la lista de viajantes
     
-    # Seleccionamos aleatoriamente una de las N listas
-    lista_seleccionada = random.choice(copiaListaViajantes)
+    copiaListaViajantes = copy.deepcopy(listaViajantes)
     
-    # Excluimos la primera tupla de la lista seleccionada
-    lista_sin_primera_tupla = lista_seleccionada[1:]
+    # Seleccionamos dos viajantes aleatoriamente, pudiendo ser el mismo viajante
     
-    # Seleccionamos aleatoriamente dos tuplas de la lista
-    if len(lista_sin_primera_tupla) > 1:
-        tupla_1, tupla_2 = random.sample(lista_sin_primera_tupla, 2)
+    viajante_a = random.randint(0, len(copiaListaViajantes) - 1)
+    viajante_b = random.randint(0, len(copiaListaViajantes) - 1)
     
-        # Intercambiamos las posiciones de las tuplas
-        indice_tupla_1 = lista_seleccionada.index(tupla_1)
-        indice_tupla_2 = lista_seleccionada.index(tupla_2)
-        aux = lista_seleccionada[indice_tupla_1]
-        lista_seleccionada[indice_tupla_1] = lista_seleccionada[indice_tupla_2]
-        lista_seleccionada[indice_tupla_2] = aux
+    # Si los viajantes seleccionados tienen mas de una ciudad (ciudad origen), seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados
     
-    lista_sin_primera_tupla.insert(0, lista_seleccionada[0])
+    if (len(copiaListaViajantes[viajante_a]) > 1 and len(copiaListaViajantes[viajante_b]) > 1):
+        
+        # Seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados, excluyendo la primera ciudad de cada viajante (ciudad origen)
+        
+        ciudad_a = random.randint(1, len(copiaListaViajantes[viajante_a]) - 1)
+        ciudad_b = random.randint(1, len(copiaListaViajantes[viajante_b]) - 1)
     
-    copiaListaViajantes[copiaListaViajantes.index(lista_seleccionada)] = lista_sin_primera_tupla
+        # Intercambiamos las ciudades seleccionadas
+        
+        aux = copiaListaViajantes[viajante_a][ciudad_a]
+        copiaListaViajantes[viajante_a][ciudad_a] = copiaListaViajantes[viajante_b][ciudad_b]
+        copiaListaViajantes[viajante_b][ciudad_b] = aux
+    
+    # Devolvemos la lista de viajantes mutada (o no, si no se cumplen las condiciones)
 
     return copiaListaViajantes
 
