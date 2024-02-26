@@ -18,8 +18,10 @@ def main():
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 100
     
-    # definimos el numero de viajantes, en este caso 3
-    num_viajantes = 3
+    # definimos el numero de drones, en este caso 3
+    num_drones = 3
+    
+    # TODO que los drones tengan dos capacidades, una de distancia y otra de pesos (bateria recargable)
 
     print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
     
@@ -27,7 +29,7 @@ def main():
     inicio = time.time()
     
     # Llamamos al algoritmo genetico
-    mejorSolucion = genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, num_viajantes)
+    mejorSolucion = genetico(tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, num_drones)
 
     # Paramos el cronometro y medimos el tiempo total
     fin = time.time()
@@ -36,10 +38,10 @@ def main():
     print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-    f = open("log.txt", "a") 
+    f = open("log_drones.txt", "a") 
     string = "############# RESULTADO ##############" 
     string += "\n\n---ENTRADAS---" 
-    string += "\nNumero de viajantes: " + str(num_viajantes) 
+    string += "\nNumero de drones: " + str(num_drones) 
     string += "\nTamano poblacion: " + str(tamano_poblacion) 
     string += "\nPorcentaje mejor: " + str(porcentaje_mejor) 
     string += "\nProbabilidad mutante: " + str(probabilidad_mutante) 
@@ -48,8 +50,8 @@ def main():
     string += "\nTiempo: " + str(tiempo_total) 
     string += "\nDistancia: " + str(mejorSolucion[1]) 
     string += "\n\n---CAMINOS---\n"
-    for viajante in mejorSolucion[0]:
-        string = string + str(viajante) + "\n"
+    for dron in mejorSolucion[0]:
+        string = string + str(dron) + "\n"
     string += "\n\n\n"
     f.write(string)
     f.close()
@@ -57,42 +59,40 @@ def main():
     # Imprimimos la mejor solucion con una grafica
     imprimirCaminos(mejorSolucion)
 
-# Funcion que lee el contenido de el fichero scenary.txt y devuelve la lista de ciudades con sus coordenadas
-def recuperaCiudades():
+# Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de sensores con sus coordenadas
+def recuperaSensores():
 
-    # definimos lista de posiciones
+    # lista de posiciones, prioridades y baterias
     posiciones = []
+    prioridades = []
+    baterias = []
 
     # abrimos el fichero en modo lectura
-    f = open("scenary.txt", "r")
-
-    # pasamos el contenido a un string
-    s = f.read()
-
-    # cerramos el fichero
-    f.close()
+    with open("scenary_drones.txt", "r") as f:
+        # pasamos el contenido a un string
+        s = f.read()
 
     # desechamos todo lo que no son numeros y lo convertimos en una lista de elementos
     s = [float(s) for s in re.findall(r'\d+\.?\d*', s)]
 
-    # para cada elemento de la lista, si su index es par lo guardamos en 'x' y si es impar,
-    # lo guardamos en 'y' y agregamos la tupla a la lista de posiciones
+    # guardamos los elementos en las listas correspondientes
     contador = 0
-    for element in s:
-        if contador % 2:
-            y = element
-            posiciones.append((x, y))
-        else:
-            x = element
-        contador = contador + 1
+    for i in range(0, len(s), 4):
+        x = s[i]
+        y = s[i+1]
+        p = s[i+2]
+        b = s[i+3]
+        posiciones.append((x, y))
+        prioridades.append(p)
+        baterias.append(b)
 
-    return posiciones
+    return posiciones #TODO que devuelva tambien prioridades y baterias
 
 # Funcion que genera una solucion aleatoria valida a partir de una lista de ciudades (con orden previamente aleatorizado)
-# para N viajantes, devuelve una lista que contiene N listas con sus respectivos caminos
+# para N viajantes, devuelve una lista que contiene N listas con sus respectivos caminos 
 def generaSolucion(listaCiudades, num_viajantes):
 
-    # Crear la lista de vectores vacíos
+    # Crear la lista de listas vacias
     lista_viajantes = []
     for i in range(num_viajantes):
         lista_viajantes.append([])
@@ -110,22 +110,25 @@ def generaSolucion(listaCiudades, num_viajantes):
 
         # Si todos los viajantes tienen al menos una ciudad, se asigna aleatoriamente
         if todos_tienen_elemento:
-            # Elegir al azar a qué vector se añade el elemento
+            # Elegir al azar a qué viajante se añade el elemento
             viajante = random.choice(lista_viajantes)
 
             # añadimos el elemento al viajante seleccionado
             viajante.append(ciudad)
 
-    # Añadir el primer elemento a los vectores
+    # Añadimos la ciudad de origen a cada viajante
     for v in lista_viajantes:
         v.insert(0, listaCiudades[0])
 
-    # Devolver los vectores como una tupla
+    # Devolvemos la lista de viajantes con listas con los caminos de cada uno (NO ES UNA SOLUCION VALIDA, HAY QUE CORREGIRLA)
     return lista_viajantes
 
 # Funcion que corrige una solucion incorrecta, haciendola válida usando una lista de ciudades (con orden previamente aleatorizado)
 # y usando la primera como ciudad inicial. Devuelve una lista que contiene N listas con caminos validos
-def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
+def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen): 
+    
+    #TODO rehacer esta funcion para aceptar soluciones que no usen todas los sensores
+    #TODO quizas despues de el funcionamiento original, empezar a eliminar de forma aleatoria sensores para que se cumplan las restricciones
 
     # Hacemos una copia de las listas para no modificarlas
     copiaListaViajantes = copy.deepcopy(listaViajantes)
@@ -184,6 +187,8 @@ def corrigeSolucion(listaViajantes, listaCiudades, ciudadOrigen):
 
 # Funcion que recibe una posible solución, calcula las distancias euclídeas de todos los caminos, y devuelve el fitness de la solución
 def fitness(listaViajantes):
+    
+    #TODO ahora el fitness deberia incluir no solo la distancia, sino tambien la prioridad total
 
     # definimos una variable para el fitness
     f = 0.0
@@ -386,6 +391,9 @@ def mutante(listaViajantes):
     
     # Si los viajantes seleccionados tienen mas de una ciudad (ciudad origen), seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados
     
+    #TODO comprobar tambien que al intercambiar dichos sensores, no se superen las capacidades de los drones
+    #TODO en su defecto, llamamos directamente a la funcion corrigeSolucion para que se encargue de ello
+    
     if (len(copiaListaViajantes[viajante_a]) > 1 and len(copiaListaViajantes[viajante_b]) > 1):
         
         # Seleccionamos dos ciudades aleatoriamente de los viajantes seleccionados, excluyendo la primera ciudad de cada viajante (ciudad origen)
@@ -412,6 +420,9 @@ def random_hex_color():
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los viajantes
 def imprimirCaminos(mejorSolucion):
+    
+    #TODO hay que adaptar esta funcion para que se ajuste a las restricciones de los drones
+    
     totalCiudades = 0
     # Imprimimos la solución
     nCaminos = 0
