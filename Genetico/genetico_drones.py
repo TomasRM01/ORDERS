@@ -55,6 +55,31 @@ def main():
     
     print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
     
+    # Calculamos la distancia total, la bateria recargada y la prioridad acumulada por los drones
+    distanciaTotal = 0
+    bateriaTotal = 0
+    prioridadTotal = 0
+    for dron in mejorSolucion[0]:
+        # Calculamos la distancia total recorrida por el dron
+        distanciaDron = 0
+        for i in range(len(dron) - 1):
+            x1, y1 = dron[i][0]
+            x2, y2 = dron[i + 1][0]
+            distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        # Agregamos la distancia de retorno a la primera sensor
+        x1, y1 = dron[-1][0]
+        x2, y2 = dron[0][0]
+        distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        distanciaTotal += distanciaDron
+        # Calculamos la prioridad y bateria total recorrida por el dron
+        prioridadDron = 0
+        bateriaDron = 0
+        for sensor in dron:
+            prioridadDron += sensor[1]
+            bateriaDron += sensor[2]
+        prioridadTotal += prioridadDron
+        bateriaTotal += bateriaDron
+    
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
     #TODO imprimir datos de los drones
     f = open("log_drones.txt", "a") 
@@ -67,10 +92,14 @@ def main():
     string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) 
     string += "\n\n---SALIDAS---" 
     string += "\nTiempo: " + str(tiempo_total) 
-    string += "\nDistancia: " + str(mejorSolucion[1]) 
+    string += "\nFitness: " + str(mejorSolucion[1]) 
     string += "\n\n---CAMINOS---\n"
     for dron in mejorSolucion[0]:
         string = string + str(dron) + "\n"
+    string += "\n---DISTANCIA, BATERIA Y PRIORIDAD---\n"
+    string += "Distancia total recorrida por los drones: " + str(distanciaTotal) + "\n"
+    string += "Bateria total recargada por los drones: " + str(bateriaTotal) + "\n"
+    string += "Prioridad total acumulada por los drones: " + str(prioridadTotal) + "\n"
     string += "\n\n\n"
     f.write(string)
     f.close()
@@ -699,7 +728,7 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
     print("\n\nNúmero total de sensores recorridos: ", nTotalSensores + 1)
     print("Distancia total recorrida por todos los drones: ", distanciaTotal)
     print("Bateria total recargada por todos los drones: ", bateriaTotal)
-    print("Prioridad total obtenida por todos los drones: ", prioridadTotal)
+    print("Prioridad total acumulada por todos los drones: ", prioridadTotal)
     plt.text(mejorSolucion[0][0][0][0][0],mejorSolucion[0][0][0][0][1], " sensor origen")
     print("\nFitness: ", mejorSolucion[1], "\n\n\n")
     plt.show()
