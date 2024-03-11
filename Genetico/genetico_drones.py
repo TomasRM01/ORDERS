@@ -9,6 +9,7 @@ import time
 import matplotlib.pyplot as plt
 from random import randint
 
+
 # Funcion main
 def main():
     
@@ -60,28 +61,15 @@ def main():
     bateriaTotal = 0
     prioridadTotal = 0
     for dron in mejorSolucion[0]:
-        # Calculamos la distancia total recorrida por el dron
-        distanciaDron = 0
-        for i in range(len(dron) - 1):
-            x1, y1 = dron[i][0]
-            x2, y2 = dron[i + 1][0]
-            distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        # Agregamos la distancia de retorno a la primera sensor
-        x1, y1 = dron[-1][0]
-        x2, y2 = dron[0][0]
-        distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        # Calculamos la distancia, prioridad y bateria total
+        distanciaDron = distanciaTotalDron(dron)
         distanciaTotal += distanciaDron
-        # Calculamos la prioridad y bateria total recorrida por el dron
-        prioridadDron = 0
-        bateriaDron = 0
-        for sensor in dron:
-            prioridadDron += sensor[1]
-            bateriaDron += sensor[2]
+        prioridadDron = prioridadTotalDron(dron)
         prioridadTotal += prioridadDron
+        bateriaDron = bateriaTotalDron(dron)
         bateriaTotal += bateriaDron
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-    #TODO imprimir datos de los drones
     f = open("log_drones.txt", "a") 
     string = "############# RESULTADO ##############" 
     string += "\n\n---ENTRADAS---" 
@@ -106,12 +94,11 @@ def main():
 
     # Imprimimos la mejor solucion con una grafica
     imprimirCaminos(mejorSolucion, listaSensores, drones)
-
+    
+    
 # Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de sensores con sus coordenadas
 def recuperaSensores():
     
-    # TODO cambiar para que cada sensor sea una tupla con sus coordenadas, prioridad y bateria, no tres listas separadas
-
     # lista de sensores
     sensores = []
 
@@ -134,13 +121,13 @@ def recuperaSensores():
 
     return sensores
 
+
 # Funcion que genera una solucion válida para el problema de los drones y sensores
 # Rellena una listaDrones con sensores, de forma que se cumplan las restricciones de los drones
 def generaSolucion(listaSensores, num_drones, drones):
     
     # lista vacia de caminos para cada dron
     listaDrones = []
-    
     for n in range(num_drones):
         listaDrones.append([])
     
@@ -148,77 +135,44 @@ def generaSolucion(listaSensores, num_drones, drones):
     copiaListaSensores = copy.deepcopy(listaSensores)
     
     # obtenemos sensor inicial y lo eliminamos de la lista de sensores
+    # despues, actualizamos prioridad y bateria del sensor inicial a 0
     sensorInicial = copiaListaSensores.pop(0)
-    
-    # actualizamos prioridad y bateria del sensor inicial a 0
     sensorInicial = (sensorInicial[0], 0, 0)
     
-    #indice
-    i = 0
-    
-    # para cada dron
+    # generamos un camino para cada dron
     for dron in drones:
         
-        # bateria y distancia restante del dron
+        # inicializamos con la bateria y distancia restante del dron
         bateria = dron['battery_capacity']
         distancia = dron['distance_capacity']
         
         # incluimos el sensor inicial en el camino del dron
-        listaDrones[i].append(sensorInicial)
+        listaDrones[drones.index(dron)].append(sensorInicial)
         
+        # inicializamos el ultimo sensor con el sensor inicial
         ultimoSensor = sensorInicial
         
-        # mientras queden sensores por visitar, y el dron tenga bateria y distancia
-        for sensor in copiaListaSensores:
+        # por cada sensor en la lista de sensores (en sentido inverso para poder eliminar sensores de la lista mientras la recorremos)
+        for sensor in reversed(copiaListaSensores):
             
             # calculamos la distancia euclidea entre el ultimo sensor visitado y el sensor seleccionado
-            x1, y1 = ultimoSensor[0]
-            x2, y2 = sensor[0]
-            distanciaSensor = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+            distanciaSensor = distanciaEuclidea(ultimoSensor[0], sensor[0])
             
             # sumamos la distancia entre el sensor seleccionado y el sensor inicial
-            x1, y1 = sensor[0]
-            x2, y2 = sensorInicial[0]
-            distanciaSensorVuelta = distanciaSensor + math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+            distanciaSensorVuelta = distanciaSensor + distanciaEuclidea(sensor[0], sensorInicial[0])
             
             # si la bateria y la distancia restante del dron son suficientes para visitar el sensor seleccionado
             if bateria - sensor[2] > 0 and distancia - distanciaSensorVuelta > 0:
                 
-                bateria = bateria - sensor[2]
-                distancia = distancia - distanciaSensor
+                bateria -= sensor[2]
+                distancia -= distanciaSensor
                 
                 # incluimos el sensor seleccionado en el camino del dron
-                listaDrones[i].append(sensor)
-                
+                listaDrones[drones.index(dron)].append(sensor)
                 copiaListaSensores.remove(sensor)
                 
                 # actualizamos el ultimo sensor visitado
                 ultimoSensor = sensor
-                
-        i = i + 1
-        
-    # para comprobar que es correcto, haremos unos calculos de comprobacion (solo debug)
-    # !DEBUG
-    # id = 0
-    # for dron in listaDrones:
-    #     #calculamos la distancia total recorrida por el dron
-    #     distancia = 0
-    #     for i in range(len(dron) - 1):
-    #         x1, y1 = dron[i][0]
-    #         x2, y2 = dron[i + 1][0]
-    #         distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     #agregamos la distancia de retorno a la primera sensor
-    #     x1, y1 = dron[-1][0]
-    #     x2, y2 = dron[0][0]
-    #     distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     print("Distancia total recorrida por el dron: ", distancia, "Distancia de la que disponia: ", drones[id].get('distance_capacity'))
-    #     # calculamos la bateria total recargada por el dron
-    #     bateria = 0
-    #     for sensor in dron:
-    #         bateria += sensor[2]
-    #     print("Bateria total recargada por el dron: ", bateria, "Bateria de la que disponia: ", drones[id].get('battery_capacity'))
-    #     id = id + 1
-    # !DEBUG
 
     # devolvemos una lista de sensores visitados para cada dron
     return listaDrones
@@ -236,7 +190,7 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
     copialistaSensores = copy.deepcopy(listaSensores)
     
     # eliminamos el sensor con las mismas coordenadas que el sensor de origen de la lista de sensores
-    for sensor in copialistaSensores:
+    for sensor in reversed(copialistaSensores):
         if sensor[0] == sensorOrigen[0]:
             copialistaSensores.remove(sensor)
             break
@@ -255,30 +209,19 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
     # Eliminar elementos que se repitan más de una vez
     for dron in copiaListaDrones:
         # Recorremos la lista en sentido inverso
-        for i in range(len(dron) - 1, -1, -1):  
-            sensor = dron[i]
+        for sensor in reversed(dron):
             # Si el sensor está repetido o tiene las mismas coordenadas que el sensor de origen
             if contadorSensores[sensor] > 1 or sensor[0] == sensorOrigen[0]: 
                 # lo eliminamos de la lista
                 dron.remove(sensor)
         
-                
     # Una vez eliminados los sensores repetidos, comprobamos que no se superen las capacidades de los drones
     for dron in copiaListaDrones:
         # insertamos el sensor de origen al principio de la lista
         dron.insert(0, sensorOrigen)
         # calculamos la distancia total recorrida y la bateria recargada por el dron
-        distancia = 0
-        bateria = dron[0][2]
-        for i in range(len(dron) - 1):
-            x1, y1 = dron[i][0]
-            x2, y2 = dron[i + 1][0]
-            distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-            bateria += dron[i + 1][2]
-        # agregamos la distancia de retorno al primer sensor
-        x1, y1 = dron[-1][0]
-        x2, y2 = dron[0][0]
-        distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        distancia = distanciaTotalDron(dron)
+        bateria = bateriaTotalDron(dron)
         
         # si la distancia supera la capacidad del dron, eliminamos sensores aleatorios hasta que se cumplan las condiciones
         while distancia > drones[copiaListaDrones.index(dron)].get('distance_capacity') or bateria > drones[copiaListaDrones.index(dron)].get('battery_capacity'):
@@ -287,17 +230,8 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
             # eliminamos el sensor del camino del dron
             dron.remove(sensor)
             # recalculamos la distancia total recorrida y la bateria recargada por el dron
-            distancia = 0
-            bateria = 0
-            for j in range(len(dron) - 1):
-                x1, y1 = dron[j][0]
-                x2, y2 = dron[j + 1][0]
-                distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-                bateria += dron[j + 1][2]
-            # agregamos la distancia de retorno al primer sensor
-            x1, y1 = dron[-1][0]
-            x2, y2 = dron[0][0]
-            distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+            distancia = distanciaTotalDron(dron)
+            bateria = bateriaTotalDron(dron)
     
     # Obtenemos la lista de sensores no visitados por ningun dron
     sensoresNoVisitados = []
@@ -309,140 +243,49 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
                 break
         if not visitado:
             sensoresNoVisitados.append(sensor)
-            
-    # Comprobar que no se superen las capacidades de los drones para debug
-    # !DEBUG
-    # id = 0
-    # numSensoresVisitados = 1
-    # for dron in copiaListaDrones:
-        
-    #     # sumamos el numero de sensores visitados
-    #     numSensoresVisitados += len(dron) - 1
-        
-    #     #calculamos la distancia total recorrida por el dron
-    #     distancia = 0
-    #     for i in range(len(dron) - 1):
-    #         x1, y1 = dron[i][0]
-    #         x2, y2 = dron[i + 1][0]
-    #         distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     #agregamos la distancia de retorno a la primera sensor
-    #     x1, y1 = dron[-1][0]
-    #     x2, y2 = dron[0][0]
-    #     distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     print("Distancia total recorrida por el dron: ", distancia, "Distancia de la que disponia: ", drones[id].get('distance_capacity'))
-    #     # calculamos la bateria total recargada por el dron
-    #     bateria = 0
-    #     for sensor in dron:
-    #         bateria += sensor[2]
-    #     print("Bateria total recargada por el dron: ", bateria, "Bateria de la que disponia: ", drones[id].get('battery_capacity'))
-        
-    #     # si se ha superado la capacidad del dron o la distancia
-    #     if distancia > drones[id].get('distance_capacity') or bateria > drones[id].get('battery_capacity'):
-    #         print("ERROR: Se ha superado la capacidad del dron o la distancia") # ! ESTO HAY QUE ARREGLARLO
-        
-    #     id = id + 1
-    # print("Numero de sensores visitados: ", numSensoresVisitados)
-    # print("Numero de sensores no visitados: ", len(sensoresNoVisitados))
-    # !DEBUG
     
     # por cada sensor no visitado, intentamos insertarlo en un dron aleatorio
-    for i in range(len(sensoresNoVisitados) - 1, -1, -1):
-        sensor = sensoresNoVisitados[i]
+    for sensor in reversed(sensoresNoVisitados):
         # seleccionamos un dron aleatorio
         dron = random.choice(copiaListaDrones)
         # insertamos el sensor en una posición aleatoria del dron
         dron.insert(randint(1, len(dron)), sensor)
         # calculamos la distancia total recorrida y la bateria recargada por el dron
-        distancia = 0
-        bateria = 0
-        for j in range(len(dron) - 1):
-            x1, y1 = dron[j][0]
-            x2, y2 = dron[j + 1][0]
-            distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-            bateria += dron[j + 1][2]
-        # agregamos la distancia de retorno al primer sensor
-        x1, y1 = dron[-1][0]
-        x2, y2 = dron[0][0]
-        distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        distancia = distanciaTotalDron(dron)
+        bateria = bateriaTotalDron(dron)
         # si la distancia supera la capacidad del dron, eliminamos el sensor
         if distancia > drones[copiaListaDrones.index(dron)].get('distance_capacity') or bateria > drones[copiaListaDrones.index(dron)].get('battery_capacity'):
             dron.remove(sensor)
         else:
             # si el sensor se ha insertado correctamente, lo eliminamos de la lista de sensores no visitados
             sensoresNoVisitados.remove(sensor)
-
-    # Comprobar que no se superen las capacidades de los drones para debug
-    # !DEBUG
-    # id = 0
-    # numSensoresVisitados = 1
-    # for dron in copiaListaDrones:
-        
-    #     # sumamos el numero de sensores visitados
-    #     numSensoresVisitados += len(dron) - 1
-        
-    #     #calculamos la distancia total recorrida por el dron
-    #     distancia = 0
-    #     for i in range(len(dron) - 1):
-    #         x1, y1 = dron[i][0]
-    #         x2, y2 = dron[i + 1][0]
-    #         distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     #agregamos la distancia de retorno a la primera sensor
-    #     x1, y1 = dron[-1][0]
-    #     x2, y2 = dron[0][0]
-    #     distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    #     print("Distancia total recorrida por el dron: ", distancia, "Distancia de la que disponia: ", drones[id].get('distance_capacity'))
-    #     # calculamos la bateria total recargada por el dron
-    #     bateria = 0
-    #     for sensor in dron:
-    #         bateria += sensor[2]
-    #     print("Bateria total recargada por el dron: ", bateria, "Bateria de la que disponia: ", drones[id].get('battery_capacity'))
-        
-    #     # si se ha superado la capacidad del dron o la distancia
-    #     if distancia > drones[id].get('distance_capacity') or bateria > drones[id].get('battery_capacity'):
-    #         print("ERROR: Se ha superado la capacidad del dron o la distancia") # ! ESTO HAY QUE ARREGLARLO
-        
-    #     id = id + 1
-    # print("Numero de sensores visitados: ", numSensoresVisitados)
-    # print("Numero de sensores no visitados: ", len(sensoresNoVisitados))
-    # !DEBUG
     
     # Devolver los vectores como una tupla
     return copiaListaDrones
 
-# Funcion que recibe una posible solución, calcula las distancias euclídeas de todos los caminos, y devuelve el fitness de la solución
+
+# Funcion que recibe una posible solución, calcula las distancias y las prioridades de los drones y devuelve el fitness de la solución
 def fitness(listaDrones):
-    
-    #TODO ahora el fitness deberia incluir no solo la distancia, sino tambien la prioridad total
 
     # definimos un peso para la distancia
     pesoDistancia = 0.001
 
-    # definimos una variable para el fitness
+    # inicializamos variables
     f = 0.0
-
-    # calculamos la distancia total recorrida por los drones
     distancia = 0
-    for dron in listaDrones:
-        for i in range(len(dron) - 1):
-            x1, y1 = dron[i][0]
-            x2, y2 = dron[i + 1][0]
-            distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        # agregamos la distancia de retorno al primer sensor
-        x1, y1 = dron[-1][0]
-        x2, y2 = dron[0][0]
-        distancia += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        
-    # calculamos la prioridad total recorrida por los drones
     prioridad = 0
+
+    # calculamos la distancia y prioridad total
     for dron in listaDrones:
-        for sensor in dron:
-            prioridad += sensor[1]
+        distancia += distanciaTotalDron(dron)
+        prioridad += prioridadTotalDron(dron)
             
     # la funcion de fitness es la prioridad menos la distancia por el peso de la distancia
-    f = ((pesoDistancia * distancia) - prioridad)
+    f = (prioridad - (pesoDistancia * distancia))
 
     # devolvemos el fitness de la solución
     return f
+
 
 # Funcion que recibe dos soluciones correctas y las combina, creando dos nuevas soluciones. Estas soluciones NO son correctas, es decir, hay que 
 # corregirlas con la función corrigeSolucion
@@ -465,10 +308,6 @@ def combinarSoluciones(listaDronesPadre, listaDronesMadre):
             puntoMedioMadre = 0
         else:
             puntoMedioMadre = len(dronMadre) // random.randint(1, len(dronMadre) - 1)
-
-        # prints de control            
-        # print("puntoMedioPadre: ", puntoMedioPadre, "len(viajantePadre): ", len(viajantePadre))
-        # print("puntoMedioMadre: ", puntoMedioMadre, "len(viajanteMadre): ", len(viajanteMadre))
         
         # combinamos los caminos creando dos nuevos caminos
         viajanteHijo1 = dronPadre[:puntoMedioPadre] + dronMadre[puntoMedioMadre:]
@@ -476,13 +315,8 @@ def combinarSoluciones(listaDronesPadre, listaDronesMadre):
         
         # controlamos que los caminos no sean vacios
         if len(viajanteHijo1) == 0:
-            # print de control
-            # print("ERROR: viajanteHijo1 vacio")
             viajanteHijo1 = dronPadre
-            
         if len(viajanteHijo2) == 0:
-            # print de control
-            # print("ERROR: viajanteHijo2 vacio")
             viajanteHijo2 = dronMadre
 
         # metemos los nuevos caminos en la lista de drones
@@ -491,6 +325,7 @@ def combinarSoluciones(listaDronesPadre, listaDronesMadre):
 
     # devolvemos las dos nuevas soluciones (PUEDEN NO SER VALIDAS)
     return listaDronesHijo1, listaDronesHijo2
+
 
 # Funcion principal que ejecuta el algoritmo genetico para el problema de los drones y sensores
 def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, num_drones, drones):
@@ -504,8 +339,8 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
     # variable de control para la primera generacion
     primera_generacion = True
 
-    # inicializamos el mejor fitness a infinito
-    mejor_fitness = math.inf
+    # inicializamos el mejor fitness a menos infinito
+    mejor_fitness = -math.inf
 
     # inicializamos el numero de generaciones sin mejora a 0
     generaciones_sin_mejora = 0
@@ -531,10 +366,10 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                 listaDrones = generaSolucion(copiaListaSensores, num_drones, drones)
 
                 # obtenemos el fitness de la solucion
-                distancia = fitness(listaDrones)
+                f = fitness(listaDrones)
 
                 # creamos una tupla con la solucion y su fitness
-                solucion = [listaDrones, distancia]
+                solucion = [listaDrones, f]
 
                 # anadimos la solucion a la lista de soluciones
                 listaSoluciones.append(solucion)
@@ -571,25 +406,25 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                     #     listaDrones = mutante(listaDrones)
 
                     # obtenemos el fitness de la solucion
-                    distancia = fitness(listaDrones)
+                    f = fitness(listaDrones)
 
                     # creamos una tupla con la solucion y su fitness
-                    solucion = [listaDrones, distancia]
+                    solucion = [listaDrones, f]
 
                     # anadimos la solucion a la lista de soluciones
                     listaSoluciones.append(solucion)
         
         # ordenamos las soluciones en funcion de su fitness con una funcion anonima que recibe el segundo elemento de la tupla
-        listaSolucionesOrdenadas = sorted(listaSoluciones, key=lambda x: x[1])
+        listaSolucionesOrdenadas = sorted(listaSoluciones, key=lambda x: x[1], reverse=True)
 
         # Escogemos las mejores soluciones basandonos en un porcentaje predefinido
         mejoresSoluciones = listaSolucionesOrdenadas[:((tamano_poblacion * porcentaje_mejor) // 100)]
         
         # Comprobar si se ha alcanzado la estabilidad del fitness
-        if mejoresSoluciones[0][1] < mejor_fitness:
+        if mejoresSoluciones[0][1] > mejor_fitness:
             
             # Print de control para ver si el algoritmo encuentra mejores soluciones que la funcion generaSolucion()
-            if  mejor_fitness != math.inf:
+            if  mejor_fitness != -math.inf:
                 print("HAY MEJORA: ", mejoresSoluciones[0][1])
 
             # Actualizamos el mejor fitness
@@ -606,39 +441,67 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
     # Devolvemos la mejor solucion
     return mejoresSoluciones[0]
 
+
 # Funcion que recibe una lista de drones y la devuelve intercambiando dos sensores aleatoriamente
 def mutante(listaDrones):
     
     # Creamos una copia de la lista de drones
-    
     copiaListaDrones = copy.deepcopy(listaDrones)
     
     # Seleccionamos dos drones aleatoriamente, pudiendo ser el mismo viajante
-    
     viajante_a = random.randint(0, len(copiaListaDrones) - 1)
     viajante_b = random.randint(0, len(copiaListaDrones) - 1)
-    
-    # Si los drones seleccionados tienen mas de una sensor (sensor origen), seleccionamos dos sensores aleatoriamente de los drones seleccionados
     
     #TODO comprobar tambien que al intercambiar dichos sensores, no se superen las capacidades de los drones
     #TODO en su defecto, llamamos directamente a la funcion corrigeSolucion para que se encargue de ello
     
+    # Si los drones seleccionados tienen mas de una sensor (sensor origen), seleccionamos dos sensores aleatoriamente de los drones seleccionados
     if (len(copiaListaDrones[viajante_a]) > 1 and len(copiaListaDrones[viajante_b]) > 1):
         
         # Seleccionamos dos sensores aleatoriamente de los drones seleccionados, excluyendo la primera sensor de cada viajante (sensor origen)
-        
         sensor_a = random.randint(1, len(copiaListaDrones[viajante_a]) - 1)
         sensor_b = random.randint(1, len(copiaListaDrones[viajante_b]) - 1)
     
         # Intercambiamos las sensores seleccionadas
-        
         aux = copiaListaDrones[viajante_a][sensor_a]
         copiaListaDrones[viajante_a][sensor_a] = copiaListaDrones[viajante_b][sensor_b]
         copiaListaDrones[viajante_b][sensor_b] = aux
     
     # Devolvemos la lista de drones mutada (o no, si no se cumplen las condiciones)
-
     return copiaListaDrones
+
+
+# Funcion auxiliar que calcula la distancia euclidea entre dos puntos
+def distanciaEuclidea(punto1, punto2):
+    x1, y1 = punto1
+    x2, y2 = punto2
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+
+# Funcion auxiliar que calcula la distancia total recorrida por un dron
+def distanciaTotalDron(caminoDron):
+    distancia = 0
+    for i in range(len(caminoDron) - 1):
+        distancia += distanciaEuclidea(caminoDron[i][0], caminoDron[i + 1][0])
+    distancia += distanciaEuclidea(caminoDron[-1][0], caminoDron[0][0])
+    return distancia
+
+
+# Funcion auxiliar que calcula la bateria total recargada por un dron
+def bateriaTotalDron(caminoDron):
+    bateria = 0
+    for sensor in caminoDron:
+        bateria += sensor[2]
+    return bateria
+
+
+# Funcion auxiliar que calcula la prioridad total recorrida por un dron
+def prioridadTotalDron(caminoDron):
+    prioridad = 0
+    for sensor in caminoDron:
+        prioridad += sensor[1]
+    return prioridad
+
 
 # Funcion auxiliar para generar un color aleatorio
 def random_hex_color():
@@ -646,6 +509,7 @@ def random_hex_color():
     green = format(random.randint(0, 255), '02x')
     blue = format(random.randint(0, 255), '02x')
     return '#' + red + green + blue
+
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los drones
 def imprimirCaminos(mejorSolucion, listaSensores, drones):
@@ -661,27 +525,14 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
     for dron in mejorSolucion[0]:
         
         # Calculamos la distancia total recorrida por el dron
-        distanciaDron = 0
-        for i in range(len(dron) - 1):
-            x1, y1 = dron[i][0]
-            x2, y2 = dron[i + 1][0]
-            distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        # Agregamos la distancia de retorno a la primera sensor
-        x1, y1 = dron[-1][0]
-        x2, y2 = dron[0][0]
-        distanciaDron += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        
+        distanciaDron = distanciaTotalDron(dron)
+
         # Calculamos la prioridad total recorrida por el dron
-        prioridadDron = 0
-        for sensor in dron:
-            prioridadDron += sensor[1]
-            
+        prioridadDron = prioridadTotalDron(dron)
+
         # Calculamos la bateria total recargada por el dron
-        bateriaDron = 0
-        for sensor in dron:
-            bateriaDron += sensor[2]
-            
-        
+        bateriaDron = bateriaTotalDron(dron)
+
         distanciaTotal += distanciaDron
         bateriaTotal += bateriaDron
         prioridadTotal += prioridadDron
