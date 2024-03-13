@@ -28,3 +28,33 @@ Prioridad total acumulada por los drones: 104.0
 
 
 
+############# RESULTADO ##############
+
+---ENTRADAS---
+Numero de drones: 3
+Tamano poblacion: 1000
+Porcentaje mejor: 10
+Probabilidad mutante: 50
+Maximo generaciones sin mejora: 20
+
+---SALIDAS---
+Tiempo: 105.87133049964905
+Fitness: 100.66852301224898
+
+---DRONES---
+{'distance_capacity': 133, 'battery_capacity': 229}
+{'distance_capacity': 123, 'battery_capacity': 222}
+{'distance_capacity': 127, 'battery_capacity': 197}
+
+---CAMINOS---
+[((30.55, 36.1), 0, 0), ((18.96, 38.15), 6.0, 34.0), ((16.6, 26.12), 7.0, 0.0), ((7.47, 17.36), 5.0, 51.0), ((10.91, 11.57), 9.0, 71.0), ((14.05, 11.29), 5.0, 35.0), ((23.97, 2.65), 7.0, 32.0)]
+[((30.55, 36.1), 0, 0), ((45.32, 34.87), 6.0, 25.0), ((72.52, 1.66), 10.0, 60.0), ((57.59, 20.92), 10.0, 92.0), ((40.18, 22.36), 6.0, 45.0)]
+[((30.55, 36.1), 0, 0), ((32.46, 58.05), 8.0, 78.0), ((39.16, 61.95), 5.0, 28.0), ((45.93, 55.37), 4.0, 23.0), ((72.73, 36.26), 5.0, 11.0), ((27.09, 35.52), 8.0, 48.0)]
+
+---DISTANCIA, BATERIA Y PRIORIDAD---
+Distancia total recorrida por los drones: 331.4769877510156
+Bateria total recargada por los drones: 633.0
+Prioridad total acumulada por los drones: 101.0
+
+
+
