@@ -80,8 +80,11 @@ def main():
     string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) 
     string += "\n\n---SALIDAS---" 
     string += "\nTiempo: " + str(tiempo_total) 
-    string += "\nFitness: " + str(mejorSolucion[1]) 
-    string += "\n\n---CAMINOS---\n"
+    string += "\nFitness: " + str(mejorSolucion[1])
+    string += "\n\n---DRONES---\n"
+    for dron in drones:
+        string = string + str(dron) + "\n"
+    string += "\n---CAMINOS---\n"
     for dron in mejorSolucion[0]:
         string = string + str(dron) + "\n"
     string += "\n---DISTANCIA, BATERIA Y PRIORIDAD---\n"
@@ -401,9 +404,9 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                     # corregimos una solución
                     listaDrones = corrigeSolucion(hijo, copiaListaSensores, drones)
                     
-                    # # mutamos si la probabilidad lo indica
-                    # if random.randint(1, 100) <= probabilidad_mutante:
-                    #     listaDrones = mutante(listaDrones)
+                    # mutamos si la probabilidad lo indica
+                    if random.randint(1, 100) <= probabilidad_mutante:
+                        listaDrones = mutante(listaDrones, drones)
 
                     # obtenemos el fitness de la solucion
                     f = fitness(listaDrones)
@@ -443,29 +446,33 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
 
 
 # Funcion que recibe una lista de drones y la devuelve intercambiando dos sensores aleatoriamente
-def mutante(listaDrones):
+def mutante(listaDrones, drones):
     
     # Creamos una copia de la lista de drones
     copiaListaDrones = copy.deepcopy(listaDrones)
     
-    # Seleccionamos dos drones aleatoriamente, pudiendo ser el mismo viajante
-    viajante_a = random.randint(0, len(copiaListaDrones) - 1)
-    viajante_b = random.randint(0, len(copiaListaDrones) - 1)
+    # Seleccionamos un dron aleatorio
+    dron = random.choice(copiaListaDrones)
     
-    #TODO comprobar tambien que al intercambiar dichos sensores, no se superen las capacidades de los drones
-    #TODO en su defecto, llamamos directamente a la funcion corrigeSolucion para que se encargue de ello
+    # Si el dron tiene menos de 3 sensores, no se puede mutar
+    if len(dron) < 3:
+        return copiaListaDrones
     
-    # Si los drones seleccionados tienen mas de una sensor (sensor origen), seleccionamos dos sensores aleatoriamente de los drones seleccionados
-    if (len(copiaListaDrones[viajante_a]) > 1 and len(copiaListaDrones[viajante_b]) > 1):
-        
-        # Seleccionamos dos sensores aleatoriamente de los drones seleccionados, excluyendo la primera sensor de cada viajante (sensor origen)
-        sensor_a = random.randint(1, len(copiaListaDrones[viajante_a]) - 1)
-        sensor_b = random.randint(1, len(copiaListaDrones[viajante_b]) - 1)
+    # Seleccionamos dos sensores aleatorios del dron (que no sean el sensor de origen)
+    sensor1 = random.choice(dron[1:])
+    sensor2 = random.choice(dron[1:])
     
-        # Intercambiamos las sensores seleccionadas
-        aux = copiaListaDrones[viajante_a][sensor_a]
-        copiaListaDrones[viajante_a][sensor_a] = copiaListaDrones[viajante_b][sensor_b]
-        copiaListaDrones[viajante_b][sensor_b] = aux
+    # Intercambiamos los sensores
+    dron[dron.index(sensor1)] = sensor2
+    dron[dron.index(sensor2)] = sensor1
+    
+    # Calculamos la nueva distancia total recorrida
+    distancia = distanciaTotalDron(dron)
+    
+    # Si la distancia supera la capacidad del dron, deshacemos la mutacion
+    if distancia > drones[copiaListaDrones.index(dron)].get('distance_capacity'):
+        dron[dron.index(sensor1)] = sensor1
+        dron[dron.index(sensor2)] = sensor2
     
     # Devolvemos la lista de drones mutada (o no, si no se cumplen las condiciones)
     return copiaListaDrones
