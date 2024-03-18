@@ -14,10 +14,10 @@ from random import randint
 def main():
     
     # Variables importantes configurables para el algoritmo genetico
-    tamano_poblacion = 1000
+    tamano_poblacion = 200
     porcentaje_mejor = 10
     probabilidad_mutante = 50
-    maximo_generaciones_sin_mejora = 20
+    maximo_generaciones_sin_mejora = 10
     peso_distancia = 0.2
     
     # Creamos una lista de drones con sus capacidades aleatorizadas
@@ -56,8 +56,8 @@ def generarDronesAleatorios():
     num_drones = 3
      
     # Definimos los valores minimos y maximos para las capacidades de los drones
-    min_distance = 1000
-    max_distance = 1500
+    min_distance = 100
+    max_distance = 150
     min_battery = 1000
     max_battery = 2500
     
