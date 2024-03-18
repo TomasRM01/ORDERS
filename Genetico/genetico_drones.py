@@ -18,6 +18,7 @@ def main():
     porcentaje_mejor = 10
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 20
+    peso_distancia = 0.2
     
     # Creamos una lista de drones con sus capacidades aleatorizadas
     drones = generarDronesAleatorios()
@@ -33,7 +34,7 @@ def main():
     inicio = time.time()
     
     # Llamamos al algoritmo genetico
-    mejorSolucion = genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones)
+    mejorSolucion = genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia)
 
     # Paramos el cronometro y medimos el tiempo total
     fin = time.time()
@@ -42,7 +43,7 @@ def main():
     print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
     
     # Escribimos los resultados obtenidos por el algoritmo genetico en un fichero de log
-    escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones)
+    escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores)
 
     # Imprimimos la mejor solucion con una grafica
     imprimirCaminos(mejorSolucion, listaSensores, drones)
@@ -55,10 +56,10 @@ def generarDronesAleatorios():
     num_drones = 3
      
     # Definimos los valores minimos y maximos para las capacidades de los drones
-    min_distance = 100
-    max_distance = 150
-    min_battery = 100
-    max_battery = 250
+    min_distance = 1000
+    max_distance = 1500
+    min_battery = 1000
+    max_battery = 2500
     
     drones = []
     for _ in range(num_drones):
@@ -239,10 +240,7 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
 
 
 # Funcion que recibe una posible solución, calcula las distancias y las prioridades de los drones y devuelve el fitness de la solución
-def fitness(listaDrones):
-
-    # definimos un peso para la distancia
-    pesoDistancia = 0.001
+def fitness(listaDrones, peso_distancia):
 
     # inicializamos variables
     f = 0.0
@@ -255,7 +253,7 @@ def fitness(listaDrones):
         prioridad += prioridadTotalDron(dron)
             
     # la funcion de fitness es la prioridad menos la distancia por el peso de la distancia
-    f = (prioridad - (pesoDistancia * distancia))
+    f = (prioridad - (peso_distancia * distancia))
 
     # devolvemos el fitness de la solución
     return f
@@ -302,7 +300,7 @@ def combinarSoluciones(listaDronesPadre, listaDronesMadre):
 
 
 # Funcion principal que ejecuta el algoritmo genetico para el problema de los drones y sensores
-def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones):
+def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia):
     
     # hacemos una copia de la lista de sensores 
     copiaListaSensores = copy.deepcopy(listaSensores)
@@ -340,7 +338,7 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                 listaDrones = generaSolucion(copiaListaSensores, drones)
 
                 # obtenemos el fitness de la solucion
-                f = fitness(listaDrones)
+                f = fitness(listaDrones, peso_distancia)
 
                 # creamos una tupla con la solucion y su fitness
                 solucion = [listaDrones, f]
@@ -380,7 +378,7 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                         listaDrones = mutante(listaDrones, drones)
 
                     # obtenemos el fitness de la solucion
-                    f = fitness(listaDrones)
+                    f = fitness(listaDrones, peso_distancia)
 
                     # creamos una tupla con la solucion y su fitness
                     solucion = [listaDrones, f]
@@ -564,7 +562,7 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
 
 
 # Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log
-def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones):
+def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
         # Calculamos la distancia total, la bateria recargada y la prioridad acumulada por los drones
         distanciaTotal = 0
         bateriaTotal = 0
@@ -577,6 +575,23 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
             prioridadTotal += prioridadDron
             bateriaDron = bateriaTotalDron(dron)
             bateriaTotal += bateriaDron
+            
+        # Calculamos la distancia maxima y bateria maxima recargable por los drones
+        distanciaMaxima = 0
+        bateriaMaxima = 0
+        for dron in drones:
+            distanciaMaxima += dron.get('distance_capacity')
+            bateriaMaxima += dron.get('battery_capacity')
+        
+        # Calculamos la prioridad maxima acumulable por los drones    
+        prioridadMaxima = 0
+        for sensor in listaSensores:
+            prioridadMaxima += sensor[1]
+            
+        # Calculamos los porcentajes de distancia, bateria y prioridad
+        porcentajeDistancia = (distanciaTotal / distanciaMaxima) * 100
+        porcentajeBateria = (bateriaTotal / bateriaMaxima) * 100
+        porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
         
         # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
         f = open("log_drones.txt", "a") 
@@ -586,7 +601,8 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
         string += "\nTamano poblacion: " + str(tamano_poblacion) 
         string += "\nPorcentaje mejor: " + str(porcentaje_mejor) 
         string += "\nProbabilidad mutante: " + str(probabilidad_mutante) 
-        string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora) 
+        string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora)
+        string += "\nPeso distancia: " + str(peso_distancia)
         string += "\n\n---SALIDAS---" 
         string += "\nTiempo: " + str(tiempo_total) 
         string += "\nFitness: " + str(mejorSolucion[1])
@@ -597,9 +613,9 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
         for dron in mejorSolucion[0]:
             string = string + str(dron) + "\n"
         string += "\n---DISTANCIA, BATERIA Y PRIORIDAD---\n"
-        string += "Distancia total recorrida por los drones: " + str(distanciaTotal) + "\n"
-        string += "Bateria total recargada por los drones: " + str(bateriaTotal) + "\n"
-        string += "Prioridad total acumulada por los drones: " + str(prioridadTotal) + "\n"
+        string += "Distancia total recorrida por los drones: " + str(distanciaTotal) + " / " + str(distanciaMaxima) + " (" + str(porcentajeDistancia) + "%)" + "\n"
+        string += "Bateria total recargada por los drones: " + str(bateriaTotal) + " / " + str(bateriaMaxima) + " (" + str(porcentajeBateria) + "%)" + "\n"
+        string += "Prioridad total acumulada por los drones: " + str(prioridadTotal) + " / " + str(prioridadMaxima) + " (" + str(porcentajePrioridad) + "%)" + "\n"
         string += "\n\n\n"
         f.write(string)
         f.close()
