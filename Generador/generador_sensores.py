@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 
 # abrimos el fichero en modo escritura
-f = open("scenary_drones.txt", "w")
+f = open("scenary_sensores.txt", "w")
 
 # numero de sensores
 num = 100
@@ -67,6 +67,6 @@ for i, t in enumerate(posiciones):
 plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.savefig('scenary_drones.png', dpi=300)
+plt.savefig('scenary_sensores.png', dpi=300)
 plt.show()
 

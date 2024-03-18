@@ -8,7 +8,7 @@ prioridades = []
 baterias = []
 
 # abrimos el fichero en modo lectura
-with open("scenary_drones.txt", "r") as f:
+with open("scenary_sensores.txt", "r") as f:
     # pasamos el contenido a un string
     s = f.read()
 
@@ -35,5 +35,5 @@ for i, t in enumerate(posiciones):
 plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.savefig('scenary_drones.png', dpi=300)
+plt.savefig('scenary_sensores.png', dpi=300)
 plt.show()
