@@ -20,10 +20,8 @@ def main():
     maximo_generaciones_sin_mejora = 10
     peso_distancia = 0.2
     
-    # Creamos una lista de drones con sus capacidades aleatorizadas
-    drones = generarDronesAleatorios()
-    #! Esto son valores aleatorios, si queremos COMPARAR escenarios, habria que cambiar esto
-    # TODO: hacer un recuperaDrones() que lea de un fichero los drones
+    # Recuperamos los drones del .txt
+    drones = recuperaDrones()
         
     # Recuperamos los sensores del .txt
     listaSensores = recuperaSensores()
@@ -49,29 +47,26 @@ def main():
     imprimirCaminos(mejorSolucion, listaSensores, drones)
 
 
-# Funcion que genera drones con valores aleatorios dentro de unos rangos
-def generarDronesAleatorios():
-    
-    # definimos el numero de drones, en este caso 3
-    num_drones = 3
-     
-    # Definimos los valores minimos y maximos para las capacidades de los drones
-    min_distance = 100
-    max_distance = 150
-    min_battery = 1000
-    max_battery = 2500
-    
+# Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de drones con sus capacidades
+def recuperaDrones():
+    # lista de drones
     drones = []
-    for _ in range(num_drones):
-        dron = {
-            'distance_capacity': random.randint(min_distance, max_distance),  # distance capacity variable
-            'battery_capacity': random.randint(min_battery, max_battery)  # battery capacity variable
-        }
-        drones.append(dron)
+
+    # abrimos el fichero en modo lectura
+    with open("scenary_drones.txt", "r") as f:
+        # pasamos el contenido a un string
+        s = f.read()
+        
+    # recuperamos los elementos del string tal que asi: {'distance_capacity': 137, 'battery_capacity': 1158}, {'distance_capacity': 108, 'battery_capacity': 1690}, ...
+    drones = [eval(drone) for drone in re.findall(r'\{.*?\}', s)]
+
+    # cerramos el fichero
+    f.close()
+    
     return drones
-    
-    
-# Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de sensores con sus coordenadas
+
+  
+# Funcion que lee el contenido de el fichero scenary_sensores.txt y devuelve la lista de sensores con sus coordenadas
 def recuperaSensores():
     
     # lista de sensores

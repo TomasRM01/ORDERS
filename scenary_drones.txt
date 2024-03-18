@@ -1,0 +1,3 @@
+{'distance_capacity': 137, 'battery_capacity': 1158}
+{'distance_capacity': 108, 'battery_capacity': 1690}
+{'distance_capacity': 101, 'battery_capacity': 2083}

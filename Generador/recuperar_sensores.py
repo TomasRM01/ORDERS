@@ -1,3 +1,5 @@
+# Programa que recupera los sensores que se van a utilizar en el escenario.
+
 import matplotlib.pyplot as plt
 import re
 import random
