@@ -18,7 +18,7 @@ def main():
     porcentaje_mejor = 10
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 10
-    peso_distancia = 0.2
+    peso_distancia = 0.001
     
     # Recuperamos los drones del .txt
     drones = recuperaDrones()
