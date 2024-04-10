@@ -153,7 +153,7 @@ def generaSolucion(listaSensores, drones):
 def corrigeSolucion(listaDrones, listaSensores, drones): 
     
     # Obtenemos el sensor de origen
-    sensorOrigen = listaDrones[0][0]
+    sensorOrigen = listaSensores[0]
 
     # Hacemos una copia de las listas para no modificarlas
     copiaListaDrones = copy.deepcopy(listaDrones)
@@ -326,8 +326,8 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                 # rehacemos una copia de la lista de sensores 
                 copiaListaSensores = copy.deepcopy(listaSensores)
 
-                # aleatorizamos la lista de los sensores
-                random.shuffle(copiaListaSensores)
+                # aleatorizamos la lista de los sensores dejando el sensor de origen en la primera posicion
+                copiaListaSensores = [copiaListaSensores[0]] + random.sample(copiaListaSensores[1:], len(copiaListaSensores)-1)
 
                 # generamos una solución aleatoria válida
                 listaDrones = generaSolucion(copiaListaSensores, drones)
@@ -362,8 +362,8 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                     # rehacemos una copia de la lista de sensores 
                     copiaListaSensores = copy.deepcopy(listaSensores)
 
-                    # aleatorizamos la lista de los sensores
-                    random.shuffle(copiaListaSensores)
+                    # aleatorizamos la lista de los sensores dejando el sensor de origen en la primera posicion
+                    copiaListaSensores = [copiaListaSensores[0]] + random.sample(copiaListaSensores[1:], len(copiaListaSensores)-1)
 
                     # corregimos una solución
                     listaDrones = corrigeSolucion(hijo, copiaListaSensores, drones)
