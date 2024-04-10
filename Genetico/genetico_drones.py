@@ -6,6 +6,7 @@ import re
 import random
 import math
 import time
+import colorsys
 import matplotlib.pyplot as plt
 from random import randint
 
@@ -474,12 +475,17 @@ def prioridadTotalDron(caminoDron):
     return prioridad
 
 
-# Funcion auxiliar para generar un color aleatorio
-def random_hex_color():
-    red = format(random.randint(0, 255), '02x')
-    green = format(random.randint(0, 255), '02x')
-    blue = format(random.randint(0, 255), '02x')
-    return '#' + red + green + blue
+# Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones
+def generarColoresUnicos(n):
+    listaColores = []
+    pasoHue = 1.0 / n
+    for i in range(n):
+        hue = i * pasoHue
+        rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
+        rgbInt = tuple(int(x * 255) for x in rgb)
+        hexColor = '#{:02x}{:02x}{:02x}'.format(*rgbInt)
+        listaColores.append(hexColor)
+    return listaColores
 
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los drones
@@ -492,6 +498,8 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
     prioridadTotal = 0
     bateriaTotal = 0
     distanciaTotal = 0
+    
+    listaColores = generarColoresUnicos(len(drones))
     
     for dron in mejorSolucion[0]:
         
@@ -508,11 +516,10 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
         bateriaTotal += bateriaDron
         prioridadTotal += prioridadDron
         
-        nCaminos += 1
-        print("\n\nCamino del dron [", nCaminos, "]: \n\n", dron)
+        print("\n\nCamino del dron [", nCaminos + 1, "]: \n\n", dron)
         print("\nNúmero de sensores recorridos: ", len(dron) - 1, "\n\n")
-        print("Distancia recorrida por el dron: ", distanciaDron, " / ", drones[nCaminos - 1].get('distance_capacity'))
-        print("Bateria recargada por el dron: ", bateriaDron, " / ", drones[nCaminos - 1].get('battery_capacity'))
+        print("Distancia recorrida por el dron: ", distanciaDron, " / ", drones[nCaminos].get('distance_capacity'))
+        print("Bateria recargada por el dron: ", bateriaDron, " / ", drones[nCaminos].get('battery_capacity'))
         print("Prioridad obtenida por el dron: ", prioridadDron)
         nTotalSensores += len(dron) - 1
         x = []
@@ -522,7 +529,9 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
             y.append(sensor[0][1])
         x.append(dron[0][0][0])
         y.append(dron[0][0][1])
-        plt.plot(x,y,":o",color=random_hex_color())
+        plt.plot(x,y,":o",color=listaColores[nCaminos])
+        
+        nCaminos += 1
         
     # Obtenemos la lista de sensores no visitados por ningun dron comparando sus coordenadas
     sensoresNoVisitados = []
