@@ -16,6 +16,7 @@ max_battery = 2500
 
 for _ in range(num_drones):
     dron = {
+        'dron_n': _ + 1,  # drone number
         'distance_capacity': random.randint(min_distance, max_distance),  # distance capacity variable
         'battery_capacity': random.randint(min_battery, max_battery)  # battery capacity variable
     }
