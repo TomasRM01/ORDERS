@@ -152,17 +152,17 @@ def generaSolucion(listaSensores, drones):
 # Funcion que corrige una solucion incorrecta, haciendola válida usando una lista de sensores general
 # Devuelve una lista que contiene N listas con caminos validos
 def corrigeSolucion(listaDrones, listaSensores, drones): 
-    
-    # Obtenemos el sensor de origen
-    sensorOrigen = listaSensores[0]
 
     # Hacemos una copia de las listas para no modificarlas
     copiaListaDrones = copy.deepcopy(listaDrones)
     copialistaSensores = copy.deepcopy(listaSensores)
     
+    # Obtenemos el sensor inicial de la lista de sensores
+    sensorInicial = (copialistaSensores[0][0], 0, 0)
+    
     # eliminamos el sensor con las mismas coordenadas que el sensor de origen de la lista de sensores
     for sensor in reversed(copialistaSensores):
-        if sensor[0] == sensorOrigen[0]:
+        if sensor[0] == sensorInicial[0]:
             copialistaSensores.remove(sensor)
             break
     
@@ -182,14 +182,14 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
         # Recorremos la lista en sentido inverso
         for sensor in reversed(dron):
             # Si el sensor está repetido o tiene las mismas coordenadas que el sensor de origen
-            if contadorSensores[sensor] > 1 or sensor[0] == sensorOrigen[0]: 
+            if contadorSensores[sensor] > 1 or sensor[0] == sensorInicial[0]: 
                 # lo eliminamos de la lista
                 dron.remove(sensor)
         
     # Una vez eliminados los sensores repetidos, comprobamos que no se superen las capacidades de los drones
     for dron in copiaListaDrones:
         # insertamos el sensor de origen al principio de la lista
-        dron.insert(0, sensorOrigen)
+        dron.insert(0, sensorInicial)
         # calculamos la distancia total recorrida y la bateria recargada por el dron
         distancia = distanciaTotalDron(dron)
         bateria = bateriaTotalDron(dron)
