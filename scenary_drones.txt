@@ -1,3 +1,3 @@
-{'distance_capacity': 137, 'battery_capacity': 1158}
-{'distance_capacity': 108, 'battery_capacity': 1690}
-{'distance_capacity': 101, 'battery_capacity': 2083}
+{'dron_n': 1, 'distance_capacity': 145, 'battery_capacity': 2181}
+{'dron_n': 2, 'distance_capacity': 117, 'battery_capacity': 2172}
+{'dron_n': 3, 'distance_capacity': 141, 'battery_capacity': 1783}
