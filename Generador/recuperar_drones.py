@@ -7,7 +7,7 @@ import re
 drones = []
 
 # abrimos el fichero en modo lectura
-with open("scenary_drones.txt", "r") as f:
+with open("Escenario/scenary_drones.txt", "r") as f:
     # pasamos el contenido a un string
     s = f.read()
     

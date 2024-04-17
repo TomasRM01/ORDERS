@@ -54,7 +54,7 @@ def recuperaDrones():
     drones = []
 
     # abrimos el fichero en modo lectura
-    with open("scenary_drones.txt", "r") as f:
+    with open("Escenario/scenary_drones.txt", "r") as f:
         # pasamos el contenido a un string
         s = f.read()
         
@@ -74,7 +74,7 @@ def recuperaSensores():
     sensores = []
 
     # abrimos el fichero en modo lectura
-    with open("scenary_sensores.txt", "r") as f:
+    with open("Escenario/scenary_sensores.txt", "r") as f:
         # pasamos el contenido a un string
         s = f.read()
 
@@ -598,7 +598,7 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
         porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
         
         # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-        f = open("log_drones.txt", "a") 
+        f = open("Genetico/log_drones.txt", "a") 
         string = "############# RESULTADO ##############" 
         string += "\n\n---ENTRADAS---" 
         string += "\nNumero de drones: " + str(len(drones)) 

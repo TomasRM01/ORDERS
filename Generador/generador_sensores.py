@@ -1,5 +1,7 @@
+import colorsys
 import random
 import matplotlib.pyplot as plt
+
 
 # numero de sensores
 num = 30
@@ -20,7 +22,7 @@ prioridades = []
 baterias = []
 
 # abrimos el fichero en modo escritura
-f = open("scenary_sensores.txt", "w")
+f = open("Escenario/scenary_sensores.txt", "w")
 
 # iteramos para num sensores
 for _ in range(num):
@@ -68,15 +70,27 @@ f2.write('// Carga necesaria' + '\n' + 'F = ' + str(baterias) + ';\n')
 
 f2.close()
 
+# Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones
+def generarColoresUnicos(n):
+    listaColores = []
+    pasoHue = 1.0 / n
+    for i in range(n):
+        hue = i * pasoHue
+        rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
+        rgbInt = tuple(int(x * 255) for x in rgb)
+        hexColor = '#{:02x}{:02x}{:02x}'.format(*rgbInt)
+        listaColores.append(hexColor)
+    return listaColores
+
 # generamos el grafico
-colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown', 'gray', 'cyan']
+colors = generarColoresUnicos(len(posiciones))
+
 for i, t in enumerate(posiciones):
-    color = random.choice(colors)
+    color = colors[i]
     plt.scatter(t[0], t[1], c=color)
     plt.annotate(f'P: {prioridades[i]}\nB: {baterias[i]}', (t[0], t[1]), textcoords="offset points", xytext=(0,-20), ha='center', fontsize=8)
 plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.savefig('scenary_sensores.png', dpi=300)
+plt.savefig('Escenario/scenary_sensores.png', dpi=300)
 plt.show()
-

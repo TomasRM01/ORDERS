@@ -17,7 +17,7 @@ C = []
 n = 0
 
 # Fichero de salida para algoritmo genetico
-f = open("scenary_drones.txt", "w")
+f = open("Escenario/scenary_drones.txt", "w")
 
 for _ in range(num_drones):
     n += 1
