@@ -50,5 +50,5 @@ for i, t in enumerate(posiciones):
 plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.savefig('scenary_sensores.png', dpi=300)
+plt.savefig('Escenario/scenary_sensores.png', dpi=300)
 plt.show()
