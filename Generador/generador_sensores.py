@@ -1,11 +1,8 @@
 import random
 import matplotlib.pyplot as plt
 
-# abrimos el fichero en modo escritura
-f = open("scenary_sensores.txt", "w")
-
 # numero de sensores
-num = 100
+num = 30
 
 # coordenadas maximas
 max_x = 100
@@ -21,6 +18,9 @@ max_b = 200
 posiciones = []
 prioridades = []
 baterias = []
+
+# abrimos el fichero en modo escritura
+f = open("scenary_sensores.txt", "w")
 
 # iteramos para num sensores
 for _ in range(num):
@@ -57,6 +57,16 @@ for _ in range(num):
 
 # cerramos el fichero
 f.close()
+
+# Fichero de salida para CPLEX
+f2 = open("CPLEX/Drones/Sensores.dat", "w")
+
+f2.write('// Numero de sensores' + '\n' + 'm = ' + str(num) + ';\n')
+f2.write('// Coordenadas de los sensores' + '\n' + 'coordSensor = ' + str([f'<{x:.2f}, {y:.2f}>' for x, y in posiciones]).replace("'", "") + ';\n')
+f2.write('// Prioridades' + '\n' + 'P = ' + str(prioridades) + ';\n')
+f2.write('// Carga necesaria' + '\n' + 'F = ' + str(baterias) + ';\n')
+
+f2.close()
 
 # generamos el grafico
 colors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'brown', 'gray', 'cyan']
