@@ -1,18 +1,6 @@
-/*********************************************
- * OPL 22.1.1.0 Data
- * Author: Tomas Ramirez Morales
- * Creation Date: 18 jul. 2023 at 17:26:14
- *********************************************/
-
-n = 3; // Numero de drones
-m = 15; // Numero se sensores
-
-coordSensor =  [<21, 24>, <21, 10>, <42, 99>, <66, 83>, <59, 6>, <89, 21>, <95, 1>, <24, 72>, <35, 72>, <0, 88>, <73, 76>, <69, 90>, <64, 96>, <97, 60>, <72, 36>];
-
-F = [0, 182, 101, 37, 105, 101, 187, 195, 164, 22, 144, 8, 69, 112, 128]; // Carga necesaria para recargar el sensor i
-P = [0, 8, 3, 3, 6, 2, 4, 4, 6, 9, 0, 5, 7, 7, 9]; // Prioridad del sensor i
-
-B = [314, 297, 323]; // Capacidad de recarga de sensores del dron k
-C = [228, 216, 242]; // Maxima distancia que puede recorrer el dron k
-
-peso_distancia = 0.001; // Valor que multiplica al sumatorio de las distancias para asignarle un peso en la funcion objetivo. Si es muy alto, puede no funcionar (con los parametros actuales, 0.001 funciona)
+// Numero de drones
+n = 3;
+// Capacidad de carga
+B = [201, 162, 102];
+// Distancia de vuelo
+C = [144, 134, 127];

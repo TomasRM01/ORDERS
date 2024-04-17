@@ -6,10 +6,16 @@
         		
         <config default="true" name="conf" category="opl">
             			
-            <ref name="Drones.mod" type="model">
+            <ref name="Drones.dat" type="data">
 			</ref>
             			
-            <ref name="Drones.dat" type="data">
+            <ref name="Sensores.dat" type="data">
+			</ref>
+            			
+            <ref name="Datos.dat" type="data">
+			</ref>
+            			
+            <ref name="ProblemaDrones.mod" type="model">
 			</ref>
             		
         </config>

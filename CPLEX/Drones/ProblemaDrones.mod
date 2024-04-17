@@ -1,9 +1,3 @@
-/*********************************************
- * OPL 22.1.1.0 Model
- * Author: Tomas Ramirez Morales
- * Creation Date: 18 jul. 2023 at 17:26:14
- *********************************************/
-
 // Parametros de entrada
 int n = ...; // Numero de drones
 int m = ...; // Numero se sensores
@@ -147,27 +141,6 @@ int maxPrioridad = 0;
 
 // Imprimimos
 execute{
-  writeln("\nSENSORES (m) = ", m, "\n");
-  
-  // Para cada sensor imprimimos sus coordenadas, bateria y prioridad
-  // Usamos este formato para poder comparar resultados con el alg genetico
-  for (var i in S)
-  {
-    writeln("X: ", coordSensor[i].x, "\tY: ", coordSensor[i].y, "\tP: ", P[i], "\tB: ", F[i]);
-    
-    maxRecarga += F[i];
-    maxPrioridad += P[i];
-  }
-
-  
-  writeln("\n\nDRONES (n) = ", n, "\n");
-  
-  
-  // Imprimimos los drones para poder comparar resultados con el alg genetico
-  for (var k in K)
-  {
-    writeln("{'distance_capacity': ", C[k], ", 'battery_capacity': ", B[k], "}");
-  }
   
   // Para cada dron
   for (var k in K) {
@@ -187,7 +160,7 @@ execute{
     }
     // En caso de que lo haga, seguimos su recorrido imprimiendo los caminos en orden
     else {
-      i = 1;
+      var i = 1;
       var j = 2;
       // Mientras que no haya un camino hacia el sensor de destino desde este sensor de origen...
       while (x[i][1][k] == 0) {
@@ -208,6 +181,7 @@ execute{
       }
       // El sensor de destino es el inicial, lo imprimimos tambien
       writeln("- Viaja de ", i, " a ", 1, " (D = ", D[i][1], ", F = ", F[1], ", P = ", P[1], ", u = ", u[i], ")");
+      totalRecorrido += D[i][1];
     }
     
     writeln("");
