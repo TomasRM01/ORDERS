@@ -1,620 +1,108 @@
-############# RESULTADO ##############
+18/04/2024, 22:13:32
 
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 1000
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 20
-Peso distancia: 0.2
+## RESULTADO ##
 
----SALIDAS---
-Tiempo: 267.1937725543976
-Fitness: 155.60607898205464
+Fitness = 41.69598462891018
+Tiempo = 0.8037252426147461
 
----DRONES---
-{'distance_capacity': 117, 'battery_capacity': 1695}
-{'distance_capacity': 132, 'battery_capacity': 1042}
-{'distance_capacity': 139, 'battery_capacity': 1865}
+Dron 1 (C = 144, B = 201):
+- Viaja de 1 a 2 (D += 20.119493035362495, F += 43, P += 9)
+- Viaja de 2 a 16 (D += 19.585129563012845, F += 25, P += 4)
+- Viaja de 16 a 11 (D += 5.203767865691166, F += 124, P += 5)
+- Viaja de 11 a 1 (D += 22.757541607124434)
+- Total del dron (D = 67.66593207119094, F = 192, P = 18)
 
----CAMINOS---
-[((23.21, 21.05), 0, 0), ((16.06, 17.77), 3.0, 121.0), ((14.05, 11.29), 5.0, 35.0), ((16.94, 1.8), 7.0, 190.0), ((6.99, 3.37), 8.0, 180.0), ((3.69, 3.91), 4.0, 70.0), ((10.91, 11.57), 9.0, 71.0), ((7.47, 17.36), 5.0, 51.0), ((2.15, 13.66), 7.0, 111.0), ((0.82, 27.78), 2.0, 168.0), ((2.18, 37.74), 3.0, 13.0), ((7.36, 34.99), 10.0, 132.0), ((10.9, 28.49), 6.0, 173.0), ((16.6, 26.12), 7.0, 0.0)]
-[((23.21, 21.05), 0, 0), ((27.09, 35.52), 8.0, 48.0), ((30.55, 36.1), 5.0, 148.0), ((32.46, 58.05), 8.0, 78.0), ((39.16, 61.95), 5.0, 28.0), ((35.63, 63.57), 10.0, 170.0), ((25.71, 64.28), 6.0, 89.0), ((17.33, 64.61), 9.0, 59.0), ((3.69, 49.88), 9.0, 115.0), ((7.29, 49.61), 8.0, 130.0), ((18.96, 38.15), 6.0, 34.0), ((23.02, 34.77), 5.0, 83.0)]
-[((23.21, 21.05), 0, 0), ((23.97, 2.65), 7.0, 32.0), ((29.03, 3.54), 2.0, 158.0), ((43.06, 3.85), 4.0, 189.0), ((46.11, 10.15), 6.0, 104.0), ((51.45, 13.22), 10.0, 178.0), ((58.15, 10.17), 5.0, 173.0), ((63.77, 11.15), 6.0, 166.0), ((57.59, 20.92), 10.0, 92.0), ((54.0, 33.35), 4.0, 79.0), ((45.32, 34.87), 6.0, 25.0), ((40.18, 22.36), 6.0, 45.0), ((34.75, 24.75), 9.0, 111.0)]
+Dron 2 (C = 134, B = 162):
+- Viaja de 1 a 15 (D += 45.64652122560929, F += 27, P += 6)
+- Viaja de 15 a 20 (D += 45.30406714633907, F += 132, P += 7)
+- Viaja de 20 a 1 (D += 25.442837892027686)
+- Total del dron (D = 116.39342626397604, F = 159, P = 13)
 
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 371.96960508972677 / 388 (95.86845492003268%)
-Bateria total recargada por los drones: 3649.0 / 4602 (79.2916123424598%)
-Prioridad total acumulada por los drones: 230.0 / 526.0 (43.72623574144487%)
+Dron 3 (C = 127, B = 102):
+- Viaja de 1 a 8 (D += 31.973815849848148, F += 88, P += 3)
+- Viaja de 8 a 19 (D += 30.38817204110836, F += 7, P += 8)
+- Viaja de 19 a 1 (D += 57.59402486369571)
+- Total del dron (D = 119.95601275465222, F = 95, P = 11)
 
+Distancia (D) = 304.01537108981915 / 405 ( 75.06552372588128% )
+Bateria   (F) = 446 / 465 ( 95.91397849462365% )
+Prioridad (P) = 42 / 75 ( 56.00000000000001% )
 
+## PARAMETROS ##
 
-############# RESULTADO ##############
+Peso Distancia = 0.001
+Tamano Poblacion = 200
+Porcentaje Mejor = 10
+Probabilidad Mutante = 50
+Maximo Generaciones sin Mejora = 10
 
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 1000
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
+## ESCENARIO ##
 
----SALIDAS---
-Tiempo: 115.4501531124115
-Fitness: 136.2538085838708
+- Drones
+n = 3
+C = [144, 134, 127]
+B = [201, 162, 102]
 
----DRONES---
-{'distance_capacity': 150, 'battery_capacity': 1002}
-{'distance_capacity': 106, 'battery_capacity': 1263}
-{'distance_capacity': 100, 'battery_capacity': 1768}
+- Sensores
+m = 20
+coordSensor = [(69.53, 34.86), (58.49, 18.04), (43.86, 1.19), (23.68, 84.61), (37.92, 97.53), (27.97, 67.92), (3.23, 0.85), (79.68, 65.18), (31.33, 1.09), (84.53, 88.5), (77.57, 13.57), (13.11, 66.33), (90.22, 60.08), (57.42, 31.85), (56.85, 78.71), (75.71, 8.71), (51.32, 15.08), (31.76, 31.07), (66.07, 92.35), (44.09, 35.24)]
+F = [0, 9.0, 3.0, 10.0, 2.0, 1.0, 0.0, 3.0, 1.0, 1.0, 5.0, 6.0, 1.0, 2.0, 6.0, 4.0, 4.0, 2.0, 8.0, 7.0]
+P = [0, 43.0, 96.0, 57.0, 38.0, 116.0, 168.0, 88.0, 115.0, 168.0, 124.0, 127.0, 114.0, 198.0, 27.0, 25.0, 193.0, 107.0, 7.0, 132.0]
 
----CAMINOS---
-[((23.02, 34.77), 0, 0), ((7.36, 34.99), 10.0, 132.0), ((7.47, 17.36), 5.0, 51.0), ((10.91, 11.57), 9.0, 71.0), ((14.05, 11.29), 5.0, 35.0), ((23.97, 2.65), 7.0, 32.0), ((16.94, 1.8), 7.0, 190.0), ((6.99, 3.37), 8.0, 180.0), ((3.69, 3.91), 4.0, 70.0), ((2.15, 13.66), 7.0, 111.0), ((16.06, 17.77), 3.0, 121.0), ((16.6, 26.12), 7.0, 0.0)]
-[((23.02, 34.77), 0, 0), ((27.25, 44.32), 3.0, 131.0), ((32.46, 58.05), 8.0, 78.0), ((39.16, 61.95), 5.0, 28.0), ((35.63, 63.57), 10.0, 170.0), ((25.71, 64.28), 6.0, 89.0), ((17.33, 64.61), 9.0, 59.0), ((7.29, 49.61), 8.0, 130.0), ((3.69, 49.88), 9.0, 115.0), ((18.96, 38.15), 6.0, 34.0)]
-[((23.02, 34.77), 0, 0), ((30.55, 36.1), 5.0, 148.0), ((45.32, 34.87), 6.0, 25.0), ((54.0, 33.35), 4.0, 79.0), ((57.59, 20.92), 10.0, 92.0), ((51.45, 13.22), 10.0, 178.0), ((46.11, 10.15), 6.0, 104.0), ((40.18, 22.36), 6.0, 45.0), ((34.75, 24.75), 9.0, 111.0), ((27.09, 35.52), 8.0, 48.0)]
 
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 318.7309570806459 / 356 (89.53116771928255%)
-Bateria total recargada por los drones: 2657.0 / 4033 (65.8814778080833%)
-Prioridad total acumulada por los drones: 200.0 / 526.0 (38.02281368821293%)
 
 
+18/04/2024, 22:14:02
 
-############# RESULTADO ##############
+## RESULTADO ##
 
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 500
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
+Fitness = 40.67095899669967
+Tiempo = 0.795539140701294
 
----SALIDAS---
-Tiempo: 60.092331647872925
-Fitness: 138.24715527230777
+Dron 1 (C = 144, B = 201):
+- Viaja de 1 a 4 (D += 67.65563538981804, F += 57, P += 10)
+- Viaja de 4 a 6 (D += 17.23253318580875, F += 116, P += 1)
+- Viaja de 6 a 1 (D += 53.10552890236572)
+- Total del dron (D = 137.9936974779925, F = 173, P = 11)
 
----DRONES---
-{'distance_capacity': 150, 'battery_capacity': 1488}
-{'distance_capacity': 139, 'battery_capacity': 1611}
-{'distance_capacity': 108, 'battery_capacity': 1831}
+Dron 2 (C = 134, B = 162):
+- Viaja de 1 a 15 (D += 45.64652122560929, F += 27, P += 6)
+- Viaja de 15 a 19 (D += 16.463839163451514, F += 7, P += 8)
+- Viaja de 19 a 8 (D += 30.38817204110836, F += 88, P += 3)
+- Viaja de 8 a 1 (D += 31.973815849848148)
+- Total del dron (D = 124.47234828001731, F = 122, P = 17)
 
----CAMINOS---
-[((34.07, 38.22), 0, 0), ((23.21, 21.05), 4.0, 160.0), ((14.05, 11.29), 5.0, 35.0), ((10.91, 11.57), 9.0, 71.0), ((6.99, 3.37), 8.0, 180.0), ((16.94, 1.8), 7.0, 190.0), ((23.97, 2.65), 7.0, 32.0), ((3.69, 3.91), 4.0, 70.0), ((2.15, 13.66), 7.0, 111.0), ((7.47, 17.36), 5.0, 51.0), ((16.06, 17.77), 3.0, 121.0), ((10.9, 28.49), 6.0, 173.0), ((16.6, 26.12), 7.0, 0.0), ((30.55, 36.1), 5.0, 148.0)]
-[((34.07, 38.22), 0, 0), ((18.96, 38.15), 6.0, 34.0), ((23.02, 34.77), 5.0, 83.0), ((7.36, 34.99), 10.0, 132.0), ((7.29, 49.61), 8.0, 130.0), ((3.69, 49.88), 9.0, 115.0), ((17.33, 64.61), 9.0, 59.0), ((25.71, 64.28), 6.0, 89.0), ((26.47, 54.15), 0.0, 112.0), ((39.16, 61.95), 5.0, 28.0), ((35.63, 63.57), 10.0, 170.0), ((32.46, 58.05), 8.0, 78.0)]
-[((34.07, 38.22), 0, 0), ((45.32, 34.87), 6.0, 25.0), ((54.0, 33.35), 4.0, 79.0), ((57.59, 20.92), 10.0, 92.0), ((51.45, 13.22), 10.0, 178.0), ((43.06, 3.85), 4.0, 189.0), ((46.11, 10.15), 6.0, 104.0), ((40.18, 22.36), 6.0, 45.0), ((34.75, 24.75), 9.0, 111.0), ((27.09, 35.52), 8.0, 48.0)]
+Dron 3 (C = 127, B = 102):
+- Viaja de 1 a 2 (D += 20.119493035362495, F += 43, P += 9)
+- Viaja de 2 a 16 (D += 19.585129563012845, F += 25, P += 4)
+- Viaja de 16 a 1 (D += 26.870334943948873)
+- Total del dron (D = 66.57495754232421, F = 68, P = 13)
 
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 388.76422363846115 / 397 (97.92549713815141%)
-Bateria total recargada por los drones: 3243.0 / 4930 (65.78093306288032%)
-Prioridad total acumulada por los drones: 216.0 / 526.0 (41.06463878326996%)
+Distancia (D) = 329.04100330033407 / 405 ( 81.244692172922% )
+Bateria   (F) = 363 / 465 ( 78.06451612903226% )
+Prioridad (P) = 41 / 75 ( 54.666666666666664% )
 
+## PARAMETROS ##
 
+Peso Distancia = 0.001
+Tamano Poblacion = 200
+Porcentaje Mejor = 10
+Probabilidad Mutante = 50
+Maximo Generaciones sin Mejora = 10
 
-############# RESULTADO ##############
+## ESCENARIO ##
 
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 100
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
+- Drones
+n = 3
+C = [144, 134, 127]
+B = [201, 162, 102]
 
----SALIDAS---
-Tiempo: 7.242001295089722
-Fitness: 62.766908445449076
+- Sensores
+m = 20
+coordSensor = [(69.53, 34.86), (58.49, 18.04), (43.86, 1.19), (23.68, 84.61), (37.92, 97.53), (27.97, 67.92), (3.23, 0.85), (79.68, 65.18), (31.33, 1.09), (84.53, 88.5), (77.57, 13.57), (13.11, 66.33), (90.22, 60.08), (57.42, 31.85), (56.85, 78.71), (75.71, 8.71), (51.32, 15.08), (31.76, 31.07), (66.07, 92.35), (44.09, 35.24)]
+F = [0, 9.0, 3.0, 10.0, 2.0, 1.0, 0.0, 3.0, 1.0, 1.0, 5.0, 6.0, 1.0, 2.0, 6.0, 4.0, 4.0, 2.0, 8.0, 7.0]
+P = [0, 43.0, 96.0, 57.0, 38.0, 116.0, 168.0, 88.0, 115.0, 168.0, 124.0, 127.0, 114.0, 198.0, 27.0, 25.0, 193.0, 107.0, 7.0, 132.0]
 
----DRONES---
-{'distance_capacity': 116, 'battery_capacity': 1081}
-{'distance_capacity': 108, 'battery_capacity': 1760}
-{'distance_capacity': 104, 'battery_capacity': 1145}
-
----CAMINOS---
-[((88.41, 89.22), 0, 0), ((78.1, 92.22), 5.0, 106.0), ((59.0, 88.21), 4.0, 37.0), ((38.79, 91.12), 2.0, 5.0), ((39.39, 82.25), 6.0, 170.0), ((51.12, 79.82), 8.0, 172.0), ((73.92, 87.25), 4.0, 14.0), ((81.99, 86.58), 10.0, 102.0)]
-[((88.41, 89.22), 0, 0), ((76.04, 70.19), 8.0, 186.0), ((75.02, 63.87), 4.0, 68.0), ((73.01, 57.99), 4.0, 168.0), ((63.57, 61.21), 10.0, 141.0), ((60.56, 72.8), 8.0, 156.0), ((81.17, 64.5), 7.0, 188.0), ((86.45, 70.36), 9.0, 31.0), ((89.2, 73.87), 5.0, 8.0)]
-[((88.41, 89.22), 0, 0), ((81.72, 59.77), 4.0, 43.0), ((87.23, 55.39), 2.0, 55.0), ((89.15, 60.15), 5.0, 59.0), ((96.96, 57.94), 10.0, 173.0), ((92.98, 74.6), 0.0, 23.0), ((95.91, 82.01), 4.0, 92.0), ((95.59, 87.42), 5.0, 200.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 306.1654577727546 / 328 (93.34312736974226%)
-Bateria total recargada por los drones: 2197.0 / 3986 (55.1179126944305%)
-Prioridad total acumulada por los drones: 124.0 / 526.0 (23.574144486692013%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 20.144400358200073
-Fitness: 116.44089360420234
-
----DRONES---
-{'distance_capacity': 103, 'battery_capacity': 2311}
-{'distance_capacity': 141, 'battery_capacity': 1073}
-{'distance_capacity': 111, 'battery_capacity': 1656}
-
----CAMINOS---
-[((6.05, 30.07), 0, 0), ((0.82, 27.78), 2.0, 168.0), ((7.47, 17.36), 5.0, 51.0), ((2.15, 13.66), 7.0, 111.0), ((3.69, 3.91), 4.0, 70.0), ((6.99, 3.37), 8.0, 180.0), ((16.94, 1.8), 7.0, 190.0), ((23.97, 2.65), 7.0, 32.0), ((14.05, 11.29), 5.0, 35.0), ((10.91, 11.57), 9.0, 71.0), ((16.06, 17.77), 3.0, 121.0), ((10.9, 28.49), 6.0, 173.0)]
-[((6.05, 30.07), 0, 0), ((32.46, 58.05), 8.0, 78.0), ((39.16, 61.95), 5.0, 28.0), ((35.63, 63.57), 10.0, 170.0), ((25.71, 64.28), 6.0, 89.0), ((17.33, 64.61), 9.0, 59.0), ((7.36, 34.99), 10.0, 132.0), ((2.18, 37.74), 3.0, 13.0), ((3.69, 49.88), 9.0, 115.0), ((7.29, 49.61), 8.0, 130.0)]
-[((6.05, 30.07), 0, 0), ((16.6, 26.12), 7.0, 0.0), ((23.21, 21.05), 4.0, 160.0), ((34.75, 24.75), 9.0, 111.0), ((40.18, 22.36), 6.0, 45.0), ((30.55, 36.1), 5.0, 148.0), ((27.09, 35.52), 8.0, 48.0), ((34.07, 38.22), 1.0, 192.0), ((27.25, 44.32), 3.0, 131.0), ((23.02, 34.77), 5.0, 83.0), ((18.96, 38.15), 6.0, 34.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 342.79553197898827 / 355 (96.56212168422205%)
-Bateria total recargada por los drones: 2968.0 / 5040 (58.88888888888889%)
-Prioridad total acumulada por los drones: 185.0 / 526.0 (35.17110266159696%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 20
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 36.14890384674072
-Fitness: 143.47031075647772
-
----DRONES---
-{'distance_capacity': 124, 'battery_capacity': 1529}
-{'distance_capacity': 117, 'battery_capacity': 2429}
-{'distance_capacity': 127, 'battery_capacity': 1626}
-
----CAMINOS---
-[((23.02, 34.77), 0, 0), ((16.6, 26.12), 7.0, 0.0), ((16.06, 17.77), 3.0, 121.0), ((14.05, 11.29), 5.0, 35.0), ((10.91, 11.57), 9.0, 71.0), ((23.97, 2.65), 7.0, 32.0), ((16.94, 1.8), 7.0, 190.0), ((6.99, 3.37), 8.0, 180.0), ((3.69, 3.91), 4.0, 70.0), ((2.15, 13.66), 7.0, 111.0), ((7.47, 17.36), 5.0, 51.0), ((10.9, 28.49), 6.0, 173.0), ((23.21, 21.05), 4.0, 160.0)]
-[((23.02, 34.77), 0, 0), ((40.18, 22.36), 6.0, 45.0), ((51.45, 13.22), 10.0, 178.0), ((58.15, 10.17), 5.0, 173.0), ((63.77, 11.15), 6.0, 166.0), ((57.59, 20.92), 10.0, 92.0), ((46.11, 10.15), 6.0, 104.0), ((34.75, 24.75), 9.0, 111.0), ((30.55, 36.1), 5.0, 148.0), ((27.09, 35.52), 8.0, 48.0)]
-[((23.02, 34.77), 0, 0), ((18.96, 38.15), 6.0, 34.0), ((7.36, 34.99), 10.0, 132.0), ((7.29, 49.61), 8.0, 130.0), ((3.69, 49.88), 9.0, 115.0), ((17.33, 64.61), 9.0, 59.0), ((25.71, 64.28), 6.0, 89.0), ((39.16, 61.95), 5.0, 28.0), ((44.95, 63.75), 5.0, 169.0), ((35.63, 63.57), 10.0, 170.0), ((32.46, 58.05), 8.0, 78.0), ((26.47, 54.15), 0.0, 112.0), ((27.25, 44.32), 3.0, 131.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 362.6484462176114 / 368 (98.54577342869875%)
-Bateria total recargada por los drones: 3506.0 / 5584 (62.786532951289395%)
-Prioridad total acumulada por los drones: 216.0 / 526.0 (41.06463878326996%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 150
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 15
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 15.590346097946167
-Fitness: 91.85919233838563
-
----DRONES---
-{'distance_capacity': 108, 'battery_capacity': 2060}
-{'distance_capacity': 103, 'battery_capacity': 2177}
-{'distance_capacity': 123, 'battery_capacity': 1308}
-
----CAMINOS---
-[((10.9, 28.49), 0, 0), ((6.05, 30.07), 0.0, 11.0), ((2.18, 37.74), 3.0, 13.0), ((17.33, 64.61), 9.0, 59.0), ((3.81, 67.66), 2.0, 56.0), ((2.82, 62.59), 2.0, 73.0), ((3.69, 49.88), 9.0, 115.0), ((7.29, 49.61), 8.0, 130.0), ((7.36, 34.99), 10.0, 132.0)]
-[((10.9, 28.49), 0, 0), ((2.15, 13.66), 7.0, 111.0), ((3.69, 3.91), 4.0, 70.0), ((6.99, 3.37), 8.0, 180.0), ((16.94, 1.8), 7.0, 190.0), ((14.05, 11.29), 5.0, 35.0), ((10.91, 11.57), 9.0, 71.0), ((7.47, 17.36), 5.0, 51.0), ((16.6, 26.12), 7.0, 0.0), ((23.21, 21.05), 4.0, 160.0), ((16.06, 17.77), 3.0, 121.0)]
-[((10.9, 28.49), 0, 0), ((27.09, 35.52), 8.0, 48.0), ((30.55, 36.1), 5.0, 148.0), ((32.46, 58.05), 8.0, 78.0), ((35.63, 63.57), 10.0, 170.0), ((44.95, 63.75), 5.0, 169.0), ((39.16, 61.95), 5.0, 28.0), ((25.71, 64.28), 6.0, 89.0), ((27.25, 44.32), 3.0, 131.0), ((23.02, 34.77), 5.0, 83.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 325.70403830807186 / 334 (97.51617913415325%)
-Bateria total recargada por los drones: 2522.0 / 5545 (45.482416591523894%)
-Prioridad total acumulada por los drones: 157.0 / 526.0 (29.84790874524715%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 14.036221981048584
-Fitness: 112.26820388947974
-
----DRONES---
-{'distance_capacity': 105, 'battery_capacity': 1026}
-{'distance_capacity': 138, 'battery_capacity': 2221}
-{'distance_capacity': 106, 'battery_capacity': 1911}
-
----CAMINOS---
-[((16.06, 17.77), 0, 0), ((3.69, 3.91), 4.0, 70.0), ((6.99, 3.37), 8.0, 180.0), ((16.94, 1.8), 7.0, 190.0), ((14.05, 11.29), 5.0, 35.0), ((10.91, 11.57), 9.0, 71.0), ((2.15, 13.66), 7.0, 111.0), ((7.47, 17.36), 5.0, 51.0)]
-[((16.06, 17.77), 0, 0), ((30.55, 36.1), 5.0, 148.0), ((27.09, 35.52), 8.0, 48.0), ((23.02, 34.77), 5.0, 83.0), ((18.96, 38.15), 6.0, 34.0), ((17.33, 64.61), 9.0, 59.0), ((7.29, 49.61), 8.0, 130.0), ((3.69, 49.88), 9.0, 115.0), ((7.36, 34.99), 10.0, 132.0), ((2.18, 37.74), 3.0, 13.0), ((6.05, 30.07), 0.0, 11.0), ((10.9, 28.49), 6.0, 173.0), ((16.6, 26.12), 7.0, 0.0)]
-[((16.06, 17.77), 0, 0), ((23.21, 21.05), 4.0, 160.0), ((34.75, 24.75), 9.0, 111.0), ((40.18, 22.36), 6.0, 45.0), ((46.11, 10.15), 6.0, 104.0), ((51.45, 13.22), 10.0, 178.0), ((58.15, 10.17), 5.0, 173.0), ((43.06, 3.85), 4.0, 189.0), ((29.03, 3.54), 2.0, 158.0), ((23.97, 2.65), 7.0, 32.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 308.6589805526013 / 349 (88.44096863971383%)
-Bateria total recargada por los drones: 2804.0 / 5158 (54.36215587436991%)
-Prioridad total acumulada por los drones: 174.0 / 526.0 (33.07984790874524%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 18.745772123336792
-Fitness: 101.34473788116252
-
----DRONES---
-{'distance_capacity': 137, 'battery_capacity': 1158}
-{'distance_capacity': 108, 'battery_capacity': 1690}
-{'distance_capacity': 101, 'battery_capacity': 2083}
-
----CAMINOS---
-[((10.91, 11.57), 0, 0), ((40.18, 22.36), 6.0, 45.0), ((57.59, 20.92), 10.0, 92.0), ((63.77, 11.15), 6.0, 166.0), ((58.15, 10.17), 5.0, 173.0), ((51.45, 13.22), 10.0, 178.0), ((46.11, 10.15), 6.0, 104.0), ((34.75, 24.75), 9.0, 111.0), ((23.21, 21.05), 4.0, 160.0), ((16.06, 17.77), 3.0, 121.0)]
-[((10.91, 11.57), 0, 0), ((7.36, 34.99), 10.0, 132.0), ((3.69, 49.88), 9.0, 115.0), ((7.29, 49.61), 8.0, 130.0), ((18.96, 38.15), 6.0, 34.0), ((23.02, 34.77), 5.0, 83.0), ((27.09, 35.52), 8.0, 48.0), ((16.6, 26.12), 7.0, 0.0), ((10.9, 28.49), 6.0, 173.0), ((7.47, 17.36), 5.0, 51.0)]
-[((10.91, 11.57), 0, 0), ((14.05, 11.29), 5.0, 35.0), ((23.97, 2.65), 7.0, 32.0), ((16.94, 1.8), 7.0, 190.0), ((6.99, 3.37), 8.0, 180.0), ((2.15, 13.66), 7.0, 111.0), ((3.69, 3.91), 4.0, 70.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 298.2763105941874 / 346 (86.20702618329116%)
-Bateria total recargada por los drones: 2534.0 / 4931 (51.38917055364024%)
-Prioridad total acumulada por los drones: 161.0 / 526.0 (30.60836501901141%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.2
-
----SALIDAS---
-Tiempo: 21.74452304840088
-Fitness: 134.7290162297584
-
----DRONES---
-{'distance_capacity': 137, 'battery_capacity': 1158}
-{'distance_capacity': 108, 'battery_capacity': 1690}
-{'distance_capacity': 101, 'battery_capacity': 2083}
-
----CAMINOS---
-[((34.07, 38.22), 0, 0), ((27.09, 35.52), 8.0, 48.0), ((23.02, 34.77), 5.0, 83.0), ((16.6, 26.12), 7.0, 0.0), ((10.9, 28.49), 6.0, 173.0), ((2.15, 13.66), 7.0, 111.0), ((10.91, 11.57), 9.0, 71.0), ((14.05, 11.29), 5.0, 35.0), ((7.47, 17.36), 5.0, 51.0), ((7.36, 34.99), 10.0, 132.0), ((3.69, 49.88), 9.0, 115.0), ((7.29, 49.61), 8.0, 130.0), ((18.96, 38.15), 6.0, 34.0)]
-[((34.07, 38.22), 0, 0), ((27.25, 44.32), 3.0, 131.0), ((17.33, 64.61), 9.0, 59.0), ((25.71, 64.28), 6.0, 89.0), ((32.46, 58.05), 8.0, 78.0), ((35.63, 63.57), 10.0, 170.0), ((39.16, 61.95), 5.0, 28.0), ((45.93, 55.37), 4.0, 23.0), ((49.2, 57.66), 2.0, 20.0), ((54.62, 52.55), 2.0, 160.0), ((48.66, 51.88), 2.0, 83.0)]
-[((34.07, 38.22), 0, 0), ((45.32, 34.87), 6.0, 25.0), ((54.0, 33.35), 4.0, 79.0), ((57.59, 20.92), 10.0, 92.0), ((63.77, 11.15), 6.0, 166.0), ((58.15, 10.17), 5.0, 173.0), ((51.45, 13.22), 10.0, 178.0), ((46.11, 10.15), 6.0, 104.0), ((40.18, 22.36), 6.0, 45.0), ((34.75, 24.75), 9.0, 111.0), ((30.55, 36.1), 5.0, 148.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 341.35491885120797 / 346 (98.65749099745895%)
-Bateria total recargada por los drones: 2945.0 / 4931 (59.724193875481646%)
-Prioridad total acumulada por los drones: 203.0 / 526.0 (38.59315589353612%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.5096673965454102
-Fitness: 24.66271255433545
-
----DRONES---
-{'dron_n': 1, 'distance_capacity': 2371, 'battery_capacity': 143}
-{'dron_n': 2, 'distance_capacity': 2431, 'battery_capacity': 113}
-{'dron_n': 3, 'distance_capacity': 1639, 'battery_capacity': 126}
-
----CAMINOS---
-[((7.41, 19.81), 0, 0), ((24.97, 6.12), 1.0, 1.0), ((64.86, 19.88), 7.0, 40.0), ((68.76, 21.23), 7.0, 34.0), ((24.92, 37.43), 3.0, 55.0)]
-[((7.41, 19.81), 0, 0), ((1.88, 33.49), 3.0, 104.0)]
-[((7.41, 19.81), 0, 0), ((70.78, 74.65), 4.0, 122.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 337.2874456645511 / 6441 (5.2365695647345305%)
-Bateria total recargada por los drones: 356.0 / 382 (93.19371727748691%)
-Prioridad total acumulada por los drones: 25.0 / 58.0 (43.103448275862064%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.5032122135162354
-Fitness: 24.66271255433545
-
----DRONES---
-{'dron_n': 1, 'distance_capacity': 2371, 'battery_capacity': 143}
-{'dron_n': 2, 'distance_capacity': 2431, 'battery_capacity': 113}
-{'dron_n': 3, 'distance_capacity': 1639, 'battery_capacity': 126}
-
----CAMINOS---
-[((7.41, 19.81), 0, 0), ((24.92, 37.43), 3.0, 55.0), ((68.76, 21.23), 7.0, 34.0), ((64.86, 19.88), 7.0, 40.0), ((24.97, 6.12), 1.0, 1.0)]
-[((7.41, 19.81), 0, 0), ((1.88, 33.49), 3.0, 104.0)]
-[((7.41, 19.81), 0, 0), ((70.78, 74.65), 4.0, 122.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 337.2874456645511 / 6441 (5.2365695647345305%)
-Bateria total recargada por los drones: 356.0 / 382 (93.19371727748691%)
-Prioridad total acumulada por los drones: 25.0 / 58.0 (43.103448275862064%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 0.8523497581481934
-Fitness: 48.48462628500745
-
----DRONES---
-{'dron_n': 1, 'distance_capacity': 224, 'battery_capacity': 101}
-{'dron_n': 2, 'distance_capacity': 217, 'battery_capacity': 123}
-{'dron_n': 3, 'distance_capacity': 243, 'battery_capacity': 123}
-
----CAMINOS---
-[((9.25, 37.13), 0, 0), ((64.6, 88.13), 7.0, 44.0), ((84.31, 35.13), 9.0, 37.0), ((95.68, 66.52), 3.0, 15.0)]
-[((9.25, 37.13), 0, 0), ((43.54, 28.68), 10.0, 89.0), ((93.28, 39.67), 8.0, 32.0)]
-[((9.25, 37.13), 0, 0), ((1.78, 74.09), 10.0, 114.0), ((3.89, 80.71), 2.0, 2.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 515.3737149925466 / 684 (75.34703435563547%)
-Bateria total recargada por los drones: 333.0 / 347 (95.96541786743515%)
-Prioridad total acumulada por los drones: 49.0 / 94.0 (52.12765957446809%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 0.5265767574310303
-Fitness: 43.71332228659894
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((38.97, 48.05), 0, 0), ((26.52, 38.1), 10.0, 189.0), ((30.91, 26.62), 4.0, 3.0)]
-[((38.97, 48.05), 0, 0), ((69.04, 32.92), 5.0, 36.0), ((86.74, 69.89), 6.0, 47.0), ((61.48, 60.02), 5.0, 41.0)]
-[((38.97, 48.05), 0, 0), ((20.71, 98.65), 7.0, 42.0), ((25.4, 72.83), 7.0, 46.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 286.6777134010615 / 405 (70.7846205928547%)
-Bateria total recargada por los drones: 404.0 / 465 (86.88172043010752%)
-Prioridad total acumulada por los drones: 44.0 / 78.0 (56.41025641025641%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.5973787307739258
-Fitness: 47.64335380767181
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((74.86, 38.86), 0, 0), ((33.21, 19.62), 9.0, 116.0), ((66.62, 14.02), 7.0, 40.0)]
-[((74.86, 38.86), 0, 0), ((70.23, 81.0), 7.0, 36.0), ((49.38, 72.35), 10.0, 78.0), ((34.54, 65.89), 5.0, 39.0)]
-[((74.86, 38.86), 0, 0), ((74.22, 79.77), 7.0, 68.0), ((73.06, 99.34), 3.0, 5.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 356.646192328191 / 405 (88.06078822918296%)
-Bateria total recargada por los drones: 382.0 / 465 (82.15053763440861%)
-Prioridad total acumulada por los drones: 48.0 / 145.0 (33.10344827586207%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.1448688507080078
-Fitness: 48.62709979736718
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((74.86, 38.86), 0, 0), ((66.47, 73.95), 10.0, 129.0), ((66.62, 14.02), 7.0, 40.0)]
-[((74.86, 38.86), 0, 0), ((70.23, 81.0), 7.0, 36.0), ((49.38, 72.35), 10.0, 78.0), ((34.54, 65.89), 5.0, 39.0)]
-[((74.86, 38.86), 0, 0), ((74.22, 79.77), 7.0, 68.0), ((73.06, 99.34), 3.0, 5.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 372.90020263282327 / 405 (92.07412410686993%)
-Bateria total recargada por los drones: 395.0 / 465 (84.94623655913979%)
-Prioridad total acumulada por los drones: 49.0 / 145.0 (33.793103448275865%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.0066373348236084
-Fitness: 47.63363110384839
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((74.86, 38.86), 0, 0), ((70.23, 81.0), 7.0, 36.0), ((34.54, 65.89), 5.0, 39.0), ((49.38, 72.35), 10.0, 78.0)]
-[((74.86, 38.86), 0, 0), ((33.21, 19.62), 9.0, 116.0), ((66.62, 14.02), 7.0, 40.0)]
-[((74.86, 38.86), 0, 0), ((74.22, 79.77), 7.0, 68.0), ((73.06, 99.34), 3.0, 5.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 366.36889615161465 / 405 (90.46145583990484%)
-Bateria total recargada por los drones: 382.0 / 465 (82.15053763440861%)
-Prioridad total acumulada por los drones: 48.0 / 145.0 (33.10344827586207%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.1479742527008057
-Fitness: 47.65535593702671
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((74.86, 38.86), 0, 0), ((49.38, 72.35), 10.0, 78.0), ((73.06, 99.34), 3.0, 5.0), ((70.23, 81.0), 7.0, 36.0), ((74.22, 79.77), 7.0, 68.0)]
-[((74.86, 38.86), 0, 0), ((66.62, 14.02), 7.0, 40.0), ((33.21, 19.62), 9.0, 116.0)]
-[((74.86, 38.86), 0, 0), ((34.54, 65.89), 5.0, 39.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 344.6440629732846 / 405 (85.09729949957644%)
-Bateria total recargada por los drones: 382.0 / 465 (82.15053763440861%)
-Prioridad total acumulada por los drones: 48.0 / 145.0 (33.10344827586207%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 1.5375525951385498
-Fitness: 48.62709979736718
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((74.86, 38.86), 0, 0), ((66.47, 73.95), 10.0, 129.0), ((66.62, 14.02), 7.0, 40.0)]
-[((74.86, 38.86), 0, 0), ((34.54, 65.89), 5.0, 39.0), ((49.38, 72.35), 10.0, 78.0), ((70.23, 81.0), 7.0, 36.0)]
-[((74.86, 38.86), 0, 0), ((74.22, 79.77), 7.0, 68.0), ((73.06, 99.34), 3.0, 5.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 372.90020263282327 / 405 (92.07412410686993%)
-Bateria total recargada por los drones: 395.0 / 465 (84.94623655913979%)
-Prioridad total acumulada por los drones: 49.0 / 145.0 (33.793103448275865%)
-
-
-
-############# RESULTADO ##############
-
----ENTRADAS---
-Numero de drones: 3
-Tamano poblacion: 200
-Porcentaje mejor: 10
-Probabilidad mutante: 50
-Maximo generaciones sin mejora: 10
-Peso distancia: 0.001
-
----SALIDAS---
-Tiempo: 0.6516361236572266
-Fitness: 41.69598462891018
-
----DRONES---
-{'dron_n': 1, 'battery_capacity': 201, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 162, 'distance_capacity': 134}
-{'dron_n': 3, 'battery_capacity': 102, 'distance_capacity': 127}
-
----CAMINOS---
-[((69.53, 34.86), 0, 0), ((77.57, 13.57), 5.0, 124.0), ((75.71, 8.71), 4.0, 25.0), ((58.49, 18.04), 9.0, 43.0)]
-[((69.53, 34.86), 0, 0), ((44.09, 35.24), 7.0, 132.0), ((56.85, 78.71), 6.0, 27.0)]
-[((69.53, 34.86), 0, 0), ((79.68, 65.18), 3.0, 88.0), ((66.07, 92.35), 8.0, 7.0)]
-
----DISTANCIA, BATERIA Y PRIORIDAD---
-Distancia total recorrida por los drones: 304.0153710898192 / 405 (75.06552372588129%)
-Bateria total recargada por los drones: 446.0 / 465 (95.91397849462365%)
-Prioridad total acumulada por los drones: 42.0 / 80.0 (52.5%)
 
 
 

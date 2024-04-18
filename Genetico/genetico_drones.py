@@ -15,19 +15,17 @@ from random import randint
 def main():
     
     # Variables importantes configurables para el algoritmo genetico
+    peso_distancia = 0.001
     tamano_poblacion = 200
     porcentaje_mejor = 10
     probabilidad_mutante = 50
     maximo_generaciones_sin_mejora = 10
-    peso_distancia = 0.001
     
     # Recuperamos los drones del .txt
     drones = recuperaDrones()
         
     # Recuperamos los sensores del .txt
     listaSensores = recuperaSensores()
-
-    print("\n\n\n[Comenzando la ejecución del algoritmo genético]\n\n")
     
     # Arrancamos el cronometro
     inicio = time.time()
@@ -39,13 +37,11 @@ def main():
     fin = time.time()
     tiempo_total = fin - inicio
     
-    print("\nEl algoritmo tardó [{}] segundos en ejecutarse.".format(tiempo_total))
-    
     # Escribimos los resultados obtenidos por el algoritmo genetico en un fichero de log
     escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores)
 
     # Imprimimos la mejor solucion con una grafica
-    imprimirCaminos(mejorSolucion, listaSensores, drones)
+    dibujarCaminos(mejorSolucion, listaSensores, drones)
 
 
 # Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de drones con sus capacidades
@@ -390,10 +386,6 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
         
         # Comprobar si se ha alcanzado la estabilidad del fitness
         if mejoresSoluciones[0][1] > mejor_fitness:
-            
-            # Print de control para ver si el algoritmo encuentra mejores soluciones que la funcion generaSolucion()
-            if  mejor_fitness != -math.inf:
-                print("HAY MEJORA: ", mejoresSoluciones[0][1])
 
             # Actualizamos el mejor fitness
             mejor_fitness = mejoresSoluciones[0][1]
@@ -489,38 +481,13 @@ def generarColoresUnicos(n):
 
 
 # Funcion auxiliar para generar un grafico que muestre los caminos de los drones
-def imprimirCaminos(mejorSolucion, listaSensores, drones):
+def dibujarCaminos(mejorSolucion, listaSensores, drones):
     
-    # Imprimimos la solución
     nTotalSensores = 0
     nCaminos = 0
-    
-    prioridadTotal = 0
-    bateriaTotal = 0
-    distanciaTotal = 0
-    
     listaColores = generarColoresUnicos(len(drones))
     
     for dron in mejorSolucion[0]:
-        
-        # Calculamos la distancia total recorrida por el dron
-        distanciaDron = distanciaTotalDron(dron)
-
-        # Calculamos la prioridad total recorrida por el dron
-        prioridadDron = prioridadTotalDron(dron)
-
-        # Calculamos la bateria total recargada por el dron
-        bateriaDron = bateriaTotalDron(dron)
-
-        distanciaTotal += distanciaDron
-        bateriaTotal += bateriaDron
-        prioridadTotal += prioridadDron
-        
-        print("\n\nCamino del dron [", nCaminos + 1, "]: \n\n", dron)
-        print("\nNúmero de sensores recorridos: ", len(dron) - 1, "\n\n")
-        print("Distancia recorrida por el dron: ", distanciaDron, " / ", drones[nCaminos].get('distance_capacity'))
-        print("Bateria recargada por el dron: ", bateriaDron, " / ", drones[nCaminos].get('battery_capacity'))
-        print("Prioridad obtenida por el dron: ", prioridadDron)
         nTotalSensores += len(dron) - 1
         x = []
         y = []
@@ -530,7 +497,6 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
         x.append(dron[0][0][0])
         y.append(dron[0][0][1])
         plt.plot(x,y,":o",color=listaColores[nCaminos])
-        
         nCaminos += 1
         
     # Obtenemos la lista de sensores no visitados por ningun dron comparando sus coordenadas
@@ -556,73 +522,91 @@ def imprimirCaminos(mejorSolucion, listaSensores, drones):
     plt.xlabel('Eje X')
     plt.ylabel('Eje Y')
     plt.title('Gráfico de Caminos')
-    print("\n\nNúmero total de sensores recorridos: ", nTotalSensores + 1)
-    print("Distancia total recorrida por todos los drones: ", distanciaTotal)
-    print("Bateria total recargada por todos los drones: ", bateriaTotal)
-    print("Prioridad total acumulada por todos los drones: ", prioridadTotal)
     plt.text(mejorSolucion[0][0][0][0][0],mejorSolucion[0][0][0][0][1], " sensor origen")
-    print("\nFitness: ", mejorSolucion[1], "\n\n\n")
     plt.show()
 
 
-# Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log
+# Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log y por pantalla
 def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
-        # Calculamos la distancia total, la bateria recargada y la prioridad acumulada por los drones
-        distanciaTotal = 0
-        bateriaTotal = 0
-        prioridadTotal = 0
-        for dron in mejorSolucion[0]:
-            # Calculamos la distancia, prioridad y bateria total
-            distanciaDron = distanciaTotalDron(dron)
-            distanciaTotal += distanciaDron
-            prioridadDron = prioridadTotalDron(dron)
-            prioridadTotal += prioridadDron
-            bateriaDron = bateriaTotalDron(dron)
-            bateriaTotal += bateriaDron
-            
-        # Calculamos la distancia maxima y bateria maxima recargable por los drones
-        distanciaMaxima = 0
-        bateriaMaxima = 0
-        for dron in drones:
-            distanciaMaxima += dron.get('distance_capacity')
-            bateriaMaxima += dron.get('battery_capacity')
+    
+    copiaListaSensores = copy.deepcopy(listaSensores)
+    
+    # Establecemos a 0 la prioridad y la bateria del sensor de origen
+    # Se hace para que al imprimir el escenario se vea que el sensor de origen tiene prioridad y bateria 0
+    copiaListaSensores[0] = (copiaListaSensores[0][0], 0, 0)
+    
+    # Calculamos la distancia total, la bateria recargada y la prioridad acumulada por los drones
+    distanciaTotal = 0
+    bateriaTotal = 0
+    prioridadTotal = 0
+    resultadosDrones = []
+    for i, dron in enumerate(mejorSolucion[0]):
+        # Calculamos la distancia, prioridad y bateria total
+        distanciaDron = distanciaTotalDron(dron)
+        distanciaTotal += distanciaDron
+        prioridadDron = prioridadTotalDron(dron)
+        prioridadTotal += prioridadDron
+        bateriaDron = bateriaTotalDron(dron)
+        bateriaTotal += bateriaDron
         
-        # Calculamos la prioridad maxima acumulable por los drones    
-        prioridadMaxima = 0
-        for sensor in listaSensores:
-            prioridadMaxima += sensor[1]
-            
-        # Calculamos los porcentajes de distancia, bateria y prioridad
-        porcentajeDistancia = (distanciaTotal / distanciaMaxima) * 100
-        porcentajeBateria = (bateriaTotal / bateriaMaxima) * 100
-        porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
+        # Generamos el resultado del dron
+        resultadoDron = f"\nDron {i+1} (C = {drones[i]['distance_capacity']}, B = {drones[i]['battery_capacity']}):"
         
-        # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-        f = open("Genetico/log_drones.txt", "a") 
-        string = "############# RESULTADO ##############" 
-        string += "\n\n---ENTRADAS---" 
-        string += "\nNumero de drones: " + str(len(drones)) 
-        string += "\nTamano poblacion: " + str(tamano_poblacion) 
-        string += "\nPorcentaje mejor: " + str(porcentaje_mejor) 
-        string += "\nProbabilidad mutante: " + str(probabilidad_mutante) 
-        string += "\nMaximo generaciones sin mejora: " + str(maximo_generaciones_sin_mejora)
-        string += "\nPeso distancia: " + str(peso_distancia)
-        string += "\n\n---SALIDAS---" 
-        string += "\nTiempo: " + str(tiempo_total) 
-        string += "\nFitness: " + str(mejorSolucion[1])
-        string += "\n\n---DRONES---\n"
-        for dron in drones:
-            string = string + str(dron) + "\n"
-        string += "\n---CAMINOS---\n"
-        for dron in mejorSolucion[0]:
-            string = string + str(dron) + "\n"
-        string += "\n---DISTANCIA, BATERIA Y PRIORIDAD---\n"
-        string += "Distancia total recorrida por los drones: " + str(distanciaTotal) + " / " + str(distanciaMaxima) + " (" + str(porcentajeDistancia) + "%)" + "\n"
-        string += "Bateria total recargada por los drones: " + str(bateriaTotal) + " / " + str(bateriaMaxima) + " (" + str(porcentajeBateria) + "%)" + "\n"
-        string += "Prioridad total acumulada por los drones: " + str(prioridadTotal) + " / " + str(prioridadMaxima) + " (" + str(porcentajePrioridad) + "%)" + "\n"
-        string += "\n\n\n"
-        f.write(string)
-        f.close()
+        if len(dron) == 1:
+            resultadoDron += f"\n- No hace ningun viaje"
+        else:
+            # recorremos los sensores del camino hasta el penultimo
+            for j, sensor in enumerate(dron[:-1]):
+                # Buscamos en la lista de sensores el index de los sensores con las mismas coordenadas que los sensores del camino
+                # solo miramos las coordenadas, ya que la prioridad y la bateria de los sensores pueden diferir
+                origen = copiaListaSensores.index([s for s in copiaListaSensores if s[0] == sensor[0]][0])
+                destino = copiaListaSensores.index([s for s in copiaListaSensores if s[0] == dron[j+1][0]][0])
+                resultadoDron += f"\n- Viaja de {origen + 1} a {destino + 1} (D += {distanciaEuclidea(sensor[0],dron[j+1][0])}, F += {int(dron[j+1][2])}, P += {int(dron[j+1][1])})"
+            # Incluimos el regreso al sensor de origen
+            origen = copiaListaSensores.index([s for s in copiaListaSensores if s[0] == dron[-1][0]][0])
+            destino = copiaListaSensores.index([s for s in copiaListaSensores if s[0] == dron[0][0]][0])
+            resultadoDron += f"\n- Viaja de {origen + 1} a {destino + 1} (D += {distanciaEuclidea(dron[-1][0],dron[0][0])})"
+            resultadoDron += f"\n- Total del dron (D = {distanciaDron}, F = {int(bateriaDron)}, P = {int(prioridadDron)})"
+        
+        resultadosDrones.append(resultadoDron)
+    
+    # Calculamos la distancia maxima y bateria maxima recargable por los drones
+    distanciaMaxima = sum(dron['distance_capacity'] for dron in drones)
+    bateriaMaxima = sum(dron['battery_capacity'] for dron in drones)
+    
+    # Calculamos la prioridad maxima acumulable por los drones (sin contar el sensor de origen)  
+    prioridadMaxima = sum(sensor[1] for sensor in copiaListaSensores[1:])
+    
+    # Calculamos los porcentajes de distancia, bateria y prioridad
+    porcentajeDistancia = (distanciaTotal / distanciaMaxima) * 100
+    porcentajeBateria = (bateriaTotal / bateriaMaxima) * 100
+    porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
+    
+    # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
+    f = open("Genetico/log_drones.txt", "a")
+    string = f"{time.strftime('%d/%m/%Y, %H:%M:%S')}"
+    string += "\n\n## RESULTADO ##" 
+    string += f"\n\nFitness = {mejorSolucion[1]}"
+    string += f"\nTiempo = {tiempo_total}"
+    string += "\n" + "\n".join(resultadosDrones)
+    string += f"\n\nDistancia (D) = {distanciaTotal} / {distanciaMaxima} ( {porcentajeDistancia}% )"
+    string += f"\nBateria   (F) = {int(bateriaTotal)} / {int(bateriaMaxima)} ( {porcentajeBateria}% )"
+    string += f"\nPrioridad (P) = {int(prioridadTotal)} / {int(prioridadMaxima)} ( {porcentajePrioridad}% )"
+    string += "\n\n## PARAMETROS ##"
+    string += f"\n\nPeso Distancia = {peso_distancia}"
+    string += f"\nTamano Poblacion = {tamano_poblacion}"
+    string += f"\nPorcentaje Mejor = {porcentaje_mejor}"
+    string += f"\nProbabilidad Mutante = {probabilidad_mutante}"
+    string += f"\nMaximo Generaciones sin Mejora = {maximo_generaciones_sin_mejora}"
+    string += "\n\n## ESCENARIO ##"
+    string += f"\n\n- Drones\nn = {len(drones)}\nC = [{', '.join(str(dron['distance_capacity']) for dron in drones)}]\nB = [{', '.join(str(dron['battery_capacity']) for dron in drones)}]"
+    string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]"
+    string += "\n\n\n\n\n"
+    f.write(string)
+    f.close()
+    
+    # Imprimimos lo mismo por pantalla
+    print(string)
 
 
 # Se ejecuta el programa
