@@ -583,7 +583,7 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-    f = open("Genetico/log_drones.txt", "a")
+    f = open("Genetico/log_drones_genetico.txt", "a")
     string = f"{time.strftime('%d/%m/%Y, %H:%M:%S')}"
     string += "\n\n## RESULTADO ##" 
     string += f"\n\nFitness = {mejorSolucion[1]}"
