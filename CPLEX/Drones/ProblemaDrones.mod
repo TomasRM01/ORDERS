@@ -24,6 +24,9 @@ tuple coordenadas {
 
 coordenadas coordSensor[S] = ...;
 
+// Variable para imprimir el tiempo
+float temp;
+
 // Cálculo de las distancias y ajustes sensor inicial
 execute{
   
@@ -40,6 +43,10 @@ execute{
   // Ajustes para el punto inicial
   F[1] = 0;
   P[1] = 0;
+  
+  // Obtenemos el instante previo a la resolucion del problema
+  var before = new Date();
+  temp = before.getTime();
   
 }
 
@@ -134,25 +141,38 @@ float sumaDistancias = 0;
 int sumaRecargas = 0;
 int sumaPrioridades = 0;
 
-int maxDistancia = 0;
+float maxDistancia = 0;
 int maxRecarga = 0;
-int maxRecargaDrones = 0;
 int maxPrioridad = 0;
 
 // Imprimimos
 execute{
   
+  // Obtenemos el instante final
+  var after = new Date();
+  
+  writeln("\n", "## RESULTADO ##", "\n");
+  
+  // Imprimimos el fitness y el tiempo que ha tardado
+  writeln("Fitness = ", cplex.getObjValue());
+  writeln("Tiempo = ",(after.getTime()-temp) / 1000);
+
+  // Calculamos la maxima prioridad posible
+  for (var i in S) {
+    maxPrioridad += P[i];
+  }
+  
   // Para cada dron
   for (var k in K) {
     
     maxDistancia += C[k];
-    maxRecargaDrones += B[k];
+    maxRecarga += B[k];
     
     totalRecorrido = 0;
     totalRecargado = 0;
     totalPrioridad = 0;
     
-    writeln("\n\nDron ", k, " (C = ", C[k], ", B = ", B[k], "):");
+    writeln("\nDron ", k, " (C = ", C[k], ", B = ", B[k], "):");
     
     // Comprobamos si el dron no hace ningun viaje
     if (x[1][1][k] == 1) {
@@ -168,7 +188,7 @@ execute{
         if (x[i][j][k] == 1) {
       	
       	  // Lo imprimimos y guardamos los datos necesarios
-          writeln("- Viaja de ", i, " a ", j, " (D = ", D[i][j], ", F = ", F[j], ", P = ", P[j], ", u = ", u[i], ")");
+          writeln("- Viaja de ", i, " a ", j, " (D += ", D[i][j], ", F += ", F[j], ", P += ", P[j], ")");
           totalRecorrido += D[i][j];
           totalRecargado += F[j];
           totalPrioridad += P[j];
@@ -180,14 +200,11 @@ execute{
         else { j += 1; }
       }
       // El sensor de destino es el inicial, lo imprimimos tambien
-      writeln("- Viaja de ", i, " a ", 1, " (D = ", D[i][1], ", F = ", F[1], ", P = ", P[1], ", u = ", u[i], ")");
+      writeln("- Viaja de ", i, " a ", 1, " (D += ", D[i][1], ")");
       totalRecorrido += D[i][1];
     }
     
-    writeln("");
-    writeln("TOTAL RECORRIDO (sum D) = ", totalRecorrido);
-    writeln("TOTAL RECARGADO (sum F) = ", totalRecargado);
-    writeln("TOTAL PRIORIDAD (sum P) = ", totalPrioridad);
+    writeln("- Total del dron (D = ", totalRecorrido, ", F = ", totalRecargado, ", P = ", totalPrioridad, ")");
     
     // Sumamos los totales
     sumaDistancias += totalRecorrido;
@@ -196,7 +213,28 @@ execute{
   }
   
   // Resumen del resultado del problema
-  writeln("\n\nSUMA DISTANCIAS (D) = ", sumaDistancias, " (max = ", maxDistancia, ")");
-  writeln("SUMA RECARGAS (F) = ", sumaRecargas, " (max sensores = ", maxRecarga, ", max drones = ", maxRecargaDrones, ")");
-  writeln("SUMA PRIORIDADES (P) = ", sumaPrioridades, " (max = ", maxPrioridad, ")");
+  writeln("");
+  writeln("Distancia (D) = ", sumaDistancias, " / ", maxDistancia, " ( " , sumaDistancias / maxDistancia * 100 , "% )");
+  writeln("Bateria   (F) = ", sumaRecargas, " / ", maxRecarga, " ( " , sumaRecargas / maxRecarga * 100 , "% )");
+  writeln("Prioridad (P) = ", sumaPrioridades, " / ", maxPrioridad, " ( " , sumaPrioridades / maxPrioridad * 100 , "% )");
+  
+  writeln("\n", "## PARAMETROS ##", "\n");
+
+  // Imprimimos los parametros
+  writeln("Peso Distancia = ", peso_distancia);
+
+  writeln("\n", "## ESCENARIO ##", "\n");
+  
+  // Imprimimos el escenario inicial
+  writeln("- Drones");
+  writeln("n = ", n);
+  writeln("C =", C);
+  writeln("B =", B);
+  writeln("");
+  writeln("- Sensores");
+  writeln("m = ", m);
+  writeln("coordSensor =", coordSensor);
+  writeln("F =", F);
+  writeln("P =", P);
+
 }
