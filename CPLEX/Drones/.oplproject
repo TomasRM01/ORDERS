@@ -12,10 +12,10 @@
             <ref name="Sensores.dat" type="data">
 			</ref>
             			
-            <ref name="Datos.dat" type="data">
+            <ref name="ProblemaDrones.mod" type="model">
 			</ref>
             			
-            <ref name="ProblemaDrones.mod" type="model">
+            <ref name="Parametros.dat" type="data">
 			</ref>
             		
         </config>
