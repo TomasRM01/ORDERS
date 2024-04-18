@@ -600,7 +600,7 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     string += f"\nMaximo Generaciones sin Mejora = {maximo_generaciones_sin_mejora}"
     string += "\n\n## ESCENARIO ##"
     string += f"\n\n- Drones\nn = {len(drones)}\nC = [{', '.join(str(dron['distance_capacity']) for dron in drones)}]\nB = [{', '.join(str(dron['battery_capacity']) for dron in drones)}]"
-    string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]"
+    string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]"
     string += "\n\n\n\n\n"
     f.write(string)
     f.close()
