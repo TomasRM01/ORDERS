@@ -18,7 +18,8 @@ def main():
     peso_distancia = 0.001
     tamano_poblacion = 200
     porcentaje_mejor = 10
-    probabilidad_mutante = 50
+    probabilidad_cruce = 90
+    probabilidad_mutante = 1
     maximo_generaciones_sin_mejora = 10
     
     # Recuperamos los drones del .txt
@@ -31,14 +32,14 @@ def main():
     inicio = time.time()
     
     # Llamamos al algoritmo genetico
-    mejorSolucion = genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia)
+    mejorSolucion = genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia)
 
     # Paramos el cronometro y medimos el tiempo total
     fin = time.time()
     tiempo_total = fin - inicio
     
     # Escribimos los resultados obtenidos por el algoritmo genetico en un fichero de log
-    escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores)
+    escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores)
 
     # Imprimimos la mejor solucion con una grafica
     dibujarCaminos(mejorSolucion, listaSensores, drones)
@@ -292,7 +293,7 @@ def combinarSoluciones(listaDronesPadre, listaDronesMadre):
 
 
 # Funcion principal que ejecuta el algoritmo genetico para el problema de los drones y sensores
-def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia):
+def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, peso_distancia):
     
     # hacemos una copia de la lista de sensores 
     copiaListaSensores = copy.deepcopy(listaSensores)
@@ -350,8 +351,13 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_mut
                 # seleccionamos aleatoriamente 2 padres
                 padre, madre = [tupla[0] for tupla in random.sample(mejoresSoluciones, 2)]
 
-                # generamos 2 nuevos hijos a partir de esos padres
-                nuevosHijos = combinarSoluciones(padre, madre)
+                # hacemos el cruce solo si la probabilidad lo indica
+                if random.randint(1, 100) <= probabilidad_cruce:
+                    # generamos 2 nuevos hijos a partir de esos padres
+                    nuevosHijos = combinarSoluciones(padre, madre)
+                else:
+                    # si no se cumple la probabilidad de cruce, los hijos serán copias de los padres
+                    nuevosHijos = [copy.deepcopy(padre), copy.deepcopy(madre)]
 
                 # corregimos las soluciones, siendo sensor origen del hijo 1 la misma del padre, y sensor origen del hijo 2 la misma de la madre
                 for hijo in nuevosHijos:
@@ -527,7 +533,7 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
 
 
 # Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log y por pantalla
-def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
+def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
     
     copiaListaSensores = copy.deepcopy(listaSensores)
     
@@ -577,10 +583,19 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     # Calculamos la prioridad maxima acumulable por los drones (sin contar el sensor de origen)  
     prioridadMaxima = sum(sensor[1] for sensor in copiaListaSensores[1:])
     
-    # Calculamos los porcentajes de distancia, bateria y prioridad
-    porcentajeDistancia = (distanciaTotal / distanciaMaxima) * 100
-    porcentajeBateria = (bateriaTotal / bateriaMaxima) * 100
-    porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
+    # Calculamos los porcentajes de distancia, bateria y prioridad, evitando divisiones entre 0
+    if distanciaMaxima > 0:
+        porcentajeDistancia = (distanciaTotal / distanciaMaxima) * 100
+    else:
+        porcentajeDistancia = 100
+    if bateriaMaxima > 0:
+        porcentajeBateria = (bateriaTotal / bateriaMaxima) * 100
+    else:
+        porcentajeBateria = 100
+    if prioridadMaxima > 0:
+        porcentajePrioridad = (prioridadTotal / prioridadMaxima) * 100
+    else:
+        porcentajePrioridad = 100
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
     f = open("Genetico/log_drones_genetico.txt", "a")
@@ -596,6 +611,7 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     string += f"\n\nPeso Distancia = {peso_distancia}"
     string += f"\nTamano Poblacion = {tamano_poblacion}"
     string += f"\nPorcentaje Mejor = {porcentaje_mejor}"
+    string += f"\nProbabilidad Cruce = {probabilidad_cruce}"
     string += f"\nProbabilidad Mutante = {probabilidad_mutante}"
     string += f"\nMaximo Generaciones sin Mejora = {maximo_generaciones_sin_mejora}"
     string += "\n\n## ESCENARIO ##"

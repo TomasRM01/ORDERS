@@ -1,22 +1,22 @@
-18/04/2024, 22:13:32
+15/07/2024, 14:05:17
 
 ## RESULTADO ##
 
 Fitness = 41.69598462891018
-Tiempo = 0.8037252426147461
+Tiempo = 0.4956088066101074
 
 Dron 1 (C = 144, B = 201):
-- Viaja de 1 a 2 (D += 20.119493035362495, F += 43, P += 9)
-- Viaja de 2 a 16 (D += 19.585129563012845, F += 25, P += 4)
-- Viaja de 16 a 11 (D += 5.203767865691166, F += 124, P += 5)
-- Viaja de 11 a 1 (D += 22.757541607124434)
+- Viaja de 1 a 11 (D += 22.757541607124434, F += 124, P += 5)
+- Viaja de 11 a 16 (D += 5.203767865691166, F += 25, P += 4)
+- Viaja de 16 a 2 (D += 19.585129563012845, F += 43, P += 9)
+- Viaja de 2 a 1 (D += 20.119493035362495)
 - Total del dron (D = 67.66593207119094, F = 192, P = 18)
 
 Dron 2 (C = 134, B = 162):
-- Viaja de 1 a 15 (D += 45.64652122560929, F += 27, P += 6)
-- Viaja de 15 a 20 (D += 45.30406714633907, F += 132, P += 7)
-- Viaja de 20 a 1 (D += 25.442837892027686)
-- Total del dron (D = 116.39342626397604, F = 159, P = 13)
+- Viaja de 1 a 20 (D += 25.442837892027686, F += 132, P += 7)
+- Viaja de 20 a 15 (D += 45.30406714633907, F += 27, P += 6)
+- Viaja de 15 a 1 (D += 45.64652122560929)
+- Total del dron (D = 116.39342626397605, F = 159, P = 13)
 
 Dron 3 (C = 127, B = 102):
 - Viaja de 1 a 8 (D += 31.973815849848148, F += 88, P += 3)
@@ -24,7 +24,7 @@ Dron 3 (C = 127, B = 102):
 - Viaja de 19 a 1 (D += 57.59402486369571)
 - Total del dron (D = 119.95601275465222, F = 95, P = 11)
 
-Distancia (D) = 304.01537108981915 / 405 ( 75.06552372588128% )
+Distancia (D) = 304.0153710898192 / 405 ( 75.06552372588129% )
 Bateria   (F) = 446 / 465 ( 95.91397849462365% )
 Prioridad (P) = 42 / 75 ( 56.00000000000001% )
 
@@ -33,7 +33,8 @@ Prioridad (P) = 42 / 75 ( 56.00000000000001% )
 Peso Distancia = 0.001
 Tamano Poblacion = 200
 Porcentaje Mejor = 10
-Probabilidad Mutante = 50
+Probabilidad Cruce = 90
+Probabilidad Mutante = 1
 Maximo Generaciones sin Mejora = 10
 
 ## ESCENARIO ##
