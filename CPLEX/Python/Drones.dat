@@ -1,0 +1,6 @@
+# Numero de drones
+n = 3;
+# Capacidad de carga
+B = [201, 162, 102];
+# Distancia de vuelo
+C = [144, 134, 127];
