@@ -225,8 +225,6 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     else:
         porcentajePrioridad = 100
     
-    # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-    f = open("Genetico/log_drones_genetico.txt", "a")
     string = f"{time.strftime('%d/%m/%Y, %H:%M:%S')}"
     string += "\n\n## RESULTADO ##" 
     string += f"\n\nFitness = {mejorSolucion[1]:.2f}"
@@ -246,6 +244,9 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     string += f"\n\n- Drones\nn = {len(drones)}\nC = [{', '.join(str(dron['distance_capacity']) for dron in drones)}]\nB = [{', '.join(str(dron['battery_capacity']) for dron in drones)}]"
     string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]"
     string += "\n\n\n\n\n"
+    
+    # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
+    f = open("Genetico/log_genetico_drones.txt", "a")
     f.write(string)
     f.close()
     
