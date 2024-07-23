@@ -32,11 +32,13 @@ for _ in range(num_drones):
     
 f.close()
 
-# Fichero de salida para CPLEX
-f2 = open("CPLEX/Drones/Drones.dat", "w")
+# ! Solo se usa para el editor externo de CPLEX Studio
+# # Fichero de salida para CPLEX
+# f2 = open("CPLEX/Drones/Drones.dat", "w")
 
-f2.write('// Numero de drones' + '\n' + 'n = ' + str(num_drones) + ';\n')
-f2.write('// Capacidad de carga' + '\n' + 'B = ' + str(B) + ';\n')
-f2.write('// Distancia de vuelo' + '\n' + 'C = ' + str(C) + ';\n')
+# f2.write('// Numero de drones' + '\n' + 'n = ' + str(num_drones) + ';\n')
+# f2.write('// Capacidad de carga' + '\n' + 'B = ' + str(B) + ';\n')
+# f2.write('// Distancia de vuelo' + '\n' + 'C = ' + str(C) + ';\n')
 
-f2.close()
+# f2.close()
+# ! Solo se usa para el editor externo de CPLEX Studio

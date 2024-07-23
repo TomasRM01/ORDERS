@@ -60,15 +60,17 @@ for _ in range(num):
 # cerramos el fichero
 f.close()
 
-# Fichero de salida para CPLEX
-f2 = open("CPLEX/Drones/Sensores.dat", "w")
+# ! Solo se usa para el editor externo de CPLEX Studio
+# # Fichero de salida para CPLEX
+# f2 = open("CPLEX/Drones/Sensores.dat", "w")
 
-f2.write('// Numero de sensores' + '\n' + 'm = ' + str(num) + ';\n')
-f2.write('// Coordenadas de los sensores' + '\n' + 'coordSensor = ' + str([f'<{x:.2f}, {y:.2f}>' for x, y in posiciones]).replace("'", "") + ';\n')
-f2.write('// Prioridades' + '\n' + 'P = ' + str(prioridades) + ';\n')
-f2.write('// Carga necesaria' + '\n' + 'F = ' + str(baterias) + ';\n')
+# f2.write('// Numero de sensores' + '\n' + 'm = ' + str(num) + ';\n')
+# f2.write('// Coordenadas de los sensores' + '\n' + 'coordSensor = ' + str([f'<{x:.2f}, {y:.2f}>' for x, y in posiciones]).replace("'", "") + ';\n')
+# f2.write('// Prioridades' + '\n' + 'P = ' + str(prioridades) + ';\n')
+# f2.write('// Carga necesaria' + '\n' + 'F = ' + str(baterias) + ';\n')
 
-f2.close()
+# f2.close()
+# ! Solo se usa para el editor externo de CPLEX Studio
 
 # Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones
 def generarColoresUnicos(n):
