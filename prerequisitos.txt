@@ -2,7 +2,7 @@
 pip install matplotlib
 
 ### Para cplex ###
-(teniendo cplex academico instalado, en la carpeta IBM\ILOG\CPLEX_Studio2211\python como administrador) *
+(teniendo cplex academico instalado, en la carpeta IBM\ILOG\CPLEX_Studio2211\python como administrador y en python 10) *
 python setup.py install
 
 (docplex no soporta numpy 2.0.1, por lo que se debe instalar una version anterior de numpy)
