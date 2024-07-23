@@ -2,7 +2,6 @@
 
 import matplotlib.pyplot as plt
 import re
-import random
 import colorsys
 
 # lista de posiciones, prioridades y baterias

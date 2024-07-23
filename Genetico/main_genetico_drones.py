@@ -92,7 +92,6 @@ def recuperaSensores():
     s = [float(s) for s in re.findall(r'\d+\.?\d*', s)]
 
     # guardamos los elementos en las listas correspondientes
-    contador = 0
     for i in range(0, len(s), 4):
         x = s[i]
         y = s[i+1]
