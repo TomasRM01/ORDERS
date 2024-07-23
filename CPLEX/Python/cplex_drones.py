@@ -1,8 +1,8 @@
 from docplex.mp.model import Model
+import time
 import math
 import re
         
-
 def main():
     
     # MODELO
@@ -13,7 +13,7 @@ def main():
     # DATOS
     
     # Extraer los datos del escenario
-    peso_distancia, n, m, P, F, B, C, K, S, D = extraerDatos()
+    peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D = extraerDatos()
     
     # VARIABLES
     
@@ -37,17 +37,10 @@ def main():
     solution = mdl.solve()
 
     # RESULTADOS
+    
+    imprimirResultado(x, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor)
 
-    # Verificar y obtener la solución
-    if solution:
-        print("Solution status: ", solution.solve_status)
-        print("Objective value: ", solution.objective_value)
-        print("Time: ", solution.solve_details.time)
-        # for var in mdl.iter_variables():
-        #     print(f"{var.name}: {var.solution_value}")
-    else:
-        print("No solution found")
-        
+    
 def extraerDatos():
     
     peso_distancia = 0.001
@@ -78,7 +71,7 @@ def extraerDatos():
     F[0] = 0
     P[0] = 0
     
-    return peso_distancia, n, m, P, F, B, C, K, S, D
+    return peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D
 
 def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     
@@ -147,6 +140,102 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     # La batería recargada por un dron debe ser menor o igual a la batería máxima que puede recargar
     for k in K:
         mdl.add_constraint(mdl.sum(x[i, j, k] * F[j] for i in S for j in S) <= B[k], f'recarga_{k}')
+
+def imprimirResultado(x, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor):
+    
+    # Iteramos obteniendo los valores de las variables de decision y las guardamos en una matriz tridimensional
+    
+    x_sol = [[[0 for _ in range(n)] for _ in range(m)] for _ in range(m)]
+    
+    for i in range(m):
+        for j in range(m):
+            for k in range(n):
+                x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
+    
+    # Inicializar variables necesarias
+    string = ""
+    string += f"{time.strftime('%d/%m/%Y, %H:%M:%S')}\n"
+    string += "\n## RESULTADO ##\n\n"
+
+    # Imprimir el fitness y el tiempo que ha tardado
+    string += "Fitness = {:.2f}\n".format(solution.objective_value)
+    string += "Tiempo = {:.2f}\n".format(solution.solve_details.time)
+
+    # Calcular la máxima prioridad posible
+    maxPrioridad = sum(P)
+
+    # Inicializar acumuladores
+    maxDistancia = sum(C)
+    maxRecarga = sum(B)
+
+    sumaDistancias = 0
+    sumaRecargas = 0
+    sumaPrioridades = 0
+
+    # Para cada dron
+    for k in K:
+        totalRecorrido = 0
+        totalRecargado = 0
+        totalPrioridad = 0
+        
+        string += f"\nDron {k + 1} (C = {C[k]:.2f}, B = {B[k]:.2f}):\n"
+        
+        # Comprobar si el dron no hace ningún viaje
+        if x_sol[0][0][k] == 1:
+            string += "- No hace ningún viaje\n"
+        else:
+            i = 0
+            j = 1
+            # Seguir su recorrido imprimiendo los caminos en orden
+            while x_sol[i][0][k] == 0:
+                if x_sol[i][j][k] == 1:
+                    string += "- Viaja de " + str(i + 1) + " a " + str(j + 1) + " (D += {:.2f}, F += {:.2f}, P += {:.2f})\n".format(D[i][j], F[j], P[j])
+                    totalRecorrido += D[i][j]
+                    totalRecargado += F[j]
+                    totalPrioridad += P[j]
+                    i = j
+                    j = 1
+                else:
+                    j += 1
+            string += "- Viaja de " + str(i + 1) + " a 1 (D += {:.2f})\n".format(D[i][0])
+            totalRecorrido += D[i][0]
+
+        string += "- Total del dron (D = {:.2f}, F = {:.2f}, P = {:.2f})\n".format(totalRecorrido, totalRecargado, totalPrioridad)
+
+        sumaDistancias += totalRecorrido
+        sumaRecargas += totalRecargado
+        sumaPrioridades += totalPrioridad
+
+    # Resumen del resultado del problema
+    string += "\n"
+    string += "Distancia (D) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaDistancias, maxDistancia, sumaDistancias / maxDistancia * 100)
+    string += "Bateria (F) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaRecargas, maxRecarga, sumaRecargas / maxRecarga * 100)
+    string += "Prioridad (P) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaPrioridades, maxPrioridad, sumaPrioridades / maxPrioridad * 100)
+
+    string += "\n## PARAMETROS ##\n\n"
+
+    # Imprimir los parámetros
+    string += "Peso Distancia = " + str(peso_distancia) + "\n"
+
+    string += "\n## ESCENARIO ##\n\n"
+
+    # Imprimir el escenario inicial
+    string += "- Drones\n"
+    string += "n = " + str(n) + "\n"
+    string += "C = " + str(C) + "\n"
+    string += "B = " + str(B) + "\n"
+    string += "\n"
+    string += "- Sensores\n"
+    string += "m = " + str(m) + "\n"
+    string += "coordSensor = " + str([(x, y) for [x, y] in coordSensor]) + "\n"
+    string += "F = " + str(F) + "\n"
+    string += "P = " + str(P) + "\n"
+
+    print(string)
+    
+    f = open("CPLEX/Python/log_cplex_drones.txt", "a")
+    f.write(string)
+    f.close()
 
 # Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de drones con sus capacidades
 def recuperaDrones():
