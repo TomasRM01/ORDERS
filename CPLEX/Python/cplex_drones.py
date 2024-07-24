@@ -1,7 +1,10 @@
+import colorsys
 from docplex.mp.model import Model
 import time
 import math
 import re
+
+from matplotlib import pyplot as plt
         
 def main():
     
@@ -13,7 +16,7 @@ def main():
     # DATOS
     
     # Extraer los datos del escenario
-    peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D = extraerDatos()
+    peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones = extraerDatos()
     
     # VARIABLES
     
@@ -38,7 +41,33 @@ def main():
 
     # RESULTADOS
     
-    imprimirResultado(x, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor)
+    # Iteramos obteniendo los valores de las variables de decision y las guardamos en una matriz tridimensional
+    x_sol = [[[0 for _ in range(n)] for _ in range(m)] for _ in range(m)]
+    
+    for i in range(m):
+        for j in range(m):
+            for k in range(n):
+                x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
+    
+    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor)
+    
+    # guardamos en una variable cada camino de cada dron de la solucion
+    caminos = []
+    for k in K:
+        camino = []
+        i = 0
+        j = 1
+        while x_sol[i][0][k] == 0:
+            if x_sol[i][j][k] == 1:
+                camino.append((coordSensor[i]))
+                i = j
+                j = 1
+            else:
+                j += 1
+        camino.append((coordSensor[i]))
+        caminos.append(camino)
+    
+    dibujarCaminos(caminos, coordSensor, drones)
 
     
 def extraerDatos():
@@ -71,7 +100,7 @@ def extraerDatos():
     F[0] = 0
     P[0] = 0
     
-    return peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D
+    return peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones
 
 def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     
@@ -141,16 +170,7 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     for k in K:
         mdl.add_constraint(mdl.sum(x[i, j, k] * F[j] for i in S for j in S) <= B[k], f'recarga_{k}')
 
-def imprimirResultado(x, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor):
-    
-    # Iteramos obteniendo los valores de las variables de decision y las guardamos en una matriz tridimensional
-    
-    x_sol = [[[0 for _ in range(n)] for _ in range(m)] for _ in range(m)]
-    
-    for i in range(m):
-        for j in range(m):
-            for k in range(n):
-                x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
+def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor):
     
     # Inicializar variables necesarias
     string = ""
@@ -278,6 +298,63 @@ def recuperaSensores():
         sensores.append(((x, y), p, b))
 
     return sensores
+
+# Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones
+def generarColoresUnicos(n):
+    listaColores = []
+    pasoHue = 1.0 / n
+    for i in range(n):
+        hue = i * pasoHue
+        rgb = colorsys.hsv_to_rgb(hue, 1.0, 1.0)
+        rgbInt = tuple(int(x * 255) for x in rgb)
+        hexColor = '#{:02x}{:02x}{:02x}'.format(*rgbInt)
+        listaColores.append(hexColor)
+    return listaColores
+
+# Funcion auxiliar para generar un grafico que muestre los caminos de los drones
+def dibujarCaminos(caminos, listaSensores, drones):
+    
+    nTotalSensores = 0
+    nCaminos = 0
+    listaColores = generarColoresUnicos(len(drones))
+    
+    for dron in caminos:
+        nTotalSensores += len(dron) - 1
+        x = []
+        y = []
+        for sensor in dron:
+            x.append(sensor[0])
+            y.append(sensor[1])
+        x.append(dron[0][0])
+        y.append(dron[0][1])
+        plt.plot(x,y,":o",color=listaColores[nCaminos])
+        nCaminos += 1
+        
+    # Obtenemos la lista de sensores no visitados por ningun dron comparando sus coordenadas
+    sensoresNoVisitados = []
+    for sensor in listaSensores:
+        visitado = False
+        for dron in caminos:
+            for sensorDron in dron:
+                if sensor[0] == sensorDron[0]:
+                    visitado = True
+                    break
+        if not visitado:
+            sensoresNoVisitados.append(sensor)
+    
+    # Imprimimos los sensores no visitados en gris
+    x = []
+    y = []
+    for sensor in sensoresNoVisitados:
+        x.append(sensor[0])
+        y.append(sensor[1])
+    plt.scatter(x, y, color='gray')
+    
+    plt.xlabel('Eje X')
+    plt.ylabel('Eje Y')
+    plt.title('Gráfico de Caminos')
+    plt.text(caminos[0][0][0],caminos[0][0][1], " sensor origen")
+    plt.show()
 
 # Ejecutar el programa
 main()
