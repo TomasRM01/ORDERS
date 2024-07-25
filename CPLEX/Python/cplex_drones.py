@@ -253,6 +253,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
     string += "coordSensor = " + str([(x, y) for [x, y] in coordSensor]) + "\n"
     string += "F = " + str(F) + "\n"
     string += "P = " + str(P) + "\n"
+    string += "\n\n\n\n"
 
     print(string)
     
