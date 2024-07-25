@@ -158,7 +158,7 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
     
     plt.xlabel('Eje X')
     plt.ylabel('Eje Y')
-    plt.title('Gráfico de Caminos')
+    plt.title('Genetico')
     plt.text(mejorSolucion[0][0][0][0][0],mejorSolucion[0][0][0][0][1], " sensor origen")
     plt.show()
 

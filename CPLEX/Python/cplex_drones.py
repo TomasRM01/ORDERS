@@ -356,7 +356,7 @@ def dibujarCaminos(caminos, listaSensores, drones):
     
     plt.xlabel('Eje X')
     plt.ylabel('Eje Y')
-    plt.title('Gráfico de Caminos')
+    plt.title('CPLEX')
     plt.text(caminos[0][0][0],caminos[0][0][1], " sensor origen")
     plt.show()
 
