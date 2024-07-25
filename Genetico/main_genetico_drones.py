@@ -2,6 +2,7 @@ import time
 import copy
 import re
 import colorsys
+import sys
 import matplotlib.pyplot as plt
 from genetico_drones import startGenetico
 from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
@@ -34,8 +35,10 @@ def main():
         # Ejecutamos el algoritmo genético con los parámetros configurados
         solucion = startGenetico(peso_distancia, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, listaSensores)
         
-        # TODO: Comprobar que la solucion cumple con las restricciones (valores dentro de lo esperado, que no haya subrutas)
-        # TODO: Si alguna solucion no es correcta o su fitness es inferior al de la solucion exacta, paramos la ejecucion
+        # Comprobamos que la solucion cumple con las restricciones (valores dentro de lo esperado, que no se repitan sensores)
+        # Si alguna solucion no es correcta, paramos la ejecucion
+        if (comprobarSolucion(solucion, listaSensores, drones) == False):
+            sys.exit("\nSolución incorrecta encontrada, deteniendo ejecución.")
         
         # Guardamos la solución obtenida en la lista de resultados
         resultados.append(solucion)
@@ -278,6 +281,44 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     # Print New Line on Complete
     if iteration == total: 
         print("\n")
+
+# Funcion que devuelve true si la solucion es correcta (no significa que sea una buena solucion)      
+def comprobarSolucion(solucion, listaSensores, drones):
+    
+    correcta = True
+    
+    # Comprobamos que la distancia recorrida por cada dron no supere su capacidad
+    for dron in solucion[0]:
+        if distanciaTotalDron(dron) > drones[solucion[0].index(dron)]['distance_capacity']:
+            print("Error: La distancia recorrida por un dron supera su capacidad de distancia")
+            correcta = False
+            return
+        
+    # Comprobamos que la bateria recargada por cada dron no supere su capacidad
+    for dron in solucion[0]:
+        if bateriaTotalDron(dron) > drones[solucion[0].index(dron)]['battery_capacity']:
+            print("Error: La bateria recargada por un dron supera su capacidad de bateria")
+            correcta = False
+            return
+        
+    # Comprobamos que la prioridad acumulada por los drones no supera el total de prioridad de los sensores
+    for dron in solucion[0]:
+        if prioridadTotalDron(dron) > sum(sensor[1] for sensor in listaSensores):
+            print("Error: La prioridad acumulada por los drones supera el total de prioridad de los sensores")
+            correcta = False
+            return
+
+    # Comprobamos que un sensor no se visita dos veces (excepto el inicial)
+    visited_sensors = set()
+    for dron in solucion[0]:
+        for i, sensor in enumerate(dron):
+            if i != 0 and sensor[0] in visited_sensors:
+                print("Error: El sensor", sensor[0], "se visita dos veces")
+                correcta = False
+                return
+            visited_sensors.add(sensor[0])
+            
+    return correcta
     
 # Ejecutamos la funcion main
 main()
