@@ -240,6 +240,9 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
     string += "\n## ESCENARIO ##\n\n"
 
     # Imprimir el escenario inicial
+    string += "- Semilla\n"
+    string += str(open("Escenario/seed.txt", "r").read()) + "\n"
+    string += "\n"
     string += "- Drones\n"
     string += "n = " + str(n) + "\n"
     string += "C = " + str(C) + "\n"

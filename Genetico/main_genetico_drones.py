@@ -163,6 +163,9 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
 # Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log y por pantalla
 def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
     
+    # Recuperamos la semilla del fichero de semilla
+    seed = open("Escenario/seed.txt", "r").read()
+    
     copiaListaSensores = copy.deepcopy(listaSensores)
     
     # Establecemos a 0 la prioridad y la bateria del sensor de origen
@@ -241,6 +244,7 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     string += f"\nProbabilidad Mutante = {probabilidad_mutante}"
     string += f"\nMaximo Generaciones sin Mejora = {maximo_generaciones_sin_mejora}"
     string += "\n\n## ESCENARIO ##"
+    string += f"\n\n- Semilla\n{seed}"
     string += f"\n\n- Drones\nn = {len(drones)}\nC = [{', '.join(str(dron['distance_capacity']) for dron in drones)}]\nB = [{', '.join(str(dron['battery_capacity']) for dron in drones)}]"
     string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]"
     string += "\n\n\n\n\n"
