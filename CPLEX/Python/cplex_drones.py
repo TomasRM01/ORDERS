@@ -220,7 +220,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
             string += "- Viaja de " + str(i + 1) + " a 1 (D += {:.2f})\n".format(D[i][0])
             totalRecorrido += D[i][0]
 
-        string += "- Total del dron (D = {:.2f}, F = {:.2f}, P = {:.2f})\n".format(totalRecorrido, totalRecargado, totalPrioridad)
+            string += "- Total del dron (D = {:.2f}, F = {:.2f}, P = {:.2f})\n".format(totalRecorrido, totalRecargado, totalPrioridad)
 
         sumaDistancias += totalRecorrido
         sumaRecargas += totalRecargado
