@@ -241,11 +241,25 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
         sumaRecargas += totalRecargado
         sumaPrioridades += totalPrioridad
 
+    # Calculamos los porcentajes controlando divisiones entre 0
+    if maxDistancia > 0:
+        porcentajeDistancia = (sumaDistancias / maxDistancia) * 100
+    else:
+        porcentajeDistancia = 100
+    if maxRecarga > 0:
+        porcentajeBateria = (sumaRecargas / maxRecarga) * 100
+    else:
+        porcentajeBateria = 100
+    if maxPrioridad > 0:
+        porcentajePrioridad = (sumaPrioridades / maxPrioridad) * 100
+    else:
+        porcentajePrioridad = 100
+        
     # Resumen del resultado del problema
     string += "\n"
-    string += "Distancia (D) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaDistancias, maxDistancia, sumaDistancias / maxDistancia * 100)
-    string += "Bateria (F) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaRecargas, maxRecarga, sumaRecargas / maxRecarga * 100)
-    string += "Prioridad (P) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaPrioridades, maxPrioridad, sumaPrioridades / maxPrioridad * 100)
+    string += "Distancia (D) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaDistancias, maxDistancia, porcentajeDistancia)
+    string += "Bateria (F) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaRecargas, maxRecarga, porcentajeBateria)
+    string += "Prioridad (P) = {:.2f} / {:.2f} ( {:.2f} % )\n".format(sumaPrioridades, maxPrioridad, porcentajePrioridad)
 
     string += "\n## PARAMETROS ##\n\n"
 
