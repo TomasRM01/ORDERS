@@ -59,6 +59,9 @@ def main():
     # Dibujamos los caminos de la solución central
     dibujarCaminos(solucion_central, listaSensores, drones)
     
+    # Dibujamos el diagrama de caja y bigotes
+    cajaBigotes(resultados)
+    
 
 
 # Funcion que lee el contenido de el fichero scenary_drones.txt y devuelve la lista de drones con sus capacidades
@@ -160,6 +163,22 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
     plt.ylabel('Eje Y')
     plt.title('Genetico')
     plt.text(mejorSolucion[0][0][0][0][0],mejorSolucion[0][0][0][0][1], " sensor origen")
+    plt.show()
+    
+# Funcion que genera grafico de caja y bigotes para el conjunto de soluciones obtenidas
+def cajaBigotes(resultados):
+    # Extraemos los valores de fitness de los resultados
+    valores_fitness = [resultado[1] for resultado in resultados]
+
+    # Creamos el gráfico de caja y bigotes
+    plt.boxplot(valores_fitness)
+
+    # Añadimos etiquetas y título
+    plt.xlabel('Ejecuciones')
+    plt.ylabel('Fitness')
+    plt.title('Diagrama de Caja y Bigotes de los Valores de Fitness')
+
+    # Mostramos el gráfico
     plt.show()
 
 
