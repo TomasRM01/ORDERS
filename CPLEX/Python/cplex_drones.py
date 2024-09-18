@@ -49,7 +49,7 @@ def main():
             for k in range(n):
                 x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
     
-    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor)
+    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, mdl.solve_details)
     
     # guardamos en una variable cada camino de cada dron de la solucion
     caminos = []
@@ -170,7 +170,7 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     for k in K:
         mdl.add_constraint(mdl.sum(x[i, j, k] * F[j] for i in S for j in S) <= B[k], f'recarga_{k}')
 
-def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor):
+def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details):
     
     # Inicializar variables necesarias
     string = ""
@@ -179,7 +179,22 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 
     # Imprimir el fitness y el tiempo que ha tardado
     string += "Fitness = {:.2f}\n".format(solution.objective_value)
-    string += "Tiempo = {:.2f}\n".format(solution.solve_details.time)
+    string += "Tiempo = {:.2f}\n".format(solve_details.time)
+    
+    string += "\n"
+    
+    # Vemos si se ha encontrado solucion, si es factible y el status
+    if solution is None:
+        string += "No se ha encontrado solucion\n"
+        if solve_details.has_hit_limit():
+            string += "Se ha alcanzado el limite de iteraciones\n"
+    else:
+        string += "Solucion encontrada\n"
+        if solution.is_feasible_solution():
+            string += "La solucion es factible\n"
+        else:
+            string += "La solucion no es factible\n"
+        string += "Status = " + solve_details.status + "\n"
 
     # Calcular la máxima prioridad posible
     maxPrioridad = sum(P)
