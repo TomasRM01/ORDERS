@@ -1,9 +1,13 @@
-25/07/2024, 16:03:40
+23/09/2024, 22:00:19
 
 ## RESULTADO ##
 
 Fitness = 40.71
-Tiempo = 120.52
+Tiempo = 120.42
+
+Solucion encontrada
+La solucion es factible
+Status = integer optimal, tolerance
 
 Dron 1 (C = 144.00, B = 135.00):
 - Viaja de 1 a 7 (D += 23.44, F += 71.00, P += 7.00)
