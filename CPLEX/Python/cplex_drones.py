@@ -41,6 +41,12 @@ def main():
 
     # RESULTADOS
     
+    # Controlamos el caso en el que no se haya encontrado solucion
+    if solution is None:
+        print("No se ha encontrado solucion")
+        print("Status = " + mdl.solve_details.status)
+        return
+    
     # Iteramos obteniendo los valores de las variables de decision y las guardamos en una matriz tridimensional
     x_sol = [[[0 for _ in range(n)] for _ in range(m)] for _ in range(m)]
     
@@ -172,7 +178,6 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
 
 def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details):
     
-    # Inicializar variables necesarias
     string = ""
     string += f"{time.strftime('%d/%m/%Y, %H:%M:%S')}\n"
     string += "\n## RESULTADO ##\n\n"
@@ -183,18 +188,22 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
     
     string += "\n"
     
-    # Vemos si se ha encontrado solucion, si es factible y el status
-    if solution is None:
-        string += "No se ha encontrado solucion\n"
-        if solve_details.has_hit_limit():
-            string += "Se ha alcanzado el limite de iteraciones\n"
-    else:
-        string += "Solucion encontrada\n"
+    # Comprobamos si algun dron hace algun viaje
+    seHacenViajes = False
+    for k in K:
+        if x_sol[0][0][k] != 1:
+            seHacenViajes = True
+            
+    string += "Solucion encontrada\n"
+    if seHacenViajes:
         if solution.is_feasible_solution():
             string += "La solucion es factible\n"
         else:
             string += "La solucion no es factible\n"
         string += "Status = " + solve_details.status + "\n"
+    else:
+        string += "Ningun dron hace ningun viaje\n"
+        
 
     # Calcular la máxima prioridad posible
     maxPrioridad = sum(P)
@@ -215,9 +224,9 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
         
         string += f"\nDron {k + 1} (C = {C[k]:.2f}, B = {B[k]:.2f}):\n"
         
-        # Comprobar si el dron no hace ningún viaje
+        # Comprobar si el dron no hace ningun viaje
         if x_sol[0][0][k] == 1:
-            string += "- No hace ningún viaje\n"
+            string += "- No hace ningun viaje\n"
         else:
             i = 0
             j = 1
