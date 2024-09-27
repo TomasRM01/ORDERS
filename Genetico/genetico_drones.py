@@ -288,7 +288,7 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_cru
                 padre, madre = [tupla[0] for tupla in random.sample(mejoresSoluciones, 2)]
 
                 # hacemos el cruce solo si la probabilidad lo indica
-                if random.randint(1, 100) <= probabilidad_cruce:
+                if random.random() < probabilidad_cruce:
                     # generamos 2 nuevos hijos a partir de esos padres
                     nuevosHijos = combinarSoluciones(padre, madre)
                 else:
@@ -308,7 +308,7 @@ def genetico(listaSensores, tamano_poblacion, porcentaje_mejor, probabilidad_cru
                     listaDrones = corrigeSolucion(hijo, copiaListaSensores, drones)
                     
                     # mutamos si la probabilidad lo indica
-                    if random.randint(1, 100) <= probabilidad_mutante:
+                    if random.random() < probabilidad_mutante:
                         listaDrones = mutante(listaDrones, drones)
 
                     # obtenemos el fitness de la solucion

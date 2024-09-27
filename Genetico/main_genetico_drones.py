@@ -17,8 +17,8 @@ def main():
     peso_distancia = 0.001
     tamano_poblacion = 200
     porcentaje_mejor = 10
-    probabilidad_cruce = 90
-    probabilidad_mutante = 1
+    probabilidad_cruce = 0.9
+    probabilidad_mutante = 0.01
     maximo_generaciones_sin_mejora = 10
 
     # Recuperamos los drones del .txt
