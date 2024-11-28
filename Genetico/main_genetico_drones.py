@@ -4,6 +4,7 @@ import re
 import colorsys
 import sys
 import matplotlib.pyplot as plt
+import random
 from genetico_drones import startGenetico
 from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
 
@@ -26,11 +27,18 @@ def main():
         
     # Recuperamos los sensores del .txt
     listaSensores = recuperaSensores()
+    
+    # Recuperamos la semilla del fichero de semilla
+    seed = open("Escenario/seed.txt", "r").read()
+    
+    # Establecemos la semilla para la generación de números aleatorios
+    random.seed(seed)
 
     for _ in range(n_ejecuciones):
         
-        # Imprimimos el progreso de las ejecuciones 
-        printProgressBar(_, n_ejecuciones - 1, prefix = 'Progreso:', suffix = 'Completado', length = 50)
+        if (n_ejecuciones > 1):
+            # Imprimimos el progreso de las ejecuciones 
+            printProgressBar(_, n_ejecuciones - 1, prefix = 'Progreso:', suffix = 'Completado', length = 50)
         
         # Ejecutamos el algoritmo genético con los parámetros configurados
         solucion = startGenetico(peso_distancia, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, drones, listaSensores)
