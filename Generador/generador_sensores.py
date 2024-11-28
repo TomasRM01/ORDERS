@@ -86,6 +86,7 @@ def generaSensores(seed):
     plt.xlabel('x')
     plt.ylabel('y')
     plt.savefig('Escenario/scenary_sensores.png', dpi=300)
+    print("Mostrando sensores. Cierre la ventana para finalizar.")
     plt.show()
 
 # Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones

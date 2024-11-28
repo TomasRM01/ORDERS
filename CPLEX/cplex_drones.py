@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import colorsys
 from docplex.mp.model import Model
 import time
@@ -295,7 +297,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 
     print(string)
     
-    f = open("CPLEX/Python/log_cplex_drones.txt", "a")
+    f = open("CPLEX/log_cplex_drones.txt", "a")
     f.write(string)
     f.close()
 
@@ -396,6 +398,7 @@ def dibujarCaminos(caminos, listaSensores, drones):
     plt.ylabel('Eje Y')
     plt.title('CPLEX')
     plt.text(caminos[0][0][0],caminos[0][0][1], " sensor origen")
+    print("Mostrando caminos de los drones. Cierre la ventana para finalizar.")
     plt.show()
 
 # Ejecutar el programa

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import time
 import copy
 import re
@@ -69,6 +71,11 @@ def main():
     
     # Dibujamos el diagrama de caja y bigotes
     cajaBigotes(resultados)
+
+    # Mantener el programa vivo para que las ventanas no se cierren
+    print("Cierra ambas ventanas para terminar.")
+    while plt.fignum_exists(1) or plt.fignum_exists(2):
+        plt.pause(0.1)  # Procesar eventos de la GUI
     
 
 
@@ -135,6 +142,9 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
     nCaminos = 0
     listaColores = generarColoresUnicos(len(drones))
     
+    # Le asignamos un ID a la figura para luego identificarla
+    plt.figure(1)
+    
     for dron in mejorSolucion[0]:
         nTotalSensores += len(dron) - 1
         x = []
@@ -171,23 +181,27 @@ def dibujarCaminos(mejorSolucion, listaSensores, drones):
     plt.ylabel('Eje Y')
     plt.title('Genetico')
     plt.text(mejorSolucion[0][0][0][0][0],mejorSolucion[0][0][0][0][1], " sensor origen")
-    plt.show()
+    print("Mostrando caminos de los drones.")
+    plt.show(block=False)
     
 # Funcion que genera grafico de caja y bigotes para el conjunto de soluciones obtenidas
 def cajaBigotes(resultados):
     # Extraemos los valores de fitness de los resultados
     valores_fitness = [resultado[1] for resultado in resultados]
 
+    # Le asignamos un ID a la figura para luego identificarla
+    plt.figure(2)
+
     # Creamos el gráfico de caja y bigotes
     plt.boxplot(valores_fitness)
 
     # Añadimos etiquetas y título
-    plt.xlabel('Ejecuciones')
     plt.ylabel('Fitness')
     plt.title('Diagrama de Caja y Bigotes de los Valores de Fitness')
 
     # Mostramos el gráfico
-    plt.show()
+    print("Mostrando diagrama de caja y bigotes.")
+    plt.show(block=False)
 
 
 # Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log y por pantalla

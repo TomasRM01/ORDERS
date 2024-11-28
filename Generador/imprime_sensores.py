@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Programa que recupera los sensores que se van a utilizar en el escenario.
 
 import matplotlib.pyplot as plt
@@ -50,4 +52,5 @@ plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.savefig('Escenario/scenary_sensores.png', dpi=300)
+print("Mostrando sensores. Cierre la ventana para finalizar.")
 plt.show()

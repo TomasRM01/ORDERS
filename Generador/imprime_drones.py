@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Programa que recupera los drones que se van a utilizar en el escenario.
 
 import re

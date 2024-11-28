@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from generador_drones import generaDrones
 from generador_sensores import generaSensores
 
