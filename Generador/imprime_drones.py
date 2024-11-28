@@ -1,6 +1,5 @@
 # Programa que recupera los drones que se van a utilizar en el escenario.
 
-import matplotlib.pyplot as plt
 import re
 
 # lista de drones
