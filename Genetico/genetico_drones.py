@@ -5,7 +5,6 @@ import copy
 import random
 import math
 import time
-from random import randint
 from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
 
 
@@ -153,7 +152,7 @@ def corrigeSolucion(listaDrones, listaSensores, drones):
         # seleccionamos un dron aleatorio
         dron = random.choice(copiaListaDrones)
         # insertamos el sensor en una posición aleatoria del dron
-        dron.insert(randint(1, len(dron)), sensor)
+        dron.insert(random.randint(1, len(dron)), sensor)
         # calculamos la distancia total recorrida y la bateria recargada por el dron
         distancia = distanciaTotalDron(dron)
         bateria = bateriaTotalDron(dron)
