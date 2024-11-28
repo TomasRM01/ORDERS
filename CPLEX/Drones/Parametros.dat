@@ -1,2 +1,0 @@
-// Valor que multiplica al sumatorio de las distancias para asignarle un peso en la funcion objetivo.
-peso_distancia = 0.001; 
