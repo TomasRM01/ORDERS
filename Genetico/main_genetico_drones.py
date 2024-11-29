@@ -5,8 +5,9 @@ import copy
 import re
 import colorsys
 import sys
-import matplotlib.pyplot as plt
 import random
+import matplotlib.pyplot as plt
+
 from genetico_drones import startGenetico
 from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
 

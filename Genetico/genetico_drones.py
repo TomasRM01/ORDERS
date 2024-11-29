@@ -5,6 +5,7 @@ import copy
 import random
 import math
 import time
+
 from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
 
 

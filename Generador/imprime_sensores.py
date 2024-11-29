@@ -2,9 +2,9 @@
 
 # Programa que recupera los sensores que se van a utilizar en el escenario.
 
-import matplotlib.pyplot as plt
 import re
 import colorsys
+import matplotlib.pyplot as plt
 
 # lista de posiciones, prioridades y baterias
 posiciones = []

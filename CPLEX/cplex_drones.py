@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import colorsys
-from docplex.mp.model import Model
 import time
 import math
 import re
 
+from pathlib import Path
+from docplex.mp.model import Model
 from matplotlib import pyplot as plt
         
 def main():
