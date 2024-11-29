@@ -5,6 +5,14 @@
 import re
 import colorsys
 import matplotlib.pyplot as plt
+import argparse
+
+from gestor_ficheros import abrirFichero
+
+# Crear un parser para manejar los argumentos
+parser = argparse.ArgumentParser(description="Programa que imprime por pantalla los parámetros de los sensores del escenario.")
+parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo que contiene los parámetros de los sensores.")  # Obligatorio
+args = parser.parse_args()
 
 # lista de posiciones, prioridades y baterias
 posiciones = []
@@ -12,9 +20,16 @@ prioridades = []
 baterias = []
 
 # abrimos el fichero en modo lectura
-with open("Escenario/scenary_sensores.txt", "r") as f:
-    # pasamos el contenido a un string
-    s = f.read()
+try:
+    f = abrirFichero(args.ruta_sensores, 'r')
+except FileNotFoundError as e:
+    print(f"Error: {e}")
+    exit(1)
+    
+# pasamos el contenido a un string
+s = f.read()
+
+print(s)
 
 # desechamos todo lo que no son numeros y lo convertimos en una lista de elementos
 s = [float(s) for s in re.findall(r'\d+\.?\d*', s)]
@@ -51,6 +66,6 @@ for i, t in enumerate(posiciones):
 plt.title('Sensores')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.savefig('Escenario/scenary_sensores.png', dpi=300)
+# plt.savefig('Escenario/scenary_sensores.png', dpi=300)
 print("Mostrando sensores. Cierre la ventana para finalizar.")
 plt.show()

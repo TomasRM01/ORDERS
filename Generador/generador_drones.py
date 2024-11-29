@@ -1,6 +1,8 @@
 import random
 
-def generaDrones(seed):
+from gestor_ficheros import abrirFichero
+
+def generaDrones(seed, ruta_drones):
     # definimos el numero de drones, en este caso 3
     num_drones = 3
         
@@ -15,8 +17,11 @@ def generaDrones(seed):
     C = []
     n = 0
 
-    # Fichero de salida para algoritmo genetico
-    f = open("Escenario/scenary_drones.txt", "w")
+    try:
+        f = abrirFichero(ruta_drones, 'w')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
 
     random.seed(seed)
 

@@ -2,7 +2,9 @@ import colorsys
 import random
 import matplotlib.pyplot as plt
 
-def generaSensores(seed):
+from gestor_ficheros import abrirFichero
+
+def generaSensores(seed, ruta_sensores):
 
     # numero de sensores
     num = 20
@@ -22,8 +24,11 @@ def generaSensores(seed):
     prioridades = []
     baterias = []
 
-    # abrimos el fichero en modo escritura
-    f = open("Escenario/scenary_sensores.txt", "w")
+    try:
+        f = abrirFichero(ruta_sensores, 'w')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
     
     random.seed(seed)
 
@@ -85,7 +90,7 @@ def generaSensores(seed):
     plt.title('Sensores')
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.savefig('Escenario/scenary_sensores.png', dpi=300)
+    # plt.savefig('Escenario/scenary_sensores.png', dpi=300)
     print("Mostrando sensores. Cierre la ventana para finalizar.")
     plt.show()
 
