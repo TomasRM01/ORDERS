@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
 import colorsys
+import argparse
 import time
 import math
 import re
 
 from docplex.mp.model import Model
 from matplotlib import pyplot as plt
+from gestor_ficheros import abrirFichero
+
+# Crear un parser para manejar los argumentos
+parser = argparse.ArgumentParser(description="Programa que resuelve un escenario mediante CPLEX.")
+parser.add_argument("ruta_drones", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los drones.")  # Obligatorio
+parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los sensores.")  # Obligatorio
+parser.add_argument("ruta_semilla", type=str, help="Ruta del archivo desde donde se leerá la semilla del escenario.")  # Obligatorio
+parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
+args = parser.parse_args()
         
 def main():
     
@@ -18,7 +28,7 @@ def main():
     # DATOS
     
     # Extraer los datos del escenario
-    peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones = extraerDatos()
+    peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones, seed = extraerDatos()
     
     # VARIABLES
     
@@ -57,7 +67,7 @@ def main():
             for k in range(n):
                 x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
     
-    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, mdl.solve_details)
+    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, mdl.solve_details, seed)
     
     # guardamos en una variable cada camino de cada dron de la solucion
     caminos = []
@@ -84,6 +94,16 @@ def extraerDatos():
     
     drones = recuperaDrones()
     sensores = recuperaSensores()
+    
+    # Recuperamos la semilla para el log
+    try:
+        f = abrirFichero(args.ruta_semilla, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    seed = f.read()
+    f.close()
+    
     n = len(drones)
     m = len(sensores)
     coordSensor = [[s[0][0], s[0][1]] for s in sensores]
@@ -108,7 +128,7 @@ def extraerDatos():
     F[0] = 0
     P[0] = 0
     
-    return peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones
+    return peso_distancia, coordSensor, n, m, P, F, B, C, K, S, D, drones, seed
 
 def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     
@@ -178,7 +198,7 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     for k in K:
         mdl.add_constraint(mdl.sum(x[i, j, k] * F[j] for i in S for j in S) <= B[k], f'recarga_{k}')
 
-def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details):
+def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details, seed):
     
     string = ""
     string += f"{time.strftime('%d/%m/%Y, %H:%M:%S')}\n"
@@ -281,7 +301,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 
     # Imprimir el escenario inicial
     string += "- Semilla\n"
-    string += str(open("Escenario/seed.txt", "r").read()) + "\n"
+    string += str(seed) + "\n"
     string += "\n"
     string += "- Drones\n"
     string += "n = " + str(n) + "\n"
@@ -297,7 +317,12 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 
     print(string)
     
-    f = open("CPLEX/log_cplex_drones.txt", "a")
+    try:
+        f = abrirFichero(args.ruta_log, 'a')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
     f.write(string)
     f.close()
 
@@ -305,16 +330,18 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 def recuperaDrones():
     # lista de drones
     drones = []
+    
+    try:
+        f = abrirFichero(args.ruta_drones, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
 
-    # abrimos el fichero en modo lectura
-    with open("Escenario/scenary_drones.txt", "r") as f:
-        # pasamos el contenido a un string
-        s = f.read()
+    s = f.read()
         
     # recuperamos los elementos del string tal que asi: {'distance_capacity': 137, 'battery_capacity': 1158}, {'distance_capacity': 108, 'battery_capacity': 1690}, ...
     drones = [eval(drone) for drone in re.findall(r'\{.*?\}', s)]
 
-    # cerramos el fichero
     f.close()
     
     return drones
@@ -325,10 +352,13 @@ def recuperaSensores():
     # lista de sensores
     sensores = []
 
-    # abrimos el fichero en modo lectura
-    with open("Escenario/scenary_sensores.txt", "r") as f:
-        # pasamos el contenido a un string
-        s = f.read()
+    try:
+        f = abrirFichero(args.ruta_sensores, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+
+    s = f.read()
 
     # desechamos todo lo que no son numeros y lo convertimos en una lista de elementos
     s = [float(s) for s in re.findall(r'\d+\.?\d*', s)]
@@ -340,6 +370,8 @@ def recuperaSensores():
         p = s[i+2]
         b = s[i+3]
         sensores.append(((x, y), p, b))
+        
+    f.close()
 
     return sensores
 
