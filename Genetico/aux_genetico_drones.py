@@ -1,5 +1,6 @@
+import os
 import math
-
+import hashlib
 
 # Funcion auxiliar que calcula la distancia euclidea entre dos puntos
 def distanciaEuclidea(punto1, punto2):
@@ -31,3 +32,10 @@ def prioridadTotalDron(caminoDron):
     for sensor in caminoDron:
         prioridad += sensor[1]
     return prioridad
+
+def generar_hash_aleatorio():
+    # Generamos 16 bytes aleatorios (128 bits)
+    bytes_aleatorios = os.urandom(16)
+    # Convertimos los bytes aleatorios a una cadena hexadecimal
+    hash_hex = hashlib.md5(bytes_aleatorios).hexdigest()
+    return hash_hex
