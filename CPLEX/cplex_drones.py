@@ -300,7 +300,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
     string += "\n## ESCENARIO ##\n\n"
 
     # Imprimir el escenario inicial
-    string += "- Semilla\n"
+    string += "- Semilla del escenario\n"
     string += str(seed) + "\n"
     string += "\n"
     string += "- Drones\n"
