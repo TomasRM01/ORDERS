@@ -12,7 +12,7 @@ from generador_sensores import generaSensores
 parser = argparse.ArgumentParser(description="Programa que genera los drones y sensores de un escenario.")
 parser.add_argument("ruta_drones", type=str, help="Ruta del archivo donde se escribirán los parámetros de los drones.")  # Obligatorio
 parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo donde se escribirán los parámetros de los sensores.")  # Obligatorio
-parser.add_argument("ruta_semilla", type=str, help="Ruta del archivo donde se escribirá la semilla.")  # Obligatorio
+parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo donde se escribirá la seed del escenario.")  # Obligatorio
 parser.add_argument("-s", "--seed", type=str, help="Semilla personalizada para la generación de los drones y sensores.")  # Opcional
 args = parser.parse_args()
 
@@ -26,7 +26,7 @@ def main():
     print("Semilla: ", seed)
     
     try:
-        f = abrirFichero(args.ruta_semilla, 'w')
+        f = abrirFichero(args.ruta_seed_escenario, 'w')
     except FileNotFoundError as e:
         print(f"Error: {e}")
         exit(1)

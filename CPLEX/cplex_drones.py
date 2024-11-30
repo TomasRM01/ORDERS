@@ -14,7 +14,7 @@ from gestor_ficheros import abrirFichero
 parser = argparse.ArgumentParser(description="Programa que resuelve un escenario mediante CPLEX.")
 parser.add_argument("ruta_drones", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los drones.")  # Obligatorio
 parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los sensores.")  # Obligatorio
-parser.add_argument("ruta_semilla", type=str, help="Ruta del archivo desde donde se leerá la semilla del escenario.")  # Obligatorio
+parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo desde donde se leerá la seed del escenario.")  # Obligatorio
 parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
 args = parser.parse_args()
         
@@ -97,7 +97,7 @@ def extraerDatos():
     
     # Recuperamos la semilla para el log
     try:
-        f = abrirFichero(args.ruta_semilla, 'r')
+        f = abrirFichero(args.ruta_seed_escenario, 'r')
     except FileNotFoundError as e:
         print(f"Error: {e}")
         exit(1)
