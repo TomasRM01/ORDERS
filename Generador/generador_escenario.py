@@ -19,7 +19,7 @@ args = parser.parse_args()
 def main():
     
     seed = args.seed
-    if seed == None or seed == "":
+    if seed == None:
         # Generamos una semilla aleatoria en md5
         seed = generar_hash_aleatorio()
         
