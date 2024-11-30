@@ -7,9 +7,21 @@ import colorsys
 import sys
 import random
 import matplotlib.pyplot as plt
+import argparse
 
 from genetico_drones import startGenetico
-from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
+from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea, generar_hash_aleatorio
+from gestor_ficheros import abrirFichero
+
+# Crear un parser para manejar los argumentos
+parser = argparse.ArgumentParser(description="Programa que resuelve un escenario mediante un algoritmo genético.")
+parser.add_argument("ruta_drones", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los drones.")  # Obligatorio
+parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los sensores.")  # Obligatorio
+parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo desde donde se leerá la seed del escenario.")  # Obligatorio
+parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
+parser.add_argument("-rs", "--random_seed", action="store_true", help="Establecer una seed aleatoria para el solucionador.") # Opcional
+parser.add_argument("-s", "--seed", type=str, help="Semilla personalizada para el solucionador.") # Opcional
+args = parser.parse_args()
 
 def main():
     
@@ -31,11 +43,29 @@ def main():
     # Recuperamos los sensores del .txt
     listaSensores = recuperaSensores()
     
-    # Recuperamos la semilla del fichero de semilla
-    seed = open("Escenario/seed.txt", "r").read()
+    # Recuperamos la semilla del escenario
+    try:
+        f = abrirFichero(args.ruta_seed_escenario, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    seed = f.read()
+    f.close()
     
+    # Verificamos si se ha establecido la semilla aleatoria y una semilla personalizada al mismo tiempo
+    if args.random_seed and args.seed is not None:
+        sys.exit("Error: No se puede establecer una semilla aleatoria y una semilla personalizada al mismo tiempo.")
+        
     # Establecemos la semilla para la generación de números aleatorios
-    random.seed(seed)
+    if args.random_seed:
+        seed_genetico = generar_hash_aleatorio()
+    else:
+        if args.seed is None:    
+            seed_genetico = seed
+        else:
+            seed_genetico = args.seed
+    
+    random.seed(seed_genetico)
 
     for _ in range(n_ejecuciones):
         
@@ -65,7 +95,7 @@ def main():
     solucion_central = resultados[middle_index]
     
     # Escribimos los resultados obtenidos por el algoritmo genético en un fichero de log
-    escribirResultados(solucion_central, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, solucion_central[2], drones, peso_distancia, listaSensores)
+    escribirResultados(solucion_central, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, solucion_central[2], drones, peso_distancia, listaSensores, seed, seed_genetico)
     
     # Dibujamos los caminos de la solución central
     dibujarCaminos(solucion_central, listaSensores, drones)
@@ -85,10 +115,13 @@ def recuperaDrones():
     # lista de drones
     drones = []
 
-    # abrimos el fichero en modo lectura
-    with open("Escenario/scenary_drones.txt", "r") as f:
-        # pasamos el contenido a un string
-        s = f.read()
+    try:
+        f = abrirFichero(args.ruta_drones, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
+    s = f.read()
         
     # recuperamos los elementos del string tal que asi: {'distance_capacity': 137, 'battery_capacity': 1158}, {'distance_capacity': 108, 'battery_capacity': 1690}, ...
     drones = [eval(drone) for drone in re.findall(r'\{.*?\}', s)]
@@ -106,9 +139,13 @@ def recuperaSensores():
     sensores = []
 
     # abrimos el fichero en modo lectura
-    with open("Escenario/scenary_sensores.txt", "r") as f:
-        # pasamos el contenido a un string
-        s = f.read()
+    try:
+        f = abrirFichero(args.ruta_sensores, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
+    s = f.read()
 
     # desechamos todo lo que no son numeros y lo convertimos en una lista de elementos
     s = [float(s) for s in re.findall(r'\d+\.?\d*', s)]
@@ -120,6 +157,8 @@ def recuperaSensores():
         p = s[i+2]
         b = s[i+3]
         sensores.append(((x, y), p, b))
+
+    f.close()
 
     return sensores
 
@@ -206,10 +245,7 @@ def cajaBigotes(resultados):
 
 
 # Funcion auxiliar que escribe los resultados obtenidos por el algoritmo genetico en un fichero de log y por pantalla
-def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores):
-    
-    # Recuperamos la semilla del fichero de semilla
-    seed = open("Escenario/seed.txt", "r").read()
+def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora, tiempo_total, drones, peso_distancia, listaSensores, seed, seed_genetico):
     
     copiaListaSensores = copy.deepcopy(listaSensores)
     
@@ -289,13 +325,19 @@ def escribirResultados(mejorSolucion, tamano_poblacion, porcentaje_mejor, probab
     string += f"\nProbabilidad Mutante = {probabilidad_mutante}"
     string += f"\nMaximo Generaciones sin Mejora = {maximo_generaciones_sin_mejora}"
     string += "\n\n## ESCENARIO ##"
-    string += f"\n\n- Semilla\n{seed}"
+    string += f"\n\n- Semilla del escenario\n{seed}"
+    string += f"\n\n- Semilla del algoritmo genetico\n{seed_genetico}"
     string += f"\n\n- Drones\nn = {len(drones)}\nC = [{', '.join(str(dron['distance_capacity']) for dron in drones)}]\nB = [{', '.join(str(dron['battery_capacity']) for dron in drones)}]"
     string += f"\n\n- Sensores\nm = {len(copiaListaSensores)}\ncoordSensor = [{', '.join(str(sensor[0]) for sensor in copiaListaSensores)}]\nF = [{', '.join(str(sensor[2]) for sensor in copiaListaSensores)}]\nP = [{', '.join(str(sensor[1]) for sensor in copiaListaSensores)}]"
     string += "\n\n\n\n\n"
     
     # Escribimos en el fichero de log los resultados obtenidos por el algoritmo genetico y cerramos el fichero
-    f = open("Genetico/log_genetico_drones.txt", "a")
+    try:
+        f = abrirFichero(args.ruta_log, 'a')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
     f.write(string)
     f.close()
     

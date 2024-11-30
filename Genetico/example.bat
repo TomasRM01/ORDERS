@@ -1,0 +1,2 @@
+REM Ejemplo de uso del solucionador mediante algoritmo genético
+python3 ./main_genetico_drones.py ../Escenario/scenary_drones.txt ../Escenario/scenary_sensores.txt ../Escenario/seed.txt ./log_genetico_drones.txt -rs
