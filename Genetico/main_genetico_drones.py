@@ -19,6 +19,9 @@ parser.add_argument("ruta_drones", type=str, help="Ruta del archivo desde donde 
 parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los sensores.")  # Obligatorio
 parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo desde donde se leerá la seed del escenario.")  # Obligatorio
 parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
+parser.add_argument("ruta_parametros", type=str, help="Ruta del archivo desde donde se leerán los parámetros del algoritmo genético.")  # Obligatorio
+parser.add_argument("peso_distancia", type=float, help="Peso de la distancia en el cálculo del fitness.")  # Obligatorio
+parser.add_argument("n_ejecuciones", type=int, help="Número de ejecuciones del algoritmo genético.")  # Obligatorio
 parser.add_argument("-rs", "--random_seed", action="store_true", help="Establecer una seed aleatoria para el solucionador.") # Opcional
 parser.add_argument("-s", "--seed", type=str, help="Semilla personalizada para el solucionador.") # Opcional
 args = parser.parse_args()
@@ -27,15 +30,12 @@ def main():
     
     resultados = []
 
-    n_ejecuciones = 31
+    # Recuperamos los argumentos de la linea de comandos
+    n_ejecuciones = args.n_ejecuciones
+    peso_distancia = args.peso_distancia
 
-    # Variables importantes configurables para el algoritmo genetico
-    peso_distancia = 0.001
-    tamano_poblacion = 200
-    porcentaje_mejor = 10
-    probabilidad_cruce = 0.9
-    probabilidad_mutante = 0.01
-    maximo_generaciones_sin_mejora = 10
+    # Recuperamos los parámetros del algoritmo genético
+    tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora = recuperaParametros()
 
     # Recuperamos los drones del .txt
     drones = recuperaDrones()
@@ -43,28 +43,8 @@ def main():
     # Recuperamos los sensores del .txt
     listaSensores = recuperaSensores()
     
-    # Recuperamos la semilla del escenario
-    try:
-        f = abrirFichero(args.ruta_seed_escenario, 'r')
-    except FileNotFoundError as e:
-        print(f"Error: {e}")
-        exit(1)
-    seed = f.read()
-    f.close()
-    
-    # Verificamos si se ha establecido la semilla aleatoria y una semilla personalizada al mismo tiempo
-    if args.random_seed and args.seed is not None:
-        sys.exit("Error: No se puede establecer una semilla aleatoria y una semilla personalizada al mismo tiempo.")
-        
-    # Establecemos la semilla para la generación de números aleatorios
-    if args.random_seed:
-        seed_genetico = generar_hash_aleatorio()
-    else:
-        if args.seed is None:    
-            seed_genetico = seed
-        else:
-            seed_genetico = args.seed
-    
+    # Recuperamos la semilla del escenario y establecemos la del genetico
+    seed, seed_genetico = recuperaSemilla()
     random.seed(seed_genetico)
 
     for _ in range(n_ejecuciones):
@@ -161,6 +141,50 @@ def recuperaSensores():
     f.close()
 
     return sensores
+
+def recuperaSemilla():
+    try:
+        f = abrirFichero(args.ruta_seed_escenario, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    seed = f.read()
+    f.close()
+    
+    # Verificamos si se ha establecido la semilla aleatoria y una semilla personalizada al mismo tiempo
+    if args.random_seed and args.seed is not None:
+        sys.exit("Error: No se puede establecer una semilla aleatoria y una semilla personalizada al mismo tiempo.")
+        
+    # Establecemos la semilla para la generación de números aleatorios
+    if args.random_seed:
+        seed_genetico = generar_hash_aleatorio()
+    else:
+        if args.seed is None:    
+            seed_genetico = seed
+        else:
+            seed_genetico = args.seed
+    
+    return seed, seed_genetico
+
+def recuperaParametros():
+    # Variables importantes configurables para el algoritmo genetico
+    try:
+        f = abrirFichero(args.ruta_parametros, 'r')
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
+    parametros = f.read().splitlines()
+    f.close()
+    
+    tamano_poblacion = int(parametros[0].split('=')[1].strip())
+    porcentaje_mejor = int(parametros[1].split('=')[1].strip())
+    probabilidad_cruce = float(parametros[2].split('=')[1].strip())
+    probabilidad_mutante = float(parametros[3].split('=')[1].strip())
+    maximo_generaciones_sin_mejora = int(parametros[4].split('=')[1].strip())
+    
+    return tamano_poblacion, porcentaje_mejor, probabilidad_cruce, probabilidad_mutante, maximo_generaciones_sin_mejora
+    
 
 # Funcion auxiliar que genera una lista de colores unicos para los caminos de los drones
 def generarColoresUnicos(n):

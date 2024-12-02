@@ -16,6 +16,7 @@ parser.add_argument("ruta_drones", type=str, help="Ruta del archivo desde donde 
 parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde donde se leerán los parámetros de los sensores.")  # Obligatorio
 parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo desde donde se leerá la seed del escenario.")  # Obligatorio
 parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
+parser.add_argument("peso_distancia", type=float, help="Peso de la distancia en el cálculo del fitness.")  # Obligatorio
 args = parser.parse_args()
         
 def main():
@@ -90,7 +91,7 @@ def main():
     
 def extraerDatos():
     
-    peso_distancia = 0.001
+    peso_distancia = args.peso_distancia()
     
     drones = recuperaDrones()
     sensores = recuperaSensores()
