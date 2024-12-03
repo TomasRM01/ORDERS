@@ -66,21 +66,23 @@ ORDERS/
 ```
 
 - `CPLEX/`: Contiene los scripts necesarios para utilizar el método de resolución exacto.
-- `cplex_drones.py`: Script principal para ejecutar el método de resolución exacto.
-- `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
+    - `cplex_drones.py`: Script principal para ejecutar el método de resolución exacto.
+    - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
 - `Escenario/`: Contiene los parametros de los drones, sensores y semilla.
 - `Generador/`: Contiene los scripts necesarios para generar escenarios.
-- `generador_drones.py`: Script que contiene el código necesario para generar drones.
-- `generador_escenario.py`: Este script genera un escenario con drones y sensores utilizando generador_drones.py y generador_sensores.py.
-- `generador_sensores.py`: Script que contiene el código necesario para generar sensores.
-- `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
-- `imprime_sensores.py`: Script que imprime los sensores del escenario y los representa gráficamente.
+    - `generador_drones.py`: Script que contiene el código necesario para generar drones.
+    - `generador_escenario.py`: Este script genera un escenario con drones y sensores utilizando generador_drones.py y generador_sensores.py.
+    - `generador_sensores.py`: Script que contiene el código necesario para generar sensores.
+    - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
+    - `imprime_sensores.py`: Script que imprime los sensores del escenario y los representa gráficamente.
 - `Genetico/`: Carpeta donde se almacenan los resultados y logs de las ejecuciones.
-- `aux_genetico_drones.py`: Contiene funciones auxiliares para el algoritmo genético.
-- `genetico_drones.py`: Contiene la implementación del algoritmo genético.
-- `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
-- `main_genetico_drones.py`: Script principal para ejecutar el algoritmo genético.
+    - `aux_genetico_drones.py`: Contiene funciones auxiliares para el algoritmo genético.
+    - `genetico_drones.py`: Contiene la implementación del algoritmo genético.
+    - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
+    - `main_genetico_drones.py`: Script principal para ejecutar el algoritmo genético.
 - `README.md`: Contiene la documentación necesaria para el correcto uso de este proyecto.
+
+Para asegurar el correcto funcionamiento de los scripts, es importante no separarlos de los que se encuentran en la misma carpeta.
 
 ## Generación de escenarios
 
