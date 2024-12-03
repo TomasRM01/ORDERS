@@ -13,8 +13,8 @@ parser = argparse.ArgumentParser(description="Programa que genera los drones y s
 parser.add_argument("ruta_drones", type=str, help="Ruta del archivo donde se escribirán los parámetros de los drones.")  # Obligatorio
 parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo donde se escribirán los parámetros de los sensores.")  # Obligatorio
 parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo donde se escribirá la seed del escenario.")  # Obligatorio
-parser.add_argument("ruta_parametros_drones", type=str, help="Ruta del archivo donde se encuentran los parámetros de los drones.")  # Obligatorio
-parser.add_argument("ruta_parametros_sensores", type=str, help="Ruta del archivo donde se encuentran los parámetros de los sensores.")  # Obligatorio
+parser.add_argument("ruta_parametros_drones", type=str, help="Ruta del archivo donde se encuentran los parámetros para la generación de los drones.")  # Obligatorio
+parser.add_argument("ruta_parametros_sensores", type=str, help="Ruta del archivo donde se encuentran los parámetros para la generación de los sensores.")  # Obligatorio
 parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
 parser.add_argument("-s", "--seed", type=str, help="Semilla personalizada para la generación de los drones y sensores.")  # Opcional
 args = parser.parse_args()
