@@ -4,33 +4,23 @@ import matplotlib.pyplot as plt
 
 from gestor_ficheros import abrirFichero
 
-def generaSensores(seed, ruta_sensores):
-
-    # numero de sensores
-    num = 20
-
-    # coordenadas maximas
-    max_x = 100
-    max_y = 100
-
-    # prioridad maxima
-    max_p = 10
-
-    # bateria faltante maxima
-    max_b = 200
+def generaSensores(seed, ruta_sensores, parametros):
 
     # lista de posiciones, prioridades y baterias
     posiciones = []
     prioridades = []
     baterias = []
+    
+    # extraemos los parámetros
+    num, max_x, max_y, max_p, max_b = recuperaParametros(parametros)
 
+    random.seed(seed)
+    
     try:
         f = abrirFichero(ruta_sensores, 'w')
     except FileNotFoundError as e:
         print(f"Error: {e}")
         exit(1)
-    
-    random.seed(seed)
 
     # iteramos para num sensores
     for _ in range(num):
@@ -68,18 +58,6 @@ def generaSensores(seed, ruta_sensores):
     # cerramos el fichero
     f.close()
 
-    # ! Solo se usa para el editor externo de CPLEX Studio
-    # # Fichero de salida para CPLEX
-    # f2 = open("CPLEX/Drones/Sensores.dat", "w")
-
-    # f2.write('// Numero de sensores' + '\n' + 'm = ' + str(num) + ';\n')
-    # f2.write('// Coordenadas de los sensores' + '\n' + 'coordSensor = ' + str([f'<{x:.2f}, {y:.2f}>' for x, y in posiciones]).replace("'", "") + ';\n')
-    # f2.write('// Prioridades' + '\n' + 'P = ' + str(prioridades) + ';\n')
-    # f2.write('// Carga necesaria' + '\n' + 'F = ' + str(baterias) + ';\n')
-
-    # f2.close()
-    # ! Solo se usa para el editor externo de CPLEX Studio
-
     # generamos el grafico
     colors = generarColoresUnicos(len(posiciones))
 
@@ -105,3 +83,13 @@ def generarColoresUnicos(n):
         hexColor = '#{:02x}{:02x}{:02x}'.format(*rgbInt)
         listaColores.append(hexColor)
     return listaColores
+
+def recuperaParametros(parametros):
+
+    num = int(parametros[0].split('=')[1].strip())
+    max_x = int(parametros[1].split('=')[1].strip())
+    max_y = int(parametros[2].split('=')[1].strip())
+    max_p = int(parametros[3].split('=')[1].strip())
+    max_b = int(parametros[4].split('=')[1].strip())
+    
+    return num, max_x, max_y, max_p, max_b

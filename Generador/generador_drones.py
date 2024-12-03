@@ -2,15 +2,10 @@ import random
 
 from gestor_ficheros import abrirFichero
 
-def generaDrones(seed, ruta_drones):
-    # definimos el numero de drones, en este caso 3
-    num_drones = 3
-        
-    # Definimos los valores minimos y maximos para las capacidades de los drones
-    min_distance = 100
-    max_distance = 150
-    min_battery = 100
-    max_battery = 250
+def generaDrones(seed, ruta_drones, parametros):
+    
+    # Extraemos los parámetros
+    num_drones, min_distance, max_distance, min_battery, max_battery = recuperaParametros(parametros)
 
     # Definimos las listas donde se almacenaran las capacidades de los drones
     B = []
@@ -37,14 +32,13 @@ def generaDrones(seed, ruta_drones):
         f.write(str(dron) + '\n')
         
     f.close()
+    
+def recuperaParametros(parametros):
 
-    # ! Solo se usa para el editor externo de CPLEX Studio
-    # # Fichero de salida para CPLEX
-    # f2 = open("CPLEX/Drones/Drones.dat", "w")
-
-    # f2.write('// Numero de drones' + '\n' + 'n = ' + str(num_drones) + ';\n')
-    # f2.write('// Capacidad de carga' + '\n' + 'B = ' + str(B) + ';\n')
-    # f2.write('// Distancia de vuelo' + '\n' + 'C = ' + str(C) + ';\n')
-
-    # f2.close()
-    # ! Solo se usa para el editor externo de CPLEX Studio
+    num_drones = int(parametros[0].split('=')[1].strip())
+    min_distance = int(parametros[1].split('=')[1].strip())
+    max_distance = int(parametros[2].split('=')[1].strip())
+    min_battery = int(parametros[3].split('=')[1].strip())
+    max_battery = int(parametros[4].split('=')[1].strip())
+    
+    return num_drones, min_distance, max_distance, min_battery, max_battery
