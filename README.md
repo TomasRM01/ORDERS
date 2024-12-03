@@ -4,7 +4,7 @@
 Para clonar el repositorio, ejecute el siguiente comando en su terminal:
 
 ```bash
-git clone https://github.com/AuriseGames/ORDERS.git
+git clone https://github.com/TomasRM01/ORDERS.git
 ```
 
 ## Instalación de dependencias
