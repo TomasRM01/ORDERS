@@ -91,7 +91,7 @@ def main():
     
 def extraerDatos():
     
-    peso_distancia = args.peso_distancia()
+    peso_distancia = args.peso_distancia
     
     drones = recuperaDrones()
     sensores = recuperaSensores()
