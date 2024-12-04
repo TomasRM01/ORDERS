@@ -1,0 +1,54 @@
+04/12/2024, 23:30:15
+
+## RESULTADO ##
+
+Fitness = 30.86
+Tiempo = 0.34
+
+Dron 1 (C = 88.00, B = 10.00):
+- Viaja de 1 a 2 (D += 41.72, F += 9.00, P += 5.00)
+- Viaja de 2 a 1 (D += 41.72)
+- Total del dron (D = 83.43, F = 9.00, P = 5.00)
+
+Dron 2 (C = 57.00, B = 22.00):
+- Viaja de 1 a 8 (D += 11.49, F += 2.00, P += 9.00)
+- Viaja de 8 a 9 (D += 12.95, F += 8.00, P += 9.00)
+- Viaja de 9 a 5 (D += 9.16, F += 3.00, P += 8.00)
+- Viaja de 5 a 1 (D += 18.41)
+- Total del dron (D = 52.01, F = 13.00, P = 26.00)
+
+Distancia (D) = 135.44 / 145.00 ( 93.41% )
+Bateria   (F) = 22.00 / 32.00 ( 68.75% )
+Prioridad (P) = 31.00 / 50.00 ( 62.00% )
+
+## PARAMETROS ##
+
+Peso Distancia = 0.001
+Tamano Poblacion = 200
+Porcentaje Mejor = 10
+Probabilidad Cruce = 0.9
+Probabilidad Mutante = 0.01
+Maximo Generaciones sin Mejora = 10
+
+## ESCENARIO ##
+
+- Semilla del escenario
+30bce4d39c3d7fff32cafc805dd80be0
+
+- Semilla del algoritmo genetico
+27bcaac7a948b282f8bee32f99dd2dad
+
+- Drones
+n = 2
+C = [88, 57]
+B = [10, 22]
+
+- Sensores
+m = 10
+coordSensor = [(49.75, 36.32), (10.71, 21.62), (20.61, 3.5), (0.33, 40.62), (37.23, 22.82), (22.29, 48.22), (0.15, 27.77), (40.01, 42.41), (33.53, 31.2), (24.34, 19.7)]
+F = [0, 9.0, 1.0, 10.0, 3.0, 7.0, 9.0, 2.0, 8.0, 10.0]
+P = [0, 5.0, 0.0, 7.0, 8.0, 0.0, 3.0, 9.0, 9.0, 9.0]
+
+
+
+

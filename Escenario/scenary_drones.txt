@@ -1,3 +1,0 @@
-{'dron_n': 1, 'battery_capacity': 135, 'distance_capacity': 144}
-{'dron_n': 2, 'battery_capacity': 185, 'distance_capacity': 136}
-{'dron_n': 3, 'battery_capacity': 136, 'distance_capacity': 117}

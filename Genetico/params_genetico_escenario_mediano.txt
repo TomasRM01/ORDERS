@@ -1,0 +1,5 @@
+Tamaño de la poblacion              = 200
+Porcentaje mejor                    = 10
+Probabilidad de cruce               = 0.9
+Probabilidad de mutacion            = 0.01
+Maximo de generaciones sin mejora   = 10

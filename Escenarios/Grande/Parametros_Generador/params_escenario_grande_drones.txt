@@ -1,0 +1,5 @@
+Numero de drones    = 30
+Distancia minima    = 1000
+Distancia maxima    = 1500
+Bateria minima      = 1000
+Bateria maxima      = 2500

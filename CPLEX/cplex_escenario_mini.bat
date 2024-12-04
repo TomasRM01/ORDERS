@@ -1,0 +1,2 @@
+REM Solucionamos el escenario Mini con CPLEX
+python3 ./cplex_drones.py ../Escenarios/Mini/Parametros_Solucionador/escenario_mini_drones.txt ../Escenarios/Mini/Parametros_Solucionador/escenario_mini_sensores.txt ../Escenarios/Mini/Parametros_Solucionador/escenario_mini_seed.txt ./log_cplex_escenario_mini.txt 0.001

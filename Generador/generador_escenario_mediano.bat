@@ -1,0 +1,2 @@
+REM Comando para volver a generar el escenario Mediano
+python3 ./generador_escenario.py ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_drones.txt ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_sensores.txt ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_seed.txt ../Escenarios/Mediano/Parametros_Generador/params_escenario_mediano_drones.txt ../Escenarios/Mediano/Parametros_Generador/params_escenario_mediano_sensores.txt ./log_generador_escenario.txt -s=f42893b8c6c969c46d676693c711f2b1

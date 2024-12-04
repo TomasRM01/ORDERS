@@ -1,0 +1,2 @@
+{'dron_n': 1, 'battery_capacity': 10, 'distance_capacity': 88}
+{'dron_n': 2, 'battery_capacity': 22, 'distance_capacity': 57}
