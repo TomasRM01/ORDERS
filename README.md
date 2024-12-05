@@ -51,10 +51,10 @@ La estructura del proyecto es la siguiente:
 ```
 ORDERS/
 ├── CPLEX/
-│   ├── cplex_drones.py
 │   ├── cplex_escenario_grande.bat
 │   ├── cplex_escenario_mediano.bat
 │   ├── cplex_escenario_mini.bat
+│   ├── cplex.py
 │   ├── gestor_ficheros.py
 │   ├── log_cplex_escenario_grande.txt
 │   ├── log_cplex_escenario_mediano.txt
@@ -101,24 +101,25 @@ ORDERS/
 │   ├── imprime_sensores.py
 │   └── log_generador_escenario.txt
 ├── Genetico/
-│   ├── aux_genetico_drones.py
-│   ├── genetico_drones.py
+│   ├── aux_genetico.py
 │   ├── genetico_escenario_grande.bat
 │   ├── genetico_escenario_mediano.bat
 │   ├── genetico_escenario_mini.bat
+│   ├── genetico.py
 │   ├── gestor_ficheros.py
 │   ├── log_genetico_escenario_grande.txt
 │   ├── log_genetico_escenario_mediano.txt
 │   ├── log_genetico_escenario_mini.txt
-│   ├── main_genetico_drones.py
+│   ├── main_genetico.py
 │   ├── params_genetico_escenario_grande.txt
 │   ├── params_genetico_escenario_mediano.txt
 │   └── params_genetico_escenario_mini.txt
+├── .gitignore
 └── README.md
 ```
 
 - `CPLEX/`: Contiene los scripts necesarios para utilizar el método de resolución exacto.
-    - `cplex_drones.py`: Script principal para ejecutar el método de resolución exacto.
+    - `cplex.py`: Script principal para ejecutar el método de resolución exacto.
     - `cplex_escenario_grande.bat`: Script para ejecutar el método exacto en el escenario grande.
     - `cplex_escenario_mediano.bat`: Script para ejecutar el método exacto en el escenario mediano.
     - `cplex_escenario_mini.bat`: Script para ejecutar el método exacto en el escenario mini.
@@ -168,19 +169,20 @@ ORDERS/
     - `imprime_sensores.py`: Script que imprime los sensores del escenario y los representa gráficamente.
     - `log_generador_escenario.txt`: Log de la generación de los escenarios.
 - `Genetico/`: Carpeta donde se almacenan los resultados y logs de las ejecuciones.
-    - `aux_genetico_drones.py`: Contiene funciones auxiliares para el algoritmo genético.
-    - `genetico_drones.py`: Contiene la implementación del algoritmo genético.
+    - `aux_genetico.py`: Contiene funciones auxiliares para el algoritmo genético.
     - `genetico_escenario_grande.bat`: Script para ejecutar el algoritmo genético en el escenario grande.
     - `genetico_escenario_mediano.bat`: Script para ejecutar el algoritmo genético en el escenario mediano.
     - `genetico_escenario_mini.bat`: Script para ejecutar el algoritmo genético en el escenario mini.
+    - `genetico.py`: Contiene la implementación del algoritmo genético.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
     - `log_genetico_escenario_grande.txt`: Log de la ejecución del algoritmo genético en el escenario grande.
     - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
     - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
-    - `main_genetico_drones.py`: Script principal para ejecutar el algoritmo genético.
+    - `main_genetico.py`: Script principal para ejecutar el algoritmo genético.
     - `params_genetico_escenario_grande.txt`: Parámetros del algoritmo genético para el escenario grande.
     - `params_genetico_escenario_mediano.txt`: Parámetros del algoritmo genético para el escenario mediano.
     - `params_genetico_escenario_mini.txt`: Parámetros del algoritmo genético para el escenario mini.
+- `.gitignore`: Archivo que contiene los archivos y carpetas que se ignoran en el control de versiones.
 - `README.md`: Contiene la documentación necesaria para el correcto uso de este proyecto.
 
 > [!CAUTION]
@@ -233,10 +235,10 @@ Se deben especificar los siguientes parámetros en el archivo de los sensores, e
 
 ### Método exacto: CPLEX
 
-Para ejecutar el método de resolución exacto, sitúese en la misma carpeta que cplex_drones.py y utilice el siguiente comando:
+Para ejecutar el método de resolución exacto, sitúese en la misma carpeta que `cplex.py` y utilice el siguiente comando:
 
 ```bash
-python3 cplex_drones.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia]
+python3 cplex.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia]
 ```
 
 #### Parámetros Obligatorios:
@@ -248,10 +250,10 @@ python3 cplex_drones.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [rut
 
 ### Método aproximado: Algoritmo Genético
 
-Para ejecutar el método de resolución aproximado, sitúese en la misma carpeta que main_genetico_drones.py y utilice el siguiente comando:
+Para ejecutar el método de resolución aproximado, sitúese en la misma carpeta que `main_genetico.py` y utilice el siguiente comando:
 
 ```bash
-python3 main_genetico_drones.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [ruta_parametros] [peso_distancia] [n_ejecuciones] [-rs, --random_seed] [-s, --seed] valor
+python3 main_genetico.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [ruta_parametros] [peso_distancia] [n_ejecuciones] [-rs, --random_seed] [-s, --seed] valor
 ```
 
 #### Parámetros Obligatorios:

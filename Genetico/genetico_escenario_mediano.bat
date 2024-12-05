@@ -1,2 +1,2 @@
 REM Solucionamos el escenario Mediano con Algoritmo Genetico
-python3 ./main_genetico_drones.py ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_drones.txt ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_sensores.txt ../Escenarios/Mediano/Parametros_Generador/params_escenario_mediano_seed.txt ./log_genetico_escenario_mediano.txt ./params_genetico_escenario_mediano.txt 0.001 31 -rs
+python3 ./main_genetico.py ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_drones.txt ../Escenarios/Mediano/Parametros_Solucionador/escenario_mediano_sensores.txt ../Escenarios/Mediano/Parametros_Generador/params_escenario_mediano_seed.txt ./log_genetico_escenario_mediano.txt ./params_genetico_escenario_mediano.txt 0.001 31 -rs

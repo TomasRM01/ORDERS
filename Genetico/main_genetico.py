@@ -9,8 +9,8 @@ import random
 import matplotlib.pyplot as plt
 import argparse
 
-from genetico_drones import startGenetico
-from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea, generar_hash_aleatorio
+from genetico import startGenetico
+from aux_genetico import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea, generar_hash_aleatorio
 from gestor_ficheros import abrirFichero
 
 # Crear un parser para manejar los argumentos

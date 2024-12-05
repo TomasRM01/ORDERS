@@ -6,7 +6,7 @@ import random
 import math
 import time
 
-from aux_genetico_drones import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
+from aux_genetico import distanciaTotalDron, prioridadTotalDron, bateriaTotalDron, distanciaEuclidea
 
 
 # Funcion startGenetico que ejecuta el algoritmo genetico para el problema de los drones y sensores

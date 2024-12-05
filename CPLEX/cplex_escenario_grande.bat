@@ -1,2 +1,2 @@
 REM Solucionamos el escenario Grande con CPLEX
-python3 ./cplex_drones.py ../Escenarios/Grande/Parametros_Solucionador/escenario_grande_drones.txt ../Escenarios/Grande/Parametros_Solucionador/escenario_grande_sensores.txt ../Escenarios/Grande/Parametros_Generador/params_escenario_grande_seed.txt ./log_cplex_escenario_grande.txt 0.1
+python3 ./cplex.py ../Escenarios/Grande/Parametros_Solucionador/escenario_grande_drones.txt ../Escenarios/Grande/Parametros_Solucionador/escenario_grande_sensores.txt ../Escenarios/Grande/Parametros_Generador/params_escenario_grande_seed.txt ./log_cplex_escenario_grande.txt 0.1
