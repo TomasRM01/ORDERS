@@ -9,7 +9,10 @@ git clone https://github.com/TomasRM01/ORDERS.git
 
 ## Instalación de dependencias
 
-Se requiere el uso de la versión 3.10 de Python. Puedes descargarla en el siguiente enlace: [Python 3.10.11](https://www.python.org/downloads/release/python-31011/). Para el desarrollo y testeo de este proyecto, se utilizó la versión 3.10.11 de Python.
+Se requiere el uso de la versión 3.10 de Python. Puedes descargarla en el siguiente enlace: [Python 3.10.11](https://www.python.org/downloads/release/python-31011/). 
+
+> [!NOTE]  
+> Para el desarrollo y testeo de este proyecto, se utilizó la versión 3.10.11 de Python.
 
 Navegue al directorio del proyecto y ejecute el siguiente comando para instalar las dependencias necesarias:
 
@@ -17,7 +20,10 @@ Navegue al directorio del proyecto y ejecute el siguiente comando para instalar 
 pip install matplotlib
 ```
 
-Para usar el resolutor de CPLEX, es necesario tener instalado IBM ILOG CPLEX Optimization Studio. Puede descargar una versión gratuita académica en el siguiente enlace: [IBM ILOG CPLEX Optimization Studio](https://academic.ibm.com/a2mt/downloads/data_science#/) (Debes registrarte con tu correo institucional para poder descargar la versión gratuita).
+Para usar el resolutor de CPLEX, es necesario tener instalado IBM ILOG CPLEX Optimization Studio. Puede descargar una versión gratuita académica en el siguiente enlace: [IBM ILOG CPLEX Optimization Studio](https://academic.ibm.com/a2mt/downloads/data_science#/).
+
+> [!NOTE]  
+> Debes registrarte con tu correo institucional para poder descargar la versión gratuita.
 
 Una vez instalado, para configurar CPLEX con Python, navegue a la carpeta de instalación de CPLEX y ejecute el siguiente comando como administrador:
 
@@ -31,6 +37,7 @@ Para terminar, instalamos docplex. Este no soporta numpy 2.0.1, por lo que se de
 ```bash
 pip install docplex numpy<2.0
 ```
+
 ### Opción sin licencia de CPLEX
 Si no tiene acceso a la versión completa de CPLEX, puede utilizar la versión gratuita de docplex, que tiene limitaciones en la cantidad de variables y restricciones que se pueden utilizar. Para ello, ejecute el siguiente comando:
 
@@ -45,44 +52,139 @@ La estructura del proyecto es la siguiente:
 ORDERS/
 ├── CPLEX/
 │   ├── cplex_drones.py
+│   ├── cplex_escenario_grande.bat
+│   ├── cplex_escenario_mediano.bat
+│   ├── cplex_escenario_mini.bat
 │   ├── gestor_ficheros.py
-│   └── ...
-├── Escenario/
-│   └── ...
+│   ├── log_cplex_escenario_grande.txt
+│   ├── log_cplex_escenario_mediano.txt
+│   └── log_cplex_escenario_mini.txt
+├── Escenarios/
+│   ├── Grande/
+│   │   ├── Parametros_Generador/
+│   │   │   ├── params_escenario_grande_drones.txt
+│   │   │   ├── params_escenario_grande_seed.txt
+│   │   │   └── params_escenario_grande_sensores.txt
+│   │   ├── Parametros_Solucionador/
+│   │   │   ├── escenario_grande_drones.txt
+│   │   │   └── escenario_grande_sensores.txt
+│   │   └── escenario_grande_sensores.png
+│   ├── Mediano/
+│   │   ├── Parametros_Generador/
+│   │   │   ├── params_escenario_mediano_drones.txt
+│   │   │   ├── params_escenario_mediano_seed.txt
+│   │   │   └── params_escenario_mediano_sensores.txt
+│   │   ├── Parametros_Solucionador/
+│   │   │   ├── escenario_mediano_drones.txt
+│   │   │   └── escenario_mediano_sensores.txt
+│   │   └── escenario_mediano_sensores.png
+│   └── Mini/
+│       ├── Parametros_Generador/
+│       │   ├── params_escenario_mini_drones.txt
+│       │   ├── params_escenario_mini_seed.txt
+│       │   └── params_escenario_mini_sensores.txt
+│       ├── Parametros_Solucionador/
+│       │   ├── escenario_mini_drones.txt
+│       │   └── escenario_mini_sensores.txt
+│       └── escenario_mini_sensores.png
 ├── Generador/
 │   ├── generador_drones.py
+│   ├── generador_escenario_grande.bat
+│   ├── generador_escenario_mediano.bat
+│   ├── generador_escenario_mini.bat
 │   ├── generador_escenario.py
 │   ├── generador_sensores.py
 │   ├── gestor_ficheros.py
+│   ├── imprime_sensores_grande.bat
+│   ├── imprime_sensores_mediano.bat
+│   ├── imprime_sensores_mini.bat
 │   ├── imprime_sensores.py
-│   └── ...
+│   └── log_generador_escenario.txt
 ├── Genetico/
 │   ├── aux_genetico_drones.py
 │   ├── genetico_drones.py
+│   ├── genetico_escenario_grande.bat
+│   ├── genetico_escenario_mediano.bat
+│   ├── genetico_escenario_mini.bat
 │   ├── gestor_ficheros.py
+│   ├── log_genetico_escenario_grande.txt
+│   ├── log_genetico_escenario_mediano.txt
+│   ├── log_genetico_escenario_mini.txt
 │   ├── main_genetico_drones.py
-│   └── ...
+│   ├── params_genetico_escenario_grande.txt
+│   ├── params_genetico_escenario_mediano.txt
+│   └── params_genetico_escenario_mini.txt
 └── README.md
 ```
 
 - `CPLEX/`: Contiene los scripts necesarios para utilizar el método de resolución exacto.
     - `cplex_drones.py`: Script principal para ejecutar el método de resolución exacto.
+    - `cplex_escenario_grande.bat`: Script para ejecutar el método exacto en el escenario grande.
+    - `cplex_escenario_mediano.bat`: Script para ejecutar el método exacto en el escenario mediano.
+    - `cplex_escenario_mini.bat`: Script para ejecutar el método exacto en el escenario mini.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
-- `Escenario/`: Contiene los parametros de los drones, sensores y semilla.
+    - `log_cplex_escenario_grande.txt`: Log de la ejecución del método exacto en el escenario grande.
+    - `log_cplex_escenario_mediano.txt`: Log de la ejecución del método exacto en el escenario mediano.
+    - `log_cplex_escenario_mini.txt`: Log de la ejecución del método exacto en el escenario mini.
+- `Escenarios/`: Contiene los parámetros de los drones, sensores y semilla.
+    - `Grande/`: Carpeta con los parámetros y resultados del escenario grande.
+        - `Parametros_Generador/`: Parámetros para la generación del escenario grande.
+            - `params_escenario_grande_drones.txt`: Parámetros de los drones utilizados para generar el escenario grande.
+            - `params_escenario_grande_seed.txt`: Seed utilizada para generar el escenario grande.
+            - `params_escenario_grande_sensores.txt`: Parámetros de los sensores utilizados para generar el escenario grande.
+        - `Parametros_Solucionador/`: Parámetros del escenario grande para los solucionadores.
+            - `escenario_grande_drones.txt`: Parámetros de los drones utilizados para resolver el escenario grande.
+            - `escenario_grande_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario grande.
+        - `escenario_grande_sensores.png`: Imagen de los sensores en el escenario grande.
+    - `Mediano/`: Carpeta con los parámetros y resultados del escenario mediano.
+        - `Parametros_Generador/`: Parámetros para la generación del escenario mediano.
+            - `params_escenario_mediano_drones.txt`: Parámetros de los drones utilizados para generar el escenario mediano.
+            - `params_escenario_mediano_seed.txt`: Seed utilizada para generar el escenario mediano.
+            - `params_escenario_mediano_sensores.txt`: Parámetros de los sensores utilizados para generar el escenario mediano.
+        - `Parametros_Solucionador/`: Parámetros del escenario mediano para los solucionadores.
+            - `escenario_mediano_drones.txt`: Parámetros de los drones utilizados para resolver el escenario mediano.
+            - `escenario_mediano_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario mediano.
+        - `escenario_mediano_sensores.png`: Imagen de los sensores en el escenario mediano.
+    - `Mini/`: Carpeta con los parámetros y resultados del escenario mini.
+        - `Parametros_Generador/`: Parámetros para la generación del escenario mini.
+            - `params_escenario_mini_drones.txt`: Parámetros de los drones utilizados para generar el escenario mini.
+            - `params_escenario_mini_seed.txt`: Seed utilizada para generar el escenario mini.
+            - `params_escenario_mini_sensores.txt`: Parámetros de los sensores utilizados para generar el escenario mini.
+        - `Parametros_Solucionador/`: Parámetros del escenario mini para los solucionadores.
+            - `escenario_mini_drones.txt`: Parámetros de los drones utilizados para resolver el escenario mini.
+            - `escenario_mini_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario mini.
+        - `escenario_mini_sensores.png`: Imagen de los sensores en el escenario mini.
 - `Generador/`: Contiene los scripts necesarios para generar escenarios.
     - `generador_drones.py`: Script que contiene el código necesario para generar drones.
+    - `generador_escenario_grande.bat`: Script para generar el escenario grande.
+    - `generador_escenario_mediano.bat`: Script para generar el escenario mediano.
+    - `generador_escenario_mini.bat`: Script para generar el escenario mini.
     - `generador_escenario.py`: Este script genera un escenario con drones y sensores utilizando generador_drones.py y generador_sensores.py.
     - `generador_sensores.py`: Script que contiene el código necesario para generar sensores.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
+    - `imprime_sensores_grande.bat`: Script para imprimir los sensores del escenario grande.
+    - `imprime_sensores_mediano.bat`: Script para imprimir los sensores del escenario mediano.
+    - `imprime_sensores_mini.bat`: Script para imprimir los sensores del escenario mini.
     - `imprime_sensores.py`: Script que imprime los sensores del escenario y los representa gráficamente.
+    - `log_generador_escenario.txt`: Log de la generación de los escenarios.
 - `Genetico/`: Carpeta donde se almacenan los resultados y logs de las ejecuciones.
     - `aux_genetico_drones.py`: Contiene funciones auxiliares para el algoritmo genético.
     - `genetico_drones.py`: Contiene la implementación del algoritmo genético.
+    - `genetico_escenario_grande.bat`: Script para ejecutar el algoritmo genético en el escenario grande.
+    - `genetico_escenario_mediano.bat`: Script para ejecutar el algoritmo genético en el escenario mediano.
+    - `genetico_escenario_mini.bat`: Script para ejecutar el algoritmo genético en el escenario mini.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
+    - `log_genetico_escenario_grande.txt`: Log de la ejecución del algoritmo genético en el escenario grande.
+    - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
+    - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
     - `main_genetico_drones.py`: Script principal para ejecutar el algoritmo genético.
+    - `params_genetico_escenario_grande.txt`: Parámetros del algoritmo genético para el escenario grande.
+    - `params_genetico_escenario_mediano.txt`: Parámetros del algoritmo genético para el escenario mediano.
+    - `params_genetico_escenario_mini.txt`: Parámetros del algoritmo genético para el escenario mini.
 - `README.md`: Contiene la documentación necesaria para el correcto uso de este proyecto.
 
-Para asegurar el correcto funcionamiento de los scripts, es importante no separarlos de los que se encuentran en la misma carpeta.
+> [!CAUTION]
+> Para asegurar el correcto funcionamiento de los scripts, es importante no separarlos de los que se encuentran en la misma carpeta.
 
 ## Generación de escenarios
 
@@ -104,7 +206,7 @@ python3 generador_escenario.py [ruta_drones] [ruta_sensores] [ruta_seed_escenari
 - `-s`, `--seed`: Semilla personalizada para la generación del escenario.
 
 #### Parametros de los drones
-Se deben especificar los siguientes parámetros en el archivo de los drones, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor (el nombre del parámetro no es necesario, pero se debe mantener el orden y el separador):
+Se deben especificar los siguientes parámetros en el archivo de los drones, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor:
 
 - `Numero de drones`: Número de drones que se generarán.
 - `Distancia minima`: Distancia mínima que puede recorrer un dron.
@@ -112,14 +214,20 @@ Se deben especificar los siguientes parámetros en el archivo de los drones, en 
 - `Bateria minima`: Batería mínima que puede tener un dron para recargar sensores.
 - `Bateria maxima`: Batería máxima que puede tener un dron para recargar sensores.
 
+> [!IMPORTANT]  
+> El nombre del parámetro no es necesario, pero se debe mantener el orden y el separador.
+
 #### Parametros de los sensores
-Se deben especificar los siguientes parámetros en el archivo de los sensores, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor (el nombre del parámetro no es necesario, pero se debe mantener el orden y el separador):
+Se deben especificar los siguientes parámetros en el archivo de los sensores, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor:
 
 - `Numero de sensores`: Número de sensores que se generarán.
 - `Coordenada maxima X`: Coordenada máxima en el eje X en la cual se puede generar un sensor.
 - `Coordenada maxima Y`: Coordenada máxima en el eje Y en la cual se puede generar un sensor.
 - `Prioridad maxima`: Prioridad máxima que puede tener un sensor.
 - `Bateria faltante maxima`: Batería faltante máxima que puede tener un sensor.
+
+> [!IMPORTANT]  
+> El nombre del parámetro no es necesario, pero se debe mantener el orden y el separador.
 
 ## Ejecución de algoritmos
 
@@ -159,11 +267,12 @@ python3 main_genetico_drones.py [ruta_drones] [ruta_sensores] [ruta_seed_escenar
 - `-rs`, `--random_seed`: Establecer una seed aleatoria para el solucionador.
 - `-s`, `--seed`: Semilla personalizada para el solucionador.
 
-Si se utiliza la semilla aleatoria, no se debe establecer la semilla personalizada.
+> [!CAUTION]
+> Si se utiliza la semilla aleatoria, no se debe establecer la semilla personalizada.
 
 #### Parametros del algoritmo genético
 
-Se deben especificar los siguientes parámetros en el archivo de los parámetros, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor (el nombre del parámetro no es necesario, pero se debe mantener el orden y el separador):
+Se deben especificar los siguientes parámetros en el archivo de los parámetros, en el siguiente orden, cada uno en una línea diferente y con un separador de igual (`=`) entre el nombre del parámetro y su valor:
 
 - `Tamaño de la población`: Número de individuos en la población.
 - `Porcentaje mejor`: Porcentaje de la población que se considerará para la selección de los mejores individuos.
@@ -171,12 +280,22 @@ Se deben especificar los siguientes parámetros en el archivo de los parámetros
 - `Probabilidad de mutación`: Probabilidad de que un individuo mute.
 - `Máximo de generaciones sin mejora`: Número de generaciones sin mejora antes de detener el algoritmo.
 
+> [!IMPORTANT]  
+> El nombre del parámetro no es necesario, pero se debe mantener el orden y el separador.
+
 ## Repetición de experimentos
 
-Para repetir los experimentos incluidos en la memoria, ejecute los archivos `.bat` proporcionados en el proyecto. Por ejemplo:
+Para repetir los experimentos incluidos en la memoria, ejecute los archivos `.bat` proporcionados en el proyecto correspondientes a cada escenario.
 
-```bash
-experimento1.bat
-```
+> [!WARNING]
+> Se utilizan rutas relativas en estos archivos, por lo que es importante que no se modifique la estructura del proyecto si se quieren replicar los experimentos.
+
+- Para volver a generar los escenarios de los experimentos, use `generador_escenario_grande.bat`, `generador_escenario_mediano.bat` o `generador_escenario_mini.bat`.
+
+- Para visualizar de forma gráfica los sensores de los escenarios, use `imprime_sensores_grande.bat`, `imprime_sensores_mediano.bat` o `imprime_sensores_mini.bat`.
+
+- Para resolver los escenarios de los experimentos mediante el método exacto, use `cplex_escenario_grande.bat`, `cplex_escenario_mediano.bat` o `cplex_escenario_mini.bat`.
+
+- Para resolver los escenarios de los experimentos mediante el método aproximado, use `genetico_escenario_grande.bat`, `genetico_escenario_mediano.bat` o `genetico_escenario_mini.bat`.
 
 Cada archivo `.bat` contiene los comandos necesarios para ejecutar los experimentos con los parámetros específicos descritos en la memoria.
