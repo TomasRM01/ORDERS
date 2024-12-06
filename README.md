@@ -67,7 +67,8 @@ ORDERS/
 │   │   │   └── params_escenario_grande_sensores.txt
 │   │   ├── Parametros_Solucionador/
 │   │   │   ├── escenario_grande_drones.txt
-│   │   │   └── escenario_grande_sensores.txt
+│   │   │   ├── escenario_grande_sensores.txt
+│   │   │   └── params_genetico_escenario_grande.txt
 │   │   └── escenario_grande_sensores.png
 │   ├── Mediano/
 │   │   ├── Parametros_Generador/
@@ -76,7 +77,8 @@ ORDERS/
 │   │   │   └── params_escenario_mediano_sensores.txt
 │   │   ├── Parametros_Solucionador/
 │   │   │   ├── escenario_mediano_drones.txt
-│   │   │   └── escenario_mediano_sensores.txt
+│   │   │   ├── escenario_mediano_sensores.txt
+│   │   │   └── params_genetico_escenario_mediano.txt
 │   │   └── escenario_mediano_sensores.png
 │   └── Mini/
 │       ├── Parametros_Generador/
@@ -85,7 +87,8 @@ ORDERS/
 │       │   └── params_escenario_mini_sensores.txt
 │       ├── Parametros_Solucionador/
 │       │   ├── escenario_mini_drones.txt
-│       │   └── escenario_mini_sensores.txt
+│       │   ├── escenario_mini_sensores.txt
+│       │   └── params_genetico_escenario_mini.txt
 │       └── escenario_mini_sensores.png
 ├── Generador/
 │   ├── generador_drones.py
@@ -110,10 +113,7 @@ ORDERS/
 │   ├── log_genetico_escenario_grande.txt
 │   ├── log_genetico_escenario_mediano.txt
 │   ├── log_genetico_escenario_mini.txt
-│   ├── main_genetico.py
-│   ├── params_genetico_escenario_grande.txt
-│   ├── params_genetico_escenario_mediano.txt
-│   └── params_genetico_escenario_mini.txt
+│   └── main_genetico.py
 ├── .gitignore
 └── README.md
 ```
@@ -136,6 +136,7 @@ ORDERS/
         - `Parametros_Solucionador/`: Parámetros del escenario grande para los solucionadores.
             - `escenario_grande_drones.txt`: Parámetros de los drones utilizados para resolver el escenario grande.
             - `escenario_grande_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario grande.
+            - `params_genetico_escenario_grande.txt`: Parámetros del algoritmo genético para el escenario grande.
         - `escenario_grande_sensores.png`: Imagen de los sensores en el escenario grande.
     - `Mediano/`: Carpeta con los parámetros y resultados del escenario mediano.
         - `Parametros_Generador/`: Parámetros para la generación del escenario mediano.
@@ -145,6 +146,7 @@ ORDERS/
         - `Parametros_Solucionador/`: Parámetros del escenario mediano para los solucionadores.
             - `escenario_mediano_drones.txt`: Parámetros de los drones utilizados para resolver el escenario mediano.
             - `escenario_mediano_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario mediano.
+            - `params_genetico_escenario_mediano.txt`: Parámetros del algoritmo genético para el escenario mediano.
         - `escenario_mediano_sensores.png`: Imagen de los sensores en el escenario mediano.
     - `Mini/`: Carpeta con los parámetros y resultados del escenario mini.
         - `Parametros_Generador/`: Parámetros para la generación del escenario mini.
@@ -154,6 +156,7 @@ ORDERS/
         - `Parametros_Solucionador/`: Parámetros del escenario mini para los solucionadores.
             - `escenario_mini_drones.txt`: Parámetros de los drones utilizados para resolver el escenario mini.
             - `escenario_mini_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario mini.
+            - `params_genetico_escenario_mini.txt`: Parámetros del algoritmo genético para el escenario mini.
         - `escenario_mini_sensores.png`: Imagen de los sensores en el escenario mini.
 - `Generador/`: Contiene los scripts necesarios para generar escenarios.
     - `generador_drones.py`: Script que contiene el código necesario para generar drones.
@@ -179,9 +182,6 @@ ORDERS/
     - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
     - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
     - `main_genetico.py`: Script principal para ejecutar el algoritmo genético.
-    - `params_genetico_escenario_grande.txt`: Parámetros del algoritmo genético para el escenario grande.
-    - `params_genetico_escenario_mediano.txt`: Parámetros del algoritmo genético para el escenario mediano.
-    - `params_genetico_escenario_mini.txt`: Parámetros del algoritmo genético para el escenario mini.
 - `.gitignore`: Archivo que contiene los archivos y carpetas que se ignoran en el control de versiones.
 - `README.md`: Contiene la documentación necesaria para el correcto uso de este proyecto.
 
