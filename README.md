@@ -111,16 +111,19 @@ ORDERS/
 ├── Resultados/
 │   ├── Grande/
 │   │   ├── caminos_genetico_escenario_grande.png
+│   │   ├── diagrama_genetico_escenario_grande.png
 │   │   ├── log_cplex_escenario_grande.txt
 │   │   └── log_genetico_escenario_grande.txt
 │   ├── Mediano/
 │   │   ├── caminos_cplex_escenario_mediano.png
 │   │   ├── caminos_genetico_escenario_mediano.png
+│   │   ├── diagrama_genetico_escenario_mediano.png
 │   │   ├── log_cplex_escenario_mediano.txt
 │   │   └── log_genetico_escenario_mediano.txt
 │   └── Mini/
 │       ├── caminos_cplex_escenario_mini.png
 │       ├── caminos_genetico_escenario_mini.png
+│       ├── diagrama_genetico_escenario_mini.png
 │       ├── log_cplex_escenario_mini.txt
 │       └── log_genetico_escenario_mini.txt
 ├── .gitignore
@@ -188,16 +191,19 @@ ORDERS/
 - `Resultados/`: Contiene los resultados de los experimentos
     - `Grande/`: Carpeta con los resultados del escenario grande.
         - `caminos_genetico_escenario_grande.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario grande.
+        - `diagrama_genetico_escenario_grande.png`: Diagrama de caja y bigotes de las ejecuciones del algoritmo genético para el escenario grande.
         - `log_cplex_escenario_grande.txt`: Log de la ejecución del método exacto en el escenario grande.
         - `log_genetico_escenario_grande.txt`: Log de la ejecución del algoritmo genético en el escenario grande.
     - `Mediano/`: Carpeta con los resultados del escenario mediano.
         - `caminos_genetico_escenario_mediano.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario mediano.
         - `caminos_cplex_escenario_mediano.png`: Gráfica de los caminos obtenidos por el método exacto en el escenario mediano.
+        - `diagrama_genetico_escenario_mediano.png`: Diagrama de caja y bigotes de las ejecuciones del algoritmo genético para el escenario mediano.
         - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
         - `log_cplex_escenario_mediano.txt`: Log de la ejecución del método exacto en el escenario mediano.
     - `Mini/`: Carpeta con los resultados del escenario mini.
         - `caminos_genetico_escenario_mini.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario mini.
         - `caminos_cplex_escenario_mini.png`: Gráfica de los caminos obtenidos por el método exacto en el escenario mini.
+        - `diagrama_genetico_escenario_mini.png`: Diagrama de caja y bigotes de las ejecuciones del algoritmo genético para el escenario mini.
         - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
         - `log_cplex_escenario_mini.txt`: Log de la ejecución del método exacto en el escenario mini.
 - `.gitignore`: Archivo que contiene los archivos y carpetas que se ignoran en el control de versiones.
