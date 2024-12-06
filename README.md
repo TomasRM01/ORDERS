@@ -55,9 +55,6 @@ ORDERS/
 │   ├── cplex_escenario_mediano.bat
 │   ├── cplex_escenario_mini.bat
 │   ├── gestor_ficheros.py
-│   ├── log_cplex_escenario_grande.txt
-│   ├── log_cplex_escenario_mediano.txt
-│   ├── log_cplex_escenario_mini.txt
 │   └── main_cplex.py
 ├── Escenarios/
 │   ├── Grande/
@@ -110,10 +107,22 @@ ORDERS/
 │   ├── genetico_escenario_mini.bat
 │   ├── genetico.py
 │   ├── gestor_ficheros.py
-│   ├── log_genetico_escenario_grande.txt
-│   ├── log_genetico_escenario_mediano.txt
-│   ├── log_genetico_escenario_mini.txt
 │   └── main_genetico.py
+├── Resultados/
+│   ├── Grande/
+│   │   ├── caminos_genetico_escenario_grande.png
+│   │   ├── log_cplex_escenario_grande.txt
+│   │   └── log_genetico_escenario_grande.txt
+│   ├── Mediano/
+│   │   ├── caminos_cplex_escenario_mediano.png
+│   │   ├── caminos_genetico_escenario_mediano.png
+│   │   ├── log_cplex_escenario_mediano.txt
+│   │   └── log_genetico_escenario_mediano.txt
+│   └── Mini/
+│       ├── caminos_cplex_escenario_mini.png
+│       ├── caminos_genetico_escenario_mini.png
+│       ├── log_cplex_escenario_mini.txt
+│       └── log_genetico_escenario_mini.txt
 ├── .gitignore
 └── README.md
 ```
@@ -123,12 +132,9 @@ ORDERS/
     - `cplex_escenario_mediano.bat`: Script para ejecutar el método exacto en el escenario mediano.
     - `cplex_escenario_mini.bat`: Script para ejecutar el método exacto en el escenario mini.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
-    - `log_cplex_escenario_grande.txt`: Log de la ejecución del método exacto en el escenario grande.
-    - `log_cplex_escenario_mediano.txt`: Log de la ejecución del método exacto en el escenario mediano.
-    - `log_cplex_escenario_mini.txt`: Log de la ejecución del método exacto en el escenario mini.
     - `main_cplex.py`: Script principal para ejecutar el método de resolución exacto.
 - `Escenarios/`: Contiene los parámetros de los drones, sensores y semilla.
-    - `Grande/`: Carpeta con los parámetros y resultados del escenario grande.
+    - `Grande/`: Carpeta con los parámetros del escenario grande.
         - `Parametros_Generador/`: Parámetros para la generación del escenario grande.
             - `params_escenario_grande_drones.txt`: Parámetros de los drones utilizados para generar el escenario grande.
             - `params_escenario_grande_seed.txt`: Seed utilizada para generar el escenario grande.
@@ -138,7 +144,7 @@ ORDERS/
             - `escenario_grande_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario grande.
             - `params_genetico_escenario_grande.txt`: Parámetros del algoritmo genético para el escenario grande.
         - `escenario_grande_sensores.png`: Imagen de los sensores en el escenario grande.
-    - `Mediano/`: Carpeta con los parámetros y resultados del escenario mediano.
+    - `Mediano/`: Carpeta con los parámetros del escenario mediano.
         - `Parametros_Generador/`: Parámetros para la generación del escenario mediano.
             - `params_escenario_mediano_drones.txt`: Parámetros de los drones utilizados para generar el escenario mediano.
             - `params_escenario_mediano_seed.txt`: Seed utilizada para generar el escenario mediano.
@@ -148,7 +154,7 @@ ORDERS/
             - `escenario_mediano_sensores.txt`: Parámetros de los sensores utilizados para resolver el escenario mediano.
             - `params_genetico_escenario_mediano.txt`: Parámetros del algoritmo genético para el escenario mediano.
         - `escenario_mediano_sensores.png`: Imagen de los sensores en el escenario mediano.
-    - `Mini/`: Carpeta con los parámetros y resultados del escenario mini.
+    - `Mini/`: Carpeta con los parámetros del escenario mini.
         - `Parametros_Generador/`: Parámetros para la generación del escenario mini.
             - `params_escenario_mini_drones.txt`: Parámetros de los drones utilizados para generar el escenario mini.
             - `params_escenario_mini_seed.txt`: Seed utilizada para generar el escenario mini.
@@ -178,10 +184,22 @@ ORDERS/
     - `genetico_escenario_mini.bat`: Script para ejecutar el algoritmo genético en el escenario mini.
     - `genetico.py`: Contiene la implementación del algoritmo genético.
     - `gestor_ficheros.py`: Contiene funciones para leer y escribir archivos.
-    - `log_genetico_escenario_grande.txt`: Log de la ejecución del algoritmo genético en el escenario grande.
-    - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
-    - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
     - `main_genetico.py`: Script principal para ejecutar el algoritmo genético.
+- `Resultados/`: Contiene los resultados de los experimentos
+    - `Grande/`: Carpeta con los resultados del escenario grande.
+        - `caminos_genetico_escenario_grande.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario grande.
+        - `log_cplex_escenario_grande.txt`: Log de la ejecución del método exacto en el escenario grande.
+        - `log_genetico_escenario_grande.txt`: Log de la ejecución del algoritmo genético en el escenario grande.
+    - `Mediano/`: Carpeta con los resultados del escenario mediano.
+        - `caminos_genetico_escenario_mediano.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario mediano.
+        - `caminos_cplex_escenario_mediano.png`: Gráfica de los caminos obtenidos por el método exacto en el escenario mediano.
+        - `log_genetico_escenario_mediano.txt`: Log de la ejecución del algoritmo genético en el escenario mediano.
+        - `log_cplex_escenario_mediano.txt`: Log de la ejecución del método exacto en el escenario mediano.
+    - `Mini/`: Carpeta con los resultados del escenario mini.
+        - `caminos_genetico_escenario_mini.png`: Gráfica de los caminos obtenidos por el algoritmo genético en el escenario mini.
+        - `caminos_cplex_escenario_mini.png`: Gráfica de los caminos obtenidos por el método exacto en el escenario mini.
+        - `log_genetico_escenario_mini.txt`: Log de la ejecución del algoritmo genético en el escenario mini.
+        - `log_cplex_escenario_mini.txt`: Log de la ejecución del método exacto en el escenario mini.
 - `.gitignore`: Archivo que contiene los archivos y carpetas que se ignoran en el control de versiones.
 - `README.md`: Contiene la documentación necesaria para el correcto uso de este proyecto.
 
