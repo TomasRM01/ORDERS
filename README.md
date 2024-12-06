@@ -54,11 +54,11 @@ ORDERS/
 │   ├── cplex_escenario_grande.bat
 │   ├── cplex_escenario_mediano.bat
 │   ├── cplex_escenario_mini.bat
-│   ├── cplex.py
 │   ├── gestor_ficheros.py
 │   ├── log_cplex_escenario_grande.txt
 │   ├── log_cplex_escenario_mediano.txt
-│   └── log_cplex_escenario_mini.txt
+│   ├── log_cplex_escenario_mini.txt
+│   └── main_cplex.py
 ├── Escenarios/
 │   ├── Grande/
 │   │   ├── Parametros_Generador/
@@ -119,7 +119,6 @@ ORDERS/
 ```
 
 - `CPLEX/`: Contiene los scripts necesarios para utilizar el método de resolución exacto.
-    - `cplex.py`: Script principal para ejecutar el método de resolución exacto.
     - `cplex_escenario_grande.bat`: Script para ejecutar el método exacto en el escenario grande.
     - `cplex_escenario_mediano.bat`: Script para ejecutar el método exacto en el escenario mediano.
     - `cplex_escenario_mini.bat`: Script para ejecutar el método exacto en el escenario mini.
@@ -127,6 +126,7 @@ ORDERS/
     - `log_cplex_escenario_grande.txt`: Log de la ejecución del método exacto en el escenario grande.
     - `log_cplex_escenario_mediano.txt`: Log de la ejecución del método exacto en el escenario mediano.
     - `log_cplex_escenario_mini.txt`: Log de la ejecución del método exacto en el escenario mini.
+    - `main_cplex.py`: Script principal para ejecutar el método de resolución exacto.
 - `Escenarios/`: Contiene los parámetros de los drones, sensores y semilla.
     - `Grande/`: Carpeta con los parámetros y resultados del escenario grande.
         - `Parametros_Generador/`: Parámetros para la generación del escenario grande.
@@ -235,10 +235,10 @@ Se deben especificar los siguientes parámetros en el archivo de los sensores, e
 
 ### Método exacto: CPLEX
 
-Para ejecutar el método de resolución exacto, sitúese en la misma carpeta que `cplex.py` y utilice el siguiente comando:
+Para ejecutar el método de resolución exacto, sitúese en la misma carpeta que `main_cplex.py` y utilice el siguiente comando:
 
 ```bash
-python3 cplex.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia]
+python3 main_cplex.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia]
 ```
 
 #### Parámetros Obligatorios:
