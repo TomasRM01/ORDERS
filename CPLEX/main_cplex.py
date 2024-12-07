@@ -17,6 +17,8 @@ parser.add_argument("ruta_sensores", type=str, help="Ruta del archivo desde dond
 parser.add_argument("ruta_seed_escenario", type=str, help="Ruta del archivo desde donde se leerá la seed del escenario.")  # Obligatorio
 parser.add_argument("ruta_log", type=str, help="Ruta del archivo donde se escribirá el log.")  # Obligatorio
 parser.add_argument("peso_distancia", type=float, help="Peso de la distancia en el cálculo del fitness.")  # Obligatorio
+parser.add_argument("-v", "--verbalize", action="store_true", help="Mostrar información detallada durante la ejecución.")  # Opcional
+parser.add_argument("-g", "--mipgap", type=float, help="Gap de MIP para la precisión de los cálculos.")  # Opcional
 args = parser.parse_args()
         
 def main():
@@ -25,6 +27,10 @@ def main():
     
     # Crear el modelo
     mdl = Model(name='ProblemaDrones')
+    
+    # Definir la precisión de los cálculos si el usuario lo ha especificado
+    if (args.mipgap is not None):
+        mdl.parameters.mip.tolerances.mipgap = args.mipgap
     
     # DATOS
     
@@ -50,7 +56,7 @@ def main():
     # RESOLVER
     
     # Resolver el modelo
-    solution = mdl.solve()
+    solution = mdl.solve(log_output=args.verbalize)
 
     # RESULTADOS
     
@@ -68,7 +74,7 @@ def main():
             for k in range(n):
                 x_sol[i][j][k] = solution.get_var_value(x[i,j,k])
     
-    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, mdl.solve_details, seed)
+    imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, mdl.solve_details, seed, mdl.parameters.mip.tolerances.mipgap.value)
     
     # guardamos en una variable cada camino de cada dron de la solucion
     caminos = []
@@ -199,7 +205,7 @@ def crearRestricciones(mdl, m, x, u, S, K, D, C, F, B):
     for k in K:
         mdl.add_constraint(mdl.sum(x[i, j, k] * F[j] for i in S for j in S) <= B[k], f'recarga_{k}')
 
-def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details, seed):
+def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, coordSensor, solve_details, seed, mipgap):
     
     string = ""
     string += f"{time.strftime('%d/%m/%Y, %H:%M:%S')}\n"
@@ -297,6 +303,7 @@ def imprimirResultado(x_sol, solution, D, F, P, K, C, B, peso_distancia, n, m, c
 
     # Imprimir los parámetros
     string += "Peso Distancia = " + str(peso_distancia) + "\n"
+    string += "MipGap = " + str(mipgap) + "\n"
 
     string += "\n## ESCENARIO ##\n\n"
 

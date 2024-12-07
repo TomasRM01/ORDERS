@@ -220,15 +220,15 @@ Para generar un escenario, sitúese en la misma carpeta que generador_escenario.
 python3 generador_escenario.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_parametros_drones] [ruta_parametros_sensores] [ruta_log] [-s, --seed] valor
 ```
 
-#### Parámetros Obligatorios:
-- `[ruta_drones]`: Ruta del archivo donde se guardarán los parámetros de los drones.
-- `[ruta_sensores]`: Ruta del archivo donde se guardarán los parámetros de los sensores.
-- `[ruta_seed_escenario]`: Ruta del archivo donde se guardará la seed del escenario.
-- `[ruta_parametros_drones]`: Ruta del archivo desde donde se leerán los parámetros para la generación de los drones.
-- `[ruta_parametros_sensores]`: Ruta del archivo desde donde se leerán los parámetros para la generación de los sensores.
-- `[ruta_log]`: Ruta del archivo donde se escribirá el log.
+#### Parámetros Obligatorios
+- `ruta_drones`: Ruta del archivo donde se guardarán los parámetros de los drones.
+- `ruta_sensores`: Ruta del archivo donde se guardarán los parámetros de los sensores.
+- `ruta_seed_escenario`: Ruta del archivo donde se guardará la seed del escenario.
+- `ruta_parametros_drones`: Ruta del archivo desde donde se leerán los parámetros para la generación de los drones.
+- `ruta_parametros_sensores`: Ruta del archivo desde donde se leerán los parámetros para la generación de los sensores.
+- `ruta_log`: Ruta del archivo donde se escribirá el log.
 
-#### Parámetros Opcionales:
+#### Parámetros Opcionales
 - `-s`, `--seed`: Semilla personalizada para la generación del escenario.
 
 #### Parametros de los drones
@@ -262,15 +262,22 @@ Se deben especificar los siguientes parámetros en el archivo de los sensores, e
 Para ejecutar el método de resolución exacto, sitúese en la misma carpeta que `main_cplex.py` y utilice el siguiente comando:
 
 ```bash
-python3 main_cplex.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia]
+python3 main_cplex.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [peso_distancia] [-v, --verbalize] [-g, --mipgap] valor
 ```
 
-#### Parámetros Obligatorios:
-- `[ruta_drones]`: Ruta del archivo desde donde se leerán los parámetros de los drones.
-- `[ruta_sensores]`: Ruta del archivo desde donde se leerán los parámetros de los sensores.
-- `[ruta_seed_escenario]`: Ruta del archivo desde donde se leerá la seed del escenario.
-- `[ruta_log]`: Ruta del archivo donde se escribirá el log.
-- `[peso_distancia]`: Peso de la distancia en el cálculo del fitness.
+#### Parámetros Obligatorios
+- `ruta_drones`: Ruta del archivo desde donde se leerán los parámetros de los drones.
+- `ruta_sensores`: Ruta del archivo desde donde se leerán los parámetros de los sensores.
+- `ruta_seed_escenario`: Ruta del archivo desde donde se leerá la seed del escenario.
+- `ruta_log`: Ruta del archivo donde se escribirá el log.
+- `peso_distancia`: Peso de la distancia en el cálculo del fitness.
+
+#### Parámetros Opcionales
+- `-v`, `--verbalize`: Imprimir información adicional durante la ejecución.
+- `-g`, `--mipgap`: Establecer el valor de la tolerancia de la brecha de la solución. Por defecto es *0.0001*.
+
+> [!CAUTION]
+> Cuanto más grande sea el `--mipgap`, menor será la precisión del resultado.
 
 ### Método aproximado: Algoritmo Genético
 
@@ -280,16 +287,16 @@ Para ejecutar el método de resolución aproximado, sitúese en la misma carpeta
 python3 main_genetico.py [ruta_drones] [ruta_sensores] [ruta_seed_escenario] [ruta_log] [ruta_parametros] [peso_distancia] [n_ejecuciones] [-rs, --random_seed] [-s, --seed] valor
 ```
 
-#### Parámetros Obligatorios:
-- `[ruta_drones]`: Ruta del archivo desde donde se leerán los parámetros de los drones.
-- `[ruta_sensores]`: Ruta del archivo desde donde se leerán los parámetros de los sensores.
-- `[ruta_seed_escenario]`: Ruta del archivo desde donde se leerá la seed del escenario.
-- `[ruta_log]`: Ruta del archivo donde se escribirá el log.
-- `[ruta_parametros]`: Ruta del archivo desde donde se leerán los parámetros del algoritmo genético.
-- `[peso_distancia]`: Peso de la distancia en el cálculo del fitness.
-- `[n_ejecuciones]`: Número de ejecuciones del algoritmo genético.
+#### Parámetros Obligatorios
+- `ruta_drones`: Ruta del archivo desde donde se leerán los parámetros de los drones.
+- `ruta_sensores`: Ruta del archivo desde donde se leerán los parámetros de los sensores.
+- `ruta_seed_escenario`: Ruta del archivo desde donde se leerá la seed del escenario.
+- `ruta_log`: Ruta del archivo donde se escribirá el log.
+- `ruta_parametros`: Ruta del archivo desde donde se leerán los parámetros del algoritmo genético.
+- `peso_distancia`: Peso de la distancia en el cálculo del fitness.
+- `n_ejecuciones`: Número de ejecuciones del algoritmo genético.
 
-#### Parámetros Opcionales:
+#### Parámetros Opcionales
 - `-rs`, `--random_seed`: Establecer una seed aleatoria para el solucionador.
 - `-s`, `--seed`: Semilla personalizada para el solucionador.
 
