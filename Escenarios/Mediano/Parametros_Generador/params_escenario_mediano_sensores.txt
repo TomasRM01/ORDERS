@@ -1,5 +1,5 @@
-Numero de sensores      = 20
+Numero de sensores      = 23
 Coordenada maxima X     = 100
 Coordenada maxima Y     = 100
 Prioridad maxima        = 10
-Bateria faltante maxima = 200
+Bateria faltante maxima = 100

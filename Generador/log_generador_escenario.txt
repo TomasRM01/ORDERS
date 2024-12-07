@@ -32,3 +32,52 @@ X: 24.34	Y: 19.70	P: 9	B: 10
 
 
 
+
+Seed: f42893b8c6c969c46d676693c711f2b1
+
+Parametros de drones:
+Numero de drones    = 3
+Distancia minima    = 100
+Distancia maxima    = 300
+Bateria minima      = 100
+Bateria maxima      = 200
+
+Parametros de sensores:
+Numero de sensores      = 23
+Coordenada maxima X     = 100
+Coordenada maxima Y     = 100
+Prioridad maxima        = 10
+Bateria faltante maxima = 100
+
+Drones generados:
+{'dron_n': 1, 'battery_capacity': 195, 'distance_capacity': 201}
+{'dron_n': 2, 'battery_capacity': 176, 'distance_capacity': 112}
+{'dron_n': 3, 'battery_capacity': 175, 'distance_capacity': 182}
+
+Sensores generados:
+X: 74.80	Y: 59.44	P: 0	B: 75
+X: 32.10	Y: 82.17	P: 3	B: 24
+X: 96.37	Y: 07.31	P: 5	B: 90
+X: 16.06	Y: 76.65	P: 1	B: 63
+X: 67.45	Y: 65.20	P: 3	B: 70
+X: 12.61	Y: 71.52	P: 1	B: 96
+X: 57.03	Y: 28.31	P: 9	B: 47
+X: 80.28	Y: 36.59	P: 8	B: 54
+X: 11.05	Y: 43.44	P: 0	B: 6
+X: 12.42	Y: 03.27	P: 5	B: 73
+X: 12.48	Y: 54.76	P: 6	B: 14
+X: 41.95	Y: 01.03	P: 4	B: 76
+X: 86.17	Y: 97.06	P: 4	B: 30
+X: 07.62	Y: 48.47	P: 5	B: 83
+X: 49.42	Y: 83.82	P: 6	B: 65
+X: 63.82	Y: 56.47	P: 4	B: 40
+X: 51.08	Y: 58.19	P: 1	B: 61
+X: 01.33	Y: 39.81	P: 10	B: 3
+X: 84.24	Y: 03.43	P: 7	B: 56
+X: 62.69	Y: 33.86	P: 9	B: 65
+X: 58.68	Y: 93.96	P: 3	B: 81
+X: 48.99	Y: 99.76	P: 8	B: 33
+X: 88.31	Y: 74.30	P: 5	B: 52
+
+
+
