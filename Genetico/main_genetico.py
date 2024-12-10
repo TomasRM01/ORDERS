@@ -159,7 +159,7 @@ def recuperaSemilla():
     if args.random_seed:
         seed_genetico = generar_hash_aleatorio()
     else:
-        if args.seed is None:    
+        if args.seed is None or args.seed == "":    
             seed_genetico = seed
         else:
             seed_genetico = args.seed

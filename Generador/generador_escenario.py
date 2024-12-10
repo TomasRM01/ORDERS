@@ -26,7 +26,7 @@ def main():
     
     # Generamos la seed si no se ha especificado
     seed = args.seed
-    if seed == None:
+    if seed == None or seed == "":
         # Generamos una semilla aleatoria en md5
         seed = generar_hash_aleatorio()
         
