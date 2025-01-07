@@ -36,8 +36,8 @@ def generaSensores(seed, ruta_sensores, parametros):
             for t in posiciones:
                 if (abs(t[0] - x) <= 3 and abs(t[1] - y) <= 3):
                     repetido = 1
-                    x = round(random.uniform(0, 100), 2)
-                    y = round(random.uniform(0, 100), 2)
+                    x = round(random.uniform(0, max_x), 2)
+                    y = round(random.uniform(0, max_y), 2)
                     break
         
         # generamos una prioridad aleatoria
