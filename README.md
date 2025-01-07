@@ -17,13 +17,13 @@ Se requiere el uso de la versión 3.10 de Python. Puedes descargarla en el sigui
 Navegue al directorio del proyecto y ejecute el siguiente comando para instalar las dependencias necesarias:
 
 ```bash
-pip install matplotlib
+pip install matplotlib PyQt6
 ```
 
-Para usar el resolutor de CPLEX, es necesario tener instalado IBM ILOG CPLEX Optimization Studio. Puede descargar una versión gratuita académica en el siguiente enlace: [IBM ILOG CPLEX Optimization Studio](https://academic.ibm.com/a2mt/downloads/data_science#/).
+Para usar el resolutor de CPLEX, es necesario tener instalado IBM ILOG CPLEX Optimization Studio. Puede descargar una versión completa académica en el siguiente enlace: [IBM ILOG CPLEX Optimization Studio](https://academic.ibm.com/a2mt/downloads/data_science#/).
 
 > [!NOTE]  
-> Debes registrarte con tu correo institucional para poder descargar la versión gratuita.
+> Debes registrarte con tu correo institucional para poder descargar la versión completa.
 
 Una vez instalado, para configurar CPLEX con Python, navegue a la carpeta de instalación de CPLEX y ejecute el siguiente comando como administrador:
 
@@ -35,7 +35,7 @@ python3 setup.py install
 Para terminar, instalamos docplex. Este no soporta numpy 2.0.1, por lo que se debe instalar una version anterior:
 
 ```bash
-pip install docplex numpy<2.0
+pip install docplex "numpy<2.0"
 ```
 
 ### Opción sin licencia de CPLEX
