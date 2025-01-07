@@ -1,5 +1,5 @@
 Numero de drones    = 2
-Distancia minima    = 100
-Distancia maxima    = 300
+Distancia minima    = 60
+Distancia maxima    = 120
 Bateria minima      = 10
-Bateria maxima      = 50
+Bateria maxima      = 15

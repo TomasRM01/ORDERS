@@ -1,5 +1,5 @@
-Numero de sensores      = 10
-Coordenada maxima X     = 50
-Coordenada maxima Y     = 50
-Prioridad maxima        = 10
+Numero de sensores      = 7
+Coordenada maxima X     = 10
+Coordenada maxima Y     = 10
+Prioridad maxima        = 5
 Bateria faltante maxima = 10
